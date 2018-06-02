@@ -30,13 +30,13 @@ abstract class ReactorViewModel<Action, Mutation, State>(private val initialStat
 
   private final fun createStateStream(): Observable<State> {
     val transformedAction = transformAction(action)
-    val mutation = transformedAction.flatMap { action ->
-      mutate(action).onErrorResumeNext { _: Throwable -> Observable.empty() }
-    }
+    val mutation = transformedAction
+      .flatMap { action ->
+        mutate(action).onErrorResumeNext { _: Throwable -> Observable.empty() }
+      }
     val transformedMutation = transformMutation(mutation)
-    val state = transformedMutation.scan(initialState) { state, mutate ->
-      reduce(state, mutate)
-    }
+    val state = transformedMutation
+      .scan(initialState) { state, mutate -> reduce(state, mutate) }
       .onErrorResumeNext { _: Throwable -> Observable.empty() }
       .startWith(initialState)
       .observeOn(AndroidSchedulers.mainThread())
