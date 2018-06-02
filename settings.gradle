@@ -1,1 +1,1 @@
-include ':sample-counter'
+include ':sample-counter', ':reactorviewmodel'
