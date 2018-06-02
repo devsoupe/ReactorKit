@@ -9,9 +9,14 @@ interface ReactorView<ReactorViewModel> {
 
   var viewModel: ReactorViewModel?
 
-  fun attachViewModel() = this.viewModel?.let { bind(it) }
+  fun attachViewModel() = this.viewModel?.let {
+    bindActions(it)
+    bindStates(it)
+  }
 
   fun detachViewModel() = this.disposeBag.clear()
 
-  fun bind(viewModel: ReactorViewModel)
+  fun bindActions(viewModel: ReactorViewModel)
+
+  fun bindStates(viewModel: ReactorViewModel)
 }
