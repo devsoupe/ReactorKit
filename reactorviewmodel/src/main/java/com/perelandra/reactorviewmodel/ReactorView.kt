@@ -7,11 +7,14 @@ interface ReactorView<ReactorViewModel> {
   val disposeBag: DisposeBag
     get() = DisposeBag()
 
-  var viewModel: ReactorViewModel?
+  private val viewModel: ReactorViewModel
+    get() = createViewModel()
 
-  fun attachViewModel() = this.viewModel?.let {
-    bindActions(it)
-    bindStates(it)
+  fun createViewModel() : ReactorViewModel
+
+  fun attachViewModel() = {
+    bindActions(viewModel)
+    bindStates(viewModel)
   }
 
   fun detachViewModel() = this.disposeBag.clear()

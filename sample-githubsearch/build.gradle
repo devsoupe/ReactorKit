@@ -11,7 +11,7 @@ android {
     compileSdkVersion 27
 
     defaultConfig {
-        applicationId "com.perelandra.sample.counter"
+        applicationId "com.perelandra.sample.githubsearch"
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 1
