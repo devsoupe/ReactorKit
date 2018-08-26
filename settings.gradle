@@ -1,1 +1,1 @@
-include ':sample-counter', ':reactorviewmodel'
+include ':sample-counter', ':reactorviewmodel', ':sample-githubsearch'

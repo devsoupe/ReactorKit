@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ReactorViewModel</string>
+    <string name="app_sample_githubsearch_name">Sample GithubSearch</string>
+</resources>
