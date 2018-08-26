@@ -12,7 +12,7 @@ interface ReactorView<ReactorViewModel> {
 
   fun createViewModel() : ReactorViewModel
 
-  fun attachViewModel() = {
+  fun attachViewModel() {
     bindActions(viewModel)
     bindStates(viewModel)
   }
