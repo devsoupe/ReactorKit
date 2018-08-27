@@ -1,4 +1,5 @@
-## ReactorViewModel
+# ReactorViewModel
+
 A framework for a reactive and unidirectional android application architecture
 
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
