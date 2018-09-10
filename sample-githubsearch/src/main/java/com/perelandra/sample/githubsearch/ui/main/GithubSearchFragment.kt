@@ -1,5 +1,6 @@
 package com.perelandra.sample.githubsearch.ui.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -22,8 +23,6 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
     fun newInstance() = GithubSearchFragment()
   }
 
-  private lateinit var searchView: SearchView
-
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     return inflater.inflate(R.layout.fragment_github_search, container, false)
   }
@@ -37,48 +36,44 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
     list.adapter = GithubSearchListAdapter()
 
     setHasOptionsMenu(true)
-    attachViewModel()
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    detachViewModel()
   }
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
     inflater?.inflate(R.menu.menu_toolbar, menu)
 
     val searchItem = menu?.findItem(R.id.action_search)
-    searchView = searchItem?.actionView as SearchView
+    val searchView = searchItem?.actionView as SearchView
 
     searchView.queryHint = "Search"
-//    searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//
-//      override fun onQueryTextSubmit(query: String?): Boolean = false
-//
-//      override fun onQueryTextChange(newText: String?): Boolean {
-//        return true
-//      }
-//    })
+    RxSearchView.queryTextChangeEvents(searchView)
+      .skipInitialValue()
+      .filter { it.isSubmitted }
+      .map { it.queryText() }
+      .filter { it.isNotEmpty() }
+      .map { GithubSearchViewModel.Action.updateQuery(it.toString()) }
+      .bind(to = viewModel.action)
+      .disposed(by = disposeBag)
 
     super.onCreateOptionsMenu(menu, inflater)
+  }
+
+  override fun onResume() {
+    super.onResume()
+    attachViewModel()
+  }
+
+  override fun onStop() {
+    super.onStop()
+    detachViewModel()
   }
 
   override fun createViewModel(): GithubSearchViewModel = GithubSearchViewModel().of(this)
 
   override fun bindActions(viewModel: GithubSearchViewModel) {
-    RxSearchView.queryTextChanges(searchView)
-      .skipInitialValue()
-      .map {
-        Log.i(this::class.java.simpleName, "it.toString() : " + it.toString())
-        GithubSearchViewModel.Action.updateQuery(it.toString())
-      }
-      .bind(to = viewModel.action)
-      .disposed(by = disposeBag)
+
   }
 
   override fun bindStates(viewModel: GithubSearchViewModel) {
 
   }
-
 }

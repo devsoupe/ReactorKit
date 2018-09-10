@@ -12,6 +12,7 @@ import com.perelandra.reactorviewmodel.extension.bind
 import com.perelandra.reactorviewmodel.extension.disposed
 import com.perelandra.reactorviewmodel.extension.of
 import com.perelandra.sample.counter.R
+import com.perelandra.sample.counter.R.id.*
 import kotlinx.android.synthetic.main.fragment_counter.*
 
 class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
@@ -24,18 +25,18 @@ class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
     return inflater.inflate(R.layout.fragment_counter, container, false)
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+  override fun createViewModel(): CounterViewModel {
+    return CounterViewModel().of(this)
+  }
+
+  override fun onResume() {
+    super.onResume()
     attachViewModel()
   }
 
-  override fun onDestroyView() {
-    super.onDestroyView()
+  override fun onStop() {
+    super.onStop()
     detachViewModel()
-  }
-
-  override fun createViewModel(): CounterViewModel {
-    return CounterViewModel().of(this)
   }
 
   override fun bindActions(viewModel: CounterViewModel) {
