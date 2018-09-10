@@ -1,17 +1,16 @@
 package com.buxikorea.buxi.library.reactorkit
 
-import android.content.Context
 import com.perelandra.reactorviewmodel.extension.DisposeBag
 
-interface ReactorView<ReactorViewModel> {
+interface ReactorView<T> {
 
   val disposeBag: DisposeBag
     get() = DisposeBag()
 
-  private val viewModel: ReactorViewModel
+  val viewModel: T
     get() = createViewModel()
 
-  fun createViewModel() : ReactorViewModel
+  fun createViewModel() : T
 
   fun attachViewModel() {
     bindActions(viewModel)
@@ -20,7 +19,7 @@ interface ReactorView<ReactorViewModel> {
 
   fun detachViewModel() = this.disposeBag.clear()
 
-  fun bindActions(viewModel: ReactorViewModel)
+  fun bindActions(viewModel: T)
 
-  fun bindStates(viewModel: ReactorViewModel)
+  fun bindStates(viewModel: T)
 }
