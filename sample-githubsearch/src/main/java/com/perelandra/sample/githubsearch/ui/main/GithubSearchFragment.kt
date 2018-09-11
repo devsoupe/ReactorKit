@@ -1,23 +1,20 @@
 package com.perelandra.sample.githubsearch.ui.main
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
-import com.buxikorea.buxi.library.reactorkit.ReactorView
+import com.buxikorea.buxi.library.reactorkit.BaseReactorFragment
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
-import com.jakewharton.rxbinding2.view.RxView
 import com.perelandra.reactorviewmodel.extension.bind
 import com.perelandra.reactorviewmodel.extension.disposed
 import com.perelandra.reactorviewmodel.extension.of
 import com.perelandra.sample.githubsearch.R
 import kotlinx.android.synthetic.main.fragment_github_search.*
 
-class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
+class GithubSearchFragment : BaseReactorFragment<GithubSearchViewModel>() {
 
   companion object {
     fun newInstance() = GithubSearchFragment()
@@ -45,26 +42,18 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
     val searchView = searchItem?.actionView as SearchView
 
     searchView.queryHint = "Search"
-    RxSearchView.queryTextChangeEvents(searchView)
+    RxSearchView.queryTextChanges(searchView)
       .skipInitialValue()
-      .filter { it.isSubmitted }
-      .map { it.queryText() }
+      .distinctUntilChanged()
       .filter { it.isNotEmpty() }
       .map { GithubSearchViewModel.Action.updateQuery(it.toString()) }
       .bind(to = viewModel.action)
       .disposed(by = disposeBag)
 
+    Log.i(this::class.java.simpleName, "onCreateOptionsMenu : ${disposeBag}");
+    Log.i(this::class.java.simpleName, "onCreateOptionsMenu : ${viewModel}");
+
     super.onCreateOptionsMenu(menu, inflater)
-  }
-
-  override fun onResume() {
-    super.onResume()
-    attachViewModel()
-  }
-
-  override fun onStop() {
-    super.onStop()
-    detachViewModel()
   }
 
   override fun createViewModel(): GithubSearchViewModel = GithubSearchViewModel().of(this)
@@ -74,6 +63,10 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
   }
 
   override fun bindStates(viewModel: GithubSearchViewModel) {
-
+    viewModel.state.map { it.query }
+      .distinctUntilChanged()
+      .filter { it.isNotEmpty() }
+      .subscribe { Log.i(this::class.java.simpleName, "Query : $it")}
+      .disposed(by = disposeBag)
   }
 }

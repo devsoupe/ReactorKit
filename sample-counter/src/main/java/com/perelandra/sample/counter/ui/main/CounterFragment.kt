@@ -1,21 +1,19 @@
 package com.perelandra.sample.counter.ui.main
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.buxikorea.buxi.library.reactorkit.ReactorView
+import com.buxikorea.buxi.library.reactorkit.BaseReactorFragment
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.perelandra.reactorviewmodel.extension.bind
 import com.perelandra.reactorviewmodel.extension.disposed
 import com.perelandra.reactorviewmodel.extension.of
 import com.perelandra.sample.counter.R
-import com.perelandra.sample.counter.R.id.*
 import kotlinx.android.synthetic.main.fragment_counter.*
 
-class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
+class CounterFragment : BaseReactorFragment<CounterViewModel>() {
 
   companion object {
     fun newInstance() = CounterFragment()
@@ -27,16 +25,6 @@ class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
 
   override fun createViewModel(): CounterViewModel {
     return CounterViewModel().of(this)
-  }
-
-  override fun onResume() {
-    super.onResume()
-    attachViewModel()
-  }
-
-  override fun onStop() {
-    super.onStop()
-    detachViewModel()
   }
 
   override fun bindActions(viewModel: CounterViewModel) {
