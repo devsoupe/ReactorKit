@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">ReactorViewModel</string>
-    <string name="app_sample_counter_name">Sample Counter</string>
+  <string name="app_name">ReactorViewModel</string>
+  <string name="app_sample_counter_name">Sample Counter</string>
 </resources>
