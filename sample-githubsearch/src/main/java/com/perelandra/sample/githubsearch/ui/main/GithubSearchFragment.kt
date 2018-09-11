@@ -12,20 +12,19 @@ import com.perelandra.reactorviewmodel.extension.disposed
 import com.perelandra.reactorviewmodel.extension.of
 import com.perelandra.reactorviewmodel.view.ReactorFragment
 import com.perelandra.sample.githubsearch.R
+import com.perelandra.sample.githubsearch.R.id.list
+import com.perelandra.sample.githubsearch.R.id.toolbar
 import kotlinx.android.synthetic.main.fragment_github_search.*
 
 class GithubSearchFragment : ReactorFragment<GithubSearchViewModel>() {
 
   companion object {
-
     private val TAG = this::class.java.simpleName
-
     fun newInstance() = GithubSearchFragment()
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    return inflater.inflate(R.layout.fragment_github_search, container, false)
-  }
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+    inflater.inflate(R.layout.fragment_github_search, container, false)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -67,6 +66,11 @@ class GithubSearchFragment : ReactorFragment<GithubSearchViewModel>() {
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
       .subscribe { Log.i(TAG, "bindStates :: query : $it")}
+      .disposed(by = disposeBag)
+
+    viewModel.state.map { it.nextPage }
+//      .distinctUntilChanged() // for TEST
+      .subscribe { Log.i(TAG, "bindStates :: nextPage : $it")}
       .disposed(by = disposeBag)
   }
 }
