@@ -1,25 +1,33 @@
 package com.buxikorea.buxi.library.reactorkit
 
+import android.util.Log
+import com.perelandra.reactorviewmodel.BuildConfig
 import com.perelandra.reactorviewmodel.extension.DisposeBag
 
-interface ReactorView<ReactorViewModel> {
+interface ReactorView<T> {
 
   val disposeBag: DisposeBag
-    get() = DisposeBag()
 
-  private val viewModel: ReactorViewModel
-    get() = createViewModel()
+  val viewModel: T
 
-  fun createViewModel() : ReactorViewModel
+  fun createViewModel(): T
 
   fun attachViewModel() {
     bindActions(viewModel)
     bindStates(viewModel)
+
+    Log.i(this::class.java.simpleName, "[ReactorView] attachViewModel : ${disposeBag.size()}")
   }
 
-  fun detachViewModel() = this.disposeBag.clear()
+  fun detachViewModel() {
+    disposeBag.clear()
 
-  fun bindActions(viewModel: ReactorViewModel)
+    if (BuildConfig.DEBUG) {
+      Log.i(this::class.java.simpleName, "[ReactorView] detachViewModel : ${disposeBag.size()}")
+    }
+  }
 
-  fun bindStates(viewModel: ReactorViewModel)
+  fun bindActions(viewModel: T)
+
+  fun bindStates(viewModel: T)
 }

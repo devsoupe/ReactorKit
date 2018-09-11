@@ -8,7 +8,7 @@ class CounterActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.counter_activity)
+    setContentView(R.layout.activity_counter)
 
     if (savedInstanceState == null) {
       supportFragmentManager.beginTransaction()
