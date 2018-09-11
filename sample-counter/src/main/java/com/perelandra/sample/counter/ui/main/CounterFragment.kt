@@ -9,24 +9,21 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import com.perelandra.reactorviewmodel.extension.bind
 import com.perelandra.reactorviewmodel.extension.disposed
 import com.perelandra.reactorviewmodel.extension.of
-import com.perelandra.reactorviewmodel.view.BaseReactorFragment
+import com.perelandra.reactorviewmodel.view.ReactorFragment
 import com.perelandra.sample.counter.R
 import com.perelandra.sample.counter.R.id.*
 import kotlinx.android.synthetic.main.fragment_counter.*
 
-class CounterFragment : BaseReactorFragment<CounterViewModel>() {
+class CounterFragment : ReactorFragment<CounterViewModel>() {
 
   companion object {
     fun newInstance() = CounterFragment()
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    return inflater.inflate(R.layout.fragment_counter, container, false)
-  }
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+    inflater.inflate(R.layout.fragment_counter, container, false)
 
-  override fun createViewModel(): CounterViewModel {
-    return CounterViewModel().of(this)
-  }
+  override fun onCreateViewModel(): CounterViewModel = CounterViewModel().of(this)
 
   override fun bindActions(viewModel: CounterViewModel) {
     RxView.clicks(plusButton)
