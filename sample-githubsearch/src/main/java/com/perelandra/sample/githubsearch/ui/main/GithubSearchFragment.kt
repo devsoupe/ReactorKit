@@ -10,15 +10,16 @@ import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
 import com.perelandra.reactorviewmodel.extension.bind
 import com.perelandra.reactorviewmodel.extension.disposed
 import com.perelandra.reactorviewmodel.extension.of
-import com.perelandra.reactorviewmodel.view.BaseReactorFragment
+import com.perelandra.reactorviewmodel.view.ReactorFragment
 import com.perelandra.sample.githubsearch.R
-import com.perelandra.sample.githubsearch.R.id.list
-import com.perelandra.sample.githubsearch.R.id.toolbar
 import kotlinx.android.synthetic.main.fragment_github_search.*
 
-class GithubSearchFragment : BaseReactorFragment<GithubSearchViewModel>() {
+class GithubSearchFragment : ReactorFragment<GithubSearchViewModel>() {
 
   companion object {
+
+    private val TAG = this::class.java.simpleName
+
     fun newInstance() = GithubSearchFragment()
   }
 
@@ -55,7 +56,7 @@ class GithubSearchFragment : BaseReactorFragment<GithubSearchViewModel>() {
     super.onCreateOptionsMenu(menu, inflater)
   }
 
-  override fun createViewModel(): GithubSearchViewModel = GithubSearchViewModel().of(this)
+  override fun onCreateViewModel(): GithubSearchViewModel = GithubSearchViewModel().of(this)
 
   override fun bindActions(viewModel: GithubSearchViewModel) {
 
@@ -65,7 +66,7 @@ class GithubSearchFragment : BaseReactorFragment<GithubSearchViewModel>() {
     viewModel.state.map { it.query }
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
-      .subscribe { Log.i(this::class.java.simpleName, "Query : $it")}
+      .subscribe { Log.i(TAG, "bindStates :: query : $it")}
       .disposed(by = disposeBag)
   }
 }
