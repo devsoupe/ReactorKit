@@ -1,7 +1,7 @@
 package com.perelandra.sample.counter.ui.main
 
 import android.os.Parcelable
-import com.buxikorea.buxi.library.reactorkit.ReactorViewModel
+import com.perelandra.reactorviewmodel.ReactorViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.parcel.Parcelize
