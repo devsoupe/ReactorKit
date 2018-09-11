@@ -1,8 +1,9 @@
-package com.buxikorea.buxi.library.reactorkit
+package com.perelandra.reactorviewmodel.view
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.View
+import com.perelandra.reactorviewmodel.ReactorView
 import com.perelandra.reactorviewmodel.extension.DisposeBag
 
 abstract class BaseReactorFragment<T> : Fragment(), ReactorView<T> {
