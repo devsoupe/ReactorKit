@@ -50,9 +50,6 @@ class GithubSearchFragment : BaseReactorFragment<GithubSearchViewModel>() {
       .bind(to = viewModel.action)
       .disposed(by = disposeBag)
 
-    Log.i(this::class.java.simpleName, "onCreateOptionsMenu : ${disposeBag}");
-    Log.i(this::class.java.simpleName, "onCreateOptionsMenu : ${viewModel}");
-
     super.onCreateOptionsMenu(menu, inflater)
   }
 
