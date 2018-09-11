@@ -29,36 +29,24 @@ class CounterViewModel(initialState: State = State(value = 0, isLoading = false)
   ) : Parcelable
 
   override fun mutate(action: Action): Observable<Mutation> = when (action) {
-    is Action.increase -> {
-      Observable.concat(
-        Observable.just(Mutation.setLoading(true)),
-        Observable.just(Mutation.increaseValue).delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()),
-        Observable.just(Mutation.setLoading(false))
-      )
-    }
+    is Action.increase -> Observable.concat(
+      Observable.just(Mutation.setLoading(true)),
+      Observable.just(Mutation.increaseValue).delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()),
+      Observable.just(Mutation.setLoading(false)))
 
-    is Action.decrease -> {
-      Observable.concat(
-        Observable.just(Mutation.setLoading(true)),
-        Observable.just(Mutation.decreaseValue).delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()),
-        Observable.just(Mutation.setLoading(false))
-      )
-    }
+    is Action.decrease -> Observable.concat(
+      Observable.just(Mutation.setLoading(true)),
+      Observable.just(Mutation.decreaseValue).delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()),
+      Observable.just(Mutation.setLoading(false))
+    )
+
+    else -> Observable.empty()
   }
 
-  override fun reduce(state: State, mutation: Mutation): State = when (mutation) {
-    is Mutation.increaseValue -> {
-      state.copy(value = state.value.inc())
-    }
-
-    is Mutation.decreaseValue -> {
-      state.copy(value = state.value.dec())
-    }
-
-    is Mutation.setLoading -> {
-      state.copy(isLoading = mutation.isLoading)
-    }
-
+  override fun reduce(state: State, mutation: CounterViewModel.Mutation): State = when (mutation) {
+    is CounterViewModel.Mutation.increaseValue -> state.copy(value = state.value.inc())
+    is CounterViewModel.Mutation.decreaseValue -> state.copy(value = state.value.dec())
+    is CounterViewModel.Mutation.setLoading -> state.copy(isLoading = mutation.isLoading)
     else -> state
   }
 }
