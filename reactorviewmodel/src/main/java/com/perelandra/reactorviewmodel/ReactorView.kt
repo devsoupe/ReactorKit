@@ -1,4 +1,4 @@
-package com.buxikorea.buxi.library.reactorkit
+package com.perelandra.reactorviewmodel
 
 import android.util.Log
 import com.perelandra.reactorviewmodel.BuildConfig
