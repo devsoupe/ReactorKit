@@ -1,37 +1,26 @@
 package com.perelandra.sample.counter.ui.main
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.buxikorea.buxi.library.reactorkit.ReactorView
+import com.buxikorea.buxi.library.reactorkit.BaseReactorFragment
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.perelandra.reactorviewmodel.extension.bind
 import com.perelandra.reactorviewmodel.extension.disposed
 import com.perelandra.reactorviewmodel.extension.of
 import com.perelandra.sample.counter.R
-import kotlinx.android.synthetic.main.counter_fragment.*
+import kotlinx.android.synthetic.main.fragment_counter.*
 
-class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
+class CounterFragment : BaseReactorFragment<CounterViewModel>() {
 
   companion object {
     fun newInstance() = CounterFragment()
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    return inflater.inflate(R.layout.counter_fragment, container, false)
-  }
-
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
-    attachViewModel()
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    detachViewModel()
+    return inflater.inflate(R.layout.fragment_counter, container, false)
   }
 
   override fun createViewModel(): CounterViewModel {
