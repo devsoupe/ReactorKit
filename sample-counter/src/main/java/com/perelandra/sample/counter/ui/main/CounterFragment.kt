@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.buxikorea.buxi.library.reactorkit.BaseReactorFragment
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.perelandra.reactorviewmodel.extension.bind
 import com.perelandra.reactorviewmodel.extension.disposed
 import com.perelandra.reactorviewmodel.extension.of
+import com.perelandra.reactorviewmodel.view.BaseReactorFragment
 import com.perelandra.sample.counter.R
+import com.perelandra.sample.counter.R.id.*
 import kotlinx.android.synthetic.main.fragment_counter.*
 
 class CounterFragment : BaseReactorFragment<CounterViewModel>() {
