@@ -50,8 +50,8 @@ class GithubSearchViewModel(initialState: State = State(query = "", repos = empt
   }
 
   override fun reduce(state: State, mutation: GithubSearchViewModel.Mutation): State = when (mutation) {
-    is GithubSearchViewModel.Mutation.setQuery -> state.copy(query = mutation.query)
-    is GithubSearchViewModel.Mutation.setRepos -> state.copy(repos = mutation.repos, nextPage = mutation.nextPage)
+    is Mutation.setQuery -> state.copy(query = mutation.query)
+    is Mutation.setRepos -> state.copy(repos = mutation.repos, nextPage = mutation.nextPage)
     else -> state
   }
 
@@ -62,7 +62,7 @@ class GithubSearchViewModel(initialState: State = State(query = "", repos = empt
     val url = url(query = query, page = page)
     return Observable.just(url.openConnection())
       .subscribeOn(Schedulers.io())
-      .doOnError { Log.i(TAG, "GithubSearchViewModel :: search : ${ it.printStackTrace() }") }
+      .doOnError { Log.i(TAG, "GithubSearchViewModel :: search : ${it.printStackTrace()}") }
       .flatMap { Observable.just((it as HttpURLConnection).responseCode) }
 
 //      .subscribe {
