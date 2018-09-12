@@ -7,7 +7,7 @@ import com.perelandra.reactorviewmodel.extension.DisposeBag
 interface ReactorView<VM> {
 
   companion object {
-    private val TAG = this::class.java.simpleName
+    private val TAG = ReactorView::class.java.simpleName
   }
 
   val disposeBag: DisposeBag

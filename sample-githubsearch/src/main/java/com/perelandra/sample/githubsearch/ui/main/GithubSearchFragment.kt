@@ -12,14 +12,12 @@ import com.perelandra.reactorviewmodel.extension.disposed
 import com.perelandra.reactorviewmodel.extension.of
 import com.perelandra.reactorviewmodel.view.ReactorFragment
 import com.perelandra.sample.githubsearch.R
-import com.perelandra.sample.githubsearch.R.id.list
-import com.perelandra.sample.githubsearch.R.id.toolbar
 import kotlinx.android.synthetic.main.fragment_github_search.*
 
 class GithubSearchFragment : ReactorFragment<GithubSearchViewModel>() {
 
   companion object {
-    private val TAG = this::class.java.simpleName
+    private val TAG = GithubSearchFragment::class.java.simpleName
     fun newInstance() = GithubSearchFragment()
   }
 
@@ -48,7 +46,7 @@ class GithubSearchFragment : ReactorFragment<GithubSearchViewModel>() {
       .skipInitialValue()
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
-      .map { GithubSearchViewModel.Action.updateQuery(it.toString()) }
+      .map { GithubSearchViewModel.Action.UpdateQuery(it.toString()) }
       .bind(to = viewModel.action)
       .disposed(by = disposeBag)
 
@@ -68,8 +66,13 @@ class GithubSearchFragment : ReactorFragment<GithubSearchViewModel>() {
       .subscribe { Log.i(TAG, "bindStates :: query : $it")}
       .disposed(by = disposeBag)
 
+    viewModel.state.map { it.repos }
+      .distinctUntilChanged()
+      .subscribe { Log.i(TAG, "bindStates :: repos : $it")}
+      .disposed(by = disposeBag)
+
     viewModel.state.map { it.nextPage }
-//      .distinctUntilChanged() // for TEST
+      .distinctUntilChanged()
       .subscribe { Log.i(TAG, "bindStates :: nextPage : $it")}
       .disposed(by = disposeBag)
   }
