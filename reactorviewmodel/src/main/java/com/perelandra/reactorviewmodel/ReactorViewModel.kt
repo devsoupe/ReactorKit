@@ -1,6 +1,7 @@
 package com.perelandra.reactorviewmodel
 
 import android.arch.lifecycle.ViewModel
+import android.util.Log
 import com.perelandra.reactorviewmodel.extension.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
