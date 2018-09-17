@@ -7,10 +7,10 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
-import com.perelandra.reactorviewmodel.extension.bind
-import com.perelandra.reactorviewmodel.extension.disposed
-import com.perelandra.reactorviewmodel.extension.of
-import com.perelandra.reactorviewmodel.view.ReactorFragment
+import com.perelandra.reactorviewmodel.v1.bind
+import com.perelandra.reactorviewmodel.v1.disposed
+import com.perelandra.reactorviewmodel.v1.base.ReactorFragment
+import com.perelandra.reactorviewmodel.v1.of
 import com.perelandra.sample.githubsearch.R
 import kotlinx.android.synthetic.main.fragment_github_search.*
 
