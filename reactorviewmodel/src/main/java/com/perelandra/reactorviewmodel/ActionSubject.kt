@@ -1,4 +1,4 @@
-package com.perelandra.reactorviewmodel.extension
+package com.perelandra.reactorviewmodel
 
 import com.jakewharton.rxrelay2.PublishRelay
 
