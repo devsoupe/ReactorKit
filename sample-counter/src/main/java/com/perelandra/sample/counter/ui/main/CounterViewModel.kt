@@ -1,19 +1,20 @@
 package com.perelandra.sample.counter.ui.main
 
 import android.os.Parcelable
-import android.util.Log
 import com.perelandra.reactorviewmodel.ReactorViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.parcel.Parcelize
 import java.util.concurrent.TimeUnit
 
-class CounterViewModel(initialState: State = State(value = 0, isLoading = false))
-  : ReactorViewModel<CounterViewModel.Action, CounterViewModel.Mutation, CounterViewModel.State>(initialState) {
+class CounterViewModel()
+  : ReactorViewModel<CounterViewModel.Action, CounterViewModel.Mutation, CounterViewModel.State>() {
 
   companion object {
     private val TAG = CounterViewModel::class.java.simpleName
   }
+
+  override var initialState: State = State()
 
   sealed class Action {
     object Increase : Action()
@@ -29,8 +30,8 @@ class CounterViewModel(initialState: State = State(value = 0, isLoading = false)
   @Parcelize
   data class State(
     val name: String = TAG,
-    val value: Int,
-    val isLoading: Boolean
+    val value: Int = 0,
+    val isLoading: Boolean = false
   ) : Parcelable
 
   override fun mutate(action: Action): Observable<Mutation> = when (action) {
@@ -53,6 +54,10 @@ class CounterViewModel(initialState: State = State(value = 0, isLoading = false)
     is Mutation.SetLoading -> state.copy(isLoading = mutation.isLoading)
     else -> state
   }
+
+//  override fun transformAction(action: Observable<Action>): Observable<Action> {
+//    return super.transformAction(action).observeOn(AndroidSchedulers.mainThread())
+//  }
 
   override fun transformState(state: Observable<State>): Observable<State> {
     return super.transformState(state).observeOn(AndroidSchedulers.mainThread())
