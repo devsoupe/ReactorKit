@@ -2,12 +2,11 @@ package com.perelandra.sample.githubsearch.ui.main
 
 import android.os.Parcelable
 import android.util.Log
-import com.perelandra.reactorviewmodel.ReactorViewModel
+import com.perelandra.reactorviewmodel.v1.ReactorViewModel
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.parcel.Parcelize
-import java.net.URL
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 class GithubSearchViewModel(initialState: State = State(query = "", repos = emptyList(), nextPage = 0, isLoadingNextPage = false)) :
   ReactorViewModel<GithubSearchViewModel.Action, GithubSearchViewModel.Mutation, GithubSearchViewModel.State>(initialState) {
@@ -44,6 +43,7 @@ class GithubSearchViewModel(initialState: State = State(query = "", repos = empt
 
       // 2) call API and set repos
       this.search(query = action.query, page = 1)
+        .takeUntil { isUpdateQueryAction(action) }
         .map { Mutation.SetRepos(repos = it.first, nextPage = it.second) })
 
     else -> Observable.empty()
@@ -55,24 +55,23 @@ class GithubSearchViewModel(initialState: State = State(query = "", repos = empt
     else -> state
   }
 
-  override fun transformMutation(mutation: Observable<Mutation>): Observable<Mutation> {
-    return super.transformMutation(mutation).observeOn(Schedulers.io())
-  }
+//  override fun transformAction(action: Observable<Action>): Observable<Action> {
+//    return super.transformAction(action).observeOn(Schedulers.io())
+//  }
+//
+//  override fun transformState(state: Observable<State>): Observable<State> {
+//    return super.transformState(state).observeOn(AndroidSchedulers.mainThread())
+//  }
 
-  override fun transformState(state: Observable<State>): Observable<State> {
-    return super.transformState(state).observeOn(AndroidSchedulers.mainThread())
-  }
-
-  private fun url(query: String, page: Int): URL =
-    URL("https://api.github.com/search/repositories?q=$query&page=$page")
+  private fun url(query: String, page: Int): String =
+    "https://api.github.com/search/repositories?q=$query&page=$page"
 
   private fun search(query: String, page: Int): Observable<Pair<List<String>, Int>> {
     var emptyResult = Pair<List<String>, Int>(emptyList(), 0)
     val url = url(query = query, page = page)
 
-    return Observable.just(url.openConnection())
-      .map { emptyResult }
-      .doOnError { Log.i(TAG, "GithubSearchViewModel :: search : ${it.printStackTrace()}") }
+    return Observable.just(requestGet(url))
+      .map { Pair(listOf(it), 0) }
       .onErrorReturn { emptyResult }
 
 //      .flatMap { Observable.just((it as HttpURLConnection).responseCode) }
@@ -83,5 +82,18 @@ class GithubSearchViewModel(initialState: State = State(query = "", repos = empt
 //      .doOnError {
 //        if (it is HttpException)
 //      }
+  }
+
+  private fun isUpdateQueryAction(action: Action): Boolean {
+    return (action is Action.UpdateQuery)
+  }
+
+  private fun requestGet(url: String): String? {
+    Log.i(TAG, "requestGet : ${Thread.currentThread().name}")
+
+    val client = OkHttpClient()
+    val request = Request.Builder().url(url).build()
+    var response = client.newCall(request).execute()
+    return response?.body()?.string()
   }
 }
