@@ -2,18 +2,20 @@ package com.perelandra.sample.githubsearch.ui.main
 
 import android.os.Parcelable
 import android.util.Log
-import com.perelandra.reactorviewmodel.v1.ReactorViewModel
+import com.perelandra.reactorviewmodel.ReactorViewModel
 import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-class GithubSearchViewModel(initialState: State = State(query = "", repos = emptyList(), nextPage = 0, isLoadingNextPage = false)) :
-  ReactorViewModel<GithubSearchViewModel.Action, GithubSearchViewModel.Mutation, GithubSearchViewModel.State>(initialState) {
+class GithubSearchViewModel() :
+  ReactorViewModel<GithubSearchViewModel.Action, GithubSearchViewModel.Mutation, GithubSearchViewModel.State>() {
 
   companion object {
     private val TAG = GithubSearchViewModel::class.java.simpleName
   }
+
+  override var initialState: State = State()
 
   sealed class Action {
     data class UpdateQuery(val query: String) : Action()
@@ -30,10 +32,10 @@ class GithubSearchViewModel(initialState: State = State(query = "", repos = empt
   @Parcelize
   data class State(
     val name: String = TAG,
-    val query: String,
-    val repos: List<String>,
-    val nextPage: Int,
-    val isLoadingNextPage: Boolean
+    val query: String = "",
+    val repos: List<String> = emptyList(),
+    val nextPage: Int = 0,
+    val isLoadingNextPage: Boolean = false
   ) : Parcelable
 
   override fun mutate(action: Action): Observable<Mutation> = when (action) {
