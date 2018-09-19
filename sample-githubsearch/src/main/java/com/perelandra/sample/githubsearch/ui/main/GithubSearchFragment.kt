@@ -1,20 +1,23 @@
 package com.perelandra.sample.githubsearch.ui.main
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
-import com.perelandra.reactorviewmodel.v1.bind
-import com.perelandra.reactorviewmodel.v1.disposed
-import com.perelandra.reactorviewmodel.v1.base.ReactorFragment
-import com.perelandra.reactorviewmodel.v1.of
+import com.perelandra.reactorviewmodel.ReactorView
+import com.perelandra.reactorviewmodel.bind
+import com.perelandra.reactorviewmodel.disposed
+import com.perelandra.reactorviewmodel.of
 import com.perelandra.sample.githubsearch.R
+import com.perelandra.sample.githubsearch.R.id.list
+import com.perelandra.sample.githubsearch.R.id.toolbar
 import kotlinx.android.synthetic.main.fragment_github_search.*
 
-class GithubSearchFragment : ReactorFragment<GithubSearchViewModel>() {
+class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
 
   companion object {
     private val TAG = GithubSearchFragment::class.java.simpleName
@@ -33,6 +36,8 @@ class GithubSearchFragment : ReactorFragment<GithubSearchViewModel>() {
     list.adapter = GithubSearchListAdapter()
 
     setHasOptionsMenu(true)
+
+    viewmodel = GithubSearchViewModel().of(this)
   }
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -47,33 +52,29 @@ class GithubSearchFragment : ReactorFragment<GithubSearchViewModel>() {
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
       .map { GithubSearchViewModel.Action.UpdateQuery(it.toString()) }
-      .bind(to = viewModel.action)
+      .bind(to = viewmodel.action)
       .disposed(by = disposeBag)
 
     super.onCreateOptionsMenu(menu, inflater)
   }
 
-  override fun onCreateViewModel(): GithubSearchViewModel = GithubSearchViewModel().of(this)
-
-  override fun bindActions(viewModel: GithubSearchViewModel) {
-
-  }
-
-  override fun bindStates(viewModel: GithubSearchViewModel) {
-    viewModel.state.map { it.query }
+  override fun bind(viewmodel: GithubSearchViewModel): ReactorView<GithubSearchViewModel> {
+    viewmodel.state.map { it.query }
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
       .subscribe { Log.i(TAG, "bindStates :: query : $it")}
       .disposed(by = disposeBag)
 
-    viewModel.state.map { it.repos }
+    viewmodel.state.map { it.repos }
       .distinctUntilChanged()
       .subscribe { Log.i(TAG, "bindStates :: repos : $it")}
       .disposed(by = disposeBag)
 
-    viewModel.state.map { it.nextPage }
+    viewmodel.state.map { it.nextPage }
       .distinctUntilChanged()
       .subscribe { Log.i(TAG, "bindStates :: nextPage : $it")}
       .disposed(by = disposeBag)
+
+    return this
   }
 }
