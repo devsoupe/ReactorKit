@@ -34,6 +34,7 @@ class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
   }
 
   override fun bind(viewModel: CounterViewModel): ReactorView<CounterViewModel> {
+    // Actions
     RxView.clicks(plusButton)
       .map { CounterViewModel.Action.Increase }
       .bind(to = viewModel.action)
@@ -44,6 +45,7 @@ class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
       .bind(to = viewModel.action)
       .disposed(by = disposeBag)
 
+    // States
     viewModel.state.map { it.value }
       .distinctUntilChanged()
       .map { "$it" }
