@@ -13,8 +13,6 @@ import com.perelandra.reactorviewmodel.bind
 import com.perelandra.reactorviewmodel.disposed
 import com.perelandra.reactorviewmodel.of
 import com.perelandra.sample.githubsearch.R
-import com.perelandra.sample.githubsearch.R.id.list
-import com.perelandra.sample.githubsearch.R.id.toolbar
 import kotlinx.android.synthetic.main.fragment_github_search.*
 
 class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
@@ -37,7 +35,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
 
     setHasOptionsMenu(true)
 
-    viewmodel = GithubSearchViewModel().of(this)
+    viewModel = GithubSearchViewModel().of(this)
   }
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -52,7 +50,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
       .map { GithubSearchViewModel.Action.UpdateQuery(it.toString()) }
-      .bind(to = viewmodel.action)
+      .bind(to = viewModel.action)
       .disposed(by = disposeBag)
 
     super.onCreateOptionsMenu(menu, inflater)

@@ -55,10 +55,6 @@ class CounterViewModel()
     else -> state
   }
 
-//  override fun transformAction(action: Observable<Action>): Observable<Action> {
-//    return super.transformAction(action).observeOn(AndroidSchedulers.mainThread())
-//  }
-
   override fun transformState(state: Observable<State>): Observable<State> {
     return super.transformState(state).observeOn(AndroidSchedulers.mainThread())
   }
