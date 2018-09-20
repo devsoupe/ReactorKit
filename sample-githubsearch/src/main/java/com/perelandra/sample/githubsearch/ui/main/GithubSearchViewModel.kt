@@ -4,6 +4,8 @@ import android.os.Parcelable
 import android.util.Log
 import com.perelandra.reactorviewmodel.ReactorViewModel
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.parcel.Parcelize
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -57,13 +59,13 @@ class GithubSearchViewModel() :
     else -> state
   }
 
-//  override fun transformAction(action: Observable<Action>): Observable<Action> {
-//    return super.transformAction(action).observeOn(Schedulers.io())
-//  }
-//
-//  override fun transformState(state: Observable<State>): Observable<State> {
-//    return super.transformState(state).observeOn(AndroidSchedulers.mainThread())
-//  }
+  override fun transformMutation(mutation: Observable<Mutation>): Observable<Mutation> {
+    return super.transformMutation(mutation).observeOn(Schedulers.io())
+  }
+
+  override fun transformState(state: Observable<State>): Observable<State> {
+    return super.transformState(state).observeOn(AndroidSchedulers.mainThread())
+  }
 
   private fun url(query: String, page: Int): String =
     "https://api.github.com/search/repositories?q=$query&page=$page"
