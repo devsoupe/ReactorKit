@@ -18,20 +18,20 @@ interface AssociatedObjectStore {
       return store
     }
 
-  fun <T> associatedObject(key: String): T {
+  fun <T> setAssociatedObject(obj: T, key: String) {
+    associatedObjectStore[key] = obj as Any
+  }
+
+  fun <T> getAssociatedObject(key: String): T {
     return associatedObjectStore[key] as T
   }
 
-  fun <T> associatedObject(key: String, default: T): T {
+  fun <T> getAssociatedObject(key: String, default: T): T {
     (associatedObjectStore[key] as T?)?.let {
       return it
     }
     this.setAssociatedObject(default, key)
     return default
-  }
-
-  fun <T> setAssociatedObject(obj: T, key: String) {
-    associatedObjectStore[key] = obj as Any
   }
 
   fun clearAssociatedObject(id: String) {
