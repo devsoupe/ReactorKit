@@ -27,6 +27,7 @@ interface ReactorView<T> : AssociatedObjectStore {
   fun bind(viewmodel: T): ReactorView<T>
 
   fun clearReactorView() {
+    disposeBag.clear();
     clearAssociatedObject(associatedObject<ReactorView<T>>(reactorViewKey).id)
   }
 }
