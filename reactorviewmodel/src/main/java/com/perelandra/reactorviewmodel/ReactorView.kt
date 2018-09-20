@@ -8,7 +8,7 @@ interface ReactorView<T> : AssociatedObjectStore {
       setAssociatedObject<DisposeBag>(value, disposeBagKey)
     }
 
-  var viewmodel: T
+  var viewModel: T
     get() = getAssociatedObject<T>(viewmodelKey)
     set(value) {
       setAssociatedObject<T>(value, viewmodelKey)
@@ -18,9 +18,9 @@ interface ReactorView<T> : AssociatedObjectStore {
     }
 
   fun performBinding() {
-    if (viewmodel == null) return
+    if (viewModel == null) return
     if (isReactorBinded) return
-    setAssociatedObject<ReactorView<T>>(bind(viewmodel = viewmodel), reactorViewKey)
+    setAssociatedObject<ReactorView<T>>(bind(viewmodel = viewModel), reactorViewKey)
     isReactorBinded = true
   }
 
@@ -32,7 +32,7 @@ interface ReactorView<T> : AssociatedObjectStore {
   }
 }
 
-private var viewmodelKey = "viewmodel"
+private var viewmodelKey = "viewModel"
 private var disposeBagKey = "disposeBag"
 private var isReactorBindedKey = "isReactorBinded"
 private var reactorViewKey = "reactorView"
