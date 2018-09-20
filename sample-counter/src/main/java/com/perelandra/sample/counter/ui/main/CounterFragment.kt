@@ -25,7 +25,7 @@ class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewmodel = CounterViewModel().of(this)
+    viewModel = CounterViewModel().of(this)
   }
 
   override fun onDestroyView() {
@@ -33,24 +33,26 @@ class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
     clearReactorView()
   }
 
-  override fun bind(viewmodel: CounterViewModel): ReactorView<CounterViewModel> {
+  override fun bind(viewModel: CounterViewModel): ReactorView<CounterViewModel> {
+    // Actions
     RxView.clicks(plusButton)
       .map { CounterViewModel.Action.Increase }
-      .bind(to = viewmodel.action)
+      .bind(to = viewModel.action)
       .disposed(by = disposeBag)
 
     RxView.clicks(minusButton)
       .map { CounterViewModel.Action.Decrease }
-      .bind(to = viewmodel.action)
+      .bind(to = viewModel.action)
       .disposed(by = disposeBag)
 
-    viewmodel.state.map { it.value }
+    // States
+    viewModel.state.map { it.value }
       .distinctUntilChanged()
       .map { "$it" }
       .bind(to = RxTextView.text(valueTextView))
       .disposed(by = disposeBag)
 
-    viewmodel.state.map { it.isLoading }
+    viewModel.state.map { it.isLoading }
       .distinctUntilChanged()
       .bind(to = RxView.visibility(progressBar, View.GONE))
       .disposed(by = disposeBag)

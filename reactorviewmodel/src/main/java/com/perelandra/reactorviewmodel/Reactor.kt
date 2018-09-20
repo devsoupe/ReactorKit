@@ -5,21 +5,21 @@ import io.reactivex.Observable
 interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
 
   val action: ActionSubject<Action>
-    get() = associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
+    get() = getAssociatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
 
   var initialState: State
 
   private var currentState: State
-    get() = associatedObject<State>(currentStateKey, currentState)
+    get() = getAssociatedObject<State>(currentStateKey, currentState)
     set(value) {
       this.setAssociatedObject(value, currentStateKey)
     }
 
   val state: Observable<State>
-    get() = associatedObject<Observable<State>>(stateKey, createStateStream())
+    get() = getAssociatedObject<Observable<State>>(stateKey, createStateStream())
 
   private val disposeBag: DisposeBag
-    get() = associatedObject<DisposeBag>(disposeBagKey, DisposeBag())
+    get() = getAssociatedObject<DisposeBag>(disposeBagKey, DisposeBag())
 
   private fun createStateStream(): Observable<State> {
     val transformedAction = transformAction(action)
