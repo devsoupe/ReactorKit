@@ -47,7 +47,10 @@ class GithubSearchViewModel() :
 
       // 2) call API and set repos
       this.search(query = action.query, page = 1)
-        .takeUntil { isUpdateQueryAction(action) }
+        .takeUntil(this.action.filter {
+          Log.i(TAG, "isUpdateQueryAction : ${(it is Action.UpdateQuery)}")
+          it is Action.UpdateQuery
+        })
         .map { Mutation.SetRepos(repos = it.first, nextPage = it.second) })
 
     else -> Observable.empty()
@@ -59,8 +62,8 @@ class GithubSearchViewModel() :
     else -> state
   }
 
-  override fun transformMutation(mutation: Observable<Mutation>): Observable<Mutation> {
-    return super.transformMutation(mutation).observeOn(Schedulers.io())
+  override fun transformAction(action: Observable<Action>): Observable<Action> {
+    return super.transformAction(action).observeOn(Schedulers.io())
   }
 
   override fun transformState(state: Observable<State>): Observable<State> {
@@ -89,6 +92,7 @@ class GithubSearchViewModel() :
   }
 
   private fun isUpdateQueryAction(action: Action): Boolean {
+    Log.i(TAG, "isUpdateQueryAction : ${(action is Action.UpdateQuery)}")
     return (action is Action.UpdateQuery)
   }
 
