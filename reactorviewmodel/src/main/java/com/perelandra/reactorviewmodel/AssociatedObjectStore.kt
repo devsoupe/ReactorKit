@@ -35,8 +35,6 @@ interface AssociatedObjectStore {
   }
 
   fun clearAssociatedObject(id: String) {
-    Log.d("TEST", "clearAssociatedObject : $id")
-
     objectStores[id]?.let { it.clear() }
     objectStores.remove(id)
   }
