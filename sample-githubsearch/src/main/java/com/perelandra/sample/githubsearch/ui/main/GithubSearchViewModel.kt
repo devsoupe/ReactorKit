@@ -4,6 +4,8 @@ import android.os.Parcelable
 import android.util.Log
 import com.perelandra.reactorviewmodel.ReactorViewModel
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.parcel.Parcelize
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -45,7 +47,10 @@ class GithubSearchViewModel() :
 
       // 2) call API and set repos
       this.search(query = action.query, page = 1)
-        .takeUntil { isUpdateQueryAction(action) }
+        .takeUntil(this.action.filter {
+          Log.i(TAG, "isUpdateQueryAction : ${(it is Action.UpdateQuery)}")
+          it is Action.UpdateQuery
+        })
         .map { Mutation.SetRepos(repos = it.first, nextPage = it.second) })
 
     else -> Observable.empty()
@@ -57,13 +62,13 @@ class GithubSearchViewModel() :
     else -> state
   }
 
-//  override fun transformAction(action: Observable<Action>): Observable<Action> {
-//    return super.transformAction(action).observeOn(Schedulers.io())
-//  }
-//
-//  override fun transformState(state: Observable<State>): Observable<State> {
-//    return super.transformState(state).observeOn(AndroidSchedulers.mainThread())
-//  }
+  override fun transformAction(action: Observable<Action>): Observable<Action> {
+    return super.transformAction(action).observeOn(Schedulers.io())
+  }
+
+  override fun transformState(state: Observable<State>): Observable<State> {
+    return super.transformState(state).observeOn(AndroidSchedulers.mainThread())
+  }
 
   private fun url(query: String, page: Int): String =
     "https://api.github.com/search/repositories?q=$query&page=$page"
@@ -87,6 +92,7 @@ class GithubSearchViewModel() :
   }
 
   private fun isUpdateQueryAction(action: Action): Boolean {
+    Log.i(TAG, "isUpdateQueryAction : ${(action is Action.UpdateQuery)}")
     return (action is Action.UpdateQuery)
   }
 

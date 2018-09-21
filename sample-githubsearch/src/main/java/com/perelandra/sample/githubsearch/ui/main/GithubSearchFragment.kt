@@ -45,6 +45,8 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
     val searchView = searchItem?.actionView as SearchView
 
     searchView.queryHint = "Search"
+
+    // Actions
     RxSearchView.queryTextChanges(searchView)
       .skipInitialValue()
       .distinctUntilChanged()
@@ -57,6 +59,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
   }
 
   override fun bind(viewmodel: GithubSearchViewModel): ReactorView<GithubSearchViewModel> {
+    // States
     viewmodel.state.map { it.query }
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
