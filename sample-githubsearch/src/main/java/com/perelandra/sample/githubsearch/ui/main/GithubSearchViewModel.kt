@@ -1,5 +1,6 @@
 package com.perelandra.sample.githubsearch.ui.main
 
+import android.arch.lifecycle.Transformations.map
 import android.os.Parcelable
 import android.util.Log
 import com.google.gson.*
@@ -7,10 +8,8 @@ import com.perelandra.reactorviewmodel.ReactorViewModel
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.parcel.Parcelize
-import okhttp3.*
-import java.io.IOException
-import java.net.HttpURLConnection
 import com.google.gson.reflect.TypeToken
+import com.perelandra.sample.githubsearch.provider.GithubSearchClientImpl
 
 class GithubSearchViewModel() :
   ReactorViewModel<GithubSearchViewModel.Action, GithubSearchViewModel.Mutation, GithubSearchViewModel.State>() {
@@ -21,7 +20,7 @@ class GithubSearchViewModel() :
 
   override var initialState: State = State()
 
-  private val okHttpClient = OkHttpClient()
+  private val client = GithubSearchClientImpl()
   private val gson = GsonBuilder().create()
 
   sealed class Action {
@@ -54,7 +53,7 @@ class GithubSearchViewModel() :
         // 2) call API and set repos
         this.search(action.query, 1, action)
           // cancel previous request when the new `updateQuery` action is fired
-          .takeUntil(this.action.filter(::isUpdateQueryAction))
+          .takeUntil(this.action.filter { isUpdateQueryAction(action) }.map { client.cancel() })
           .map { Mutation.setRepos(it.first, it.second) })
 
       else -> Observable.empty()
@@ -74,7 +73,7 @@ class GithubSearchViewModel() :
     var emptyResult = Pair<List<String>, Int>(emptyList(), 0)
     val url = url(query, page)
 
-    return requestGet(url)
+    return client.request(url)
       .subscribeOn(Schedulers.io())
       .map {
         val dict = gson.fromJson(it, JsonObject::class.java)
@@ -87,35 +86,5 @@ class GithubSearchViewModel() :
       .onErrorReturn { emptyResult }
   }
 
-  private fun isUpdateQueryAction(action: Action): Boolean {
-    return (action is Action.updateQuery)
-  }
-
-  private fun requestGet(url: String): Observable<String> {
-    return Observable.create {
-      val request = Request.Builder().url(url).build()
-      val response = okHttpClient.newCall(request).enqueue(object : Callback {
-        override fun onFailure(call: Call, e: IOException) {
-          it.onError(e)
-        }
-
-        override fun onResponse(call: Call, response: Response) {
-          if (response.isSuccessful) {
-            response.body()?.string()?.let { res ->
-              it.onNext(res)
-              it.onComplete()
-            }
-            return
-          }
-
-          if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
-            it.onError(Throwable("⚠️ GitHub API rate limit exceeded. Wait for 60 seconds and try again."))
-            return
-          }
-
-          it.onError(Throwable("Unknown error."))
-        }
-      })
-    }
-  }
+  private fun isUpdateQueryAction(action: Action): Boolean = action is Action.updateQuery
 }
