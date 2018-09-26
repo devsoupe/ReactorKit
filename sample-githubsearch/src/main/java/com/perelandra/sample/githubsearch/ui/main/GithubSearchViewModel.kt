@@ -14,8 +14,6 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import com.google.gson.reflect.TypeToken
 
-
-
 class GithubSearchViewModel() :
   ReactorViewModel<GithubSearchViewModel.Action, GithubSearchViewModel.Mutation, GithubSearchViewModel.State>() {
 
