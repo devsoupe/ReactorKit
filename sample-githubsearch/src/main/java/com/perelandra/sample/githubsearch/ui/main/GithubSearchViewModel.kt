@@ -1,14 +1,20 @@
 package com.perelandra.sample.githubsearch.ui.main
 
+import android.arch.lifecycle.Transformations.map
+import android.net.http.HttpResponseCache
 import android.os.Parcelable
 import android.util.Log
+import com.google.gson.*
 import com.perelandra.reactorviewmodel.ReactorViewModel
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.parcel.Parcelize
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
+import java.io.IOException
+import java.net.HttpURLConnection
+import com.google.gson.reflect.TypeToken
+
+
 
 class GithubSearchViewModel() :
   ReactorViewModel<GithubSearchViewModel.Action, GithubSearchViewModel.Mutation, GithubSearchViewModel.State>() {
@@ -18,6 +24,8 @@ class GithubSearchViewModel() :
   }
 
   override var initialState: State = State()
+
+  private val okHttpClient = OkHttpClient()
 
   sealed class Action {
     data class UpdateQuery(val query: String) : Action()
@@ -40,68 +48,78 @@ class GithubSearchViewModel() :
     val isLoadingNextPage: Boolean = false
   ) : Parcelable
 
-  override fun mutate(action: Action): Observable<Mutation> = when (action) {
-    is Action.UpdateQuery -> Observable.concat(
-      // 1) set current state's query
-      Observable.just(Mutation.SetQuery(action.query)),
+  override fun mutate(action: Action): Observable<Mutation> {
+    return when (action) {
+      is Action.UpdateQuery -> Observable.concat(
+        // 1) set current state's query
+        Observable.just(Mutation.SetQuery(action.query)),
 
-      // 2) call API and set repos
-      this.search(query = action.query, page = 1)
-        .takeUntil(this.action.filter {
-          Log.i(TAG, "isUpdateQueryAction : ${(it is Action.UpdateQuery)}")
-          it is Action.UpdateQuery
-        })
-        .map { Mutation.SetRepos(repos = it.first, nextPage = it.second) })
+        // 2) call API and set repos
+        this.search(action.query, 1, action)
+          // cancel previous request when the new `UpdateQuery` action is fired
+          .takeUntil(this.action.filter(::isUpdateQueryAction))
+          .map { Mutation.SetRepos(it.first, it.second) })
 
-    else -> Observable.empty()
+      else -> Observable.empty()
+    }
   }
 
   override fun reduce(state: State, mutation: GithubSearchViewModel.Mutation): State = when (mutation) {
-    is Mutation.SetQuery -> state.copy(query = mutation.query)
-    is Mutation.SetRepos -> state.copy(repos = mutation.repos, nextPage = mutation.nextPage)
+    is GithubSearchViewModel.Mutation.SetQuery -> state.copy(query = mutation.query)
+    is GithubSearchViewModel.Mutation.SetRepos -> state.copy(repos = mutation.repos, nextPage = mutation.nextPage)
     else -> state
-  }
-
-  override fun transformAction(action: Observable<Action>): Observable<Action> {
-    return super.transformAction(action).observeOn(Schedulers.io())
-  }
-
-  override fun transformState(state: Observable<State>): Observable<State> {
-    return super.transformState(state).observeOn(AndroidSchedulers.mainThread())
   }
 
   private fun url(query: String, page: Int): String =
     "https://api.github.com/search/repositories?q=$query&page=$page"
 
-  private fun search(query: String, page: Int): Observable<Pair<List<String>, Int>> {
+  private fun search(query: String, page: Int, action: Action): Observable<Pair<List<String>, Int>> {
     var emptyResult = Pair<List<String>, Int>(emptyList(), 0)
-    val url = url(query = query, page = page)
+    val url = url(query, page)
 
-    return Observable.just(requestGet(url))
-      .map { Pair(listOf(it), 0) }
+    return requestGet(url)
+      .subscribeOn(Schedulers.io())
+      .map {
+        val gson = GsonBuilder().create()
+        val dict = gson.fromJson(it, JsonObject::class.java)
+        val items = gson.fromJson(dict["items"], object : TypeToken<ArrayList<JsonElement>>() {}.type) as ArrayList<JsonElement>
+        val repos = items.flatMap { arrayListOf(it.asJsonObject["full_name"].asString) }
+        val nextPage = if (repos.isEmpty()) 0 else page + 1
+        Pair(repos, nextPage)
+      }
+      .doOnError { Log.d(TAG, "${it.message}") }
       .onErrorReturn { emptyResult }
-
-//      .flatMap { Observable.just((it as HttpURLConnection).responseCode) }
-//      .subscribe {
-//        Log.i(TAG, "GithubSearchViewModel :: search :: responseCode : $it")
-//      }
-//      .map { (it as HttpURLConnection).responseCode }
-//      .doOnError {
-//        if (it is HttpException)
-//      }
   }
 
   private fun isUpdateQueryAction(action: Action): Boolean {
-    Log.i(TAG, "isUpdateQueryAction : ${(action is Action.UpdateQuery)}")
     return (action is Action.UpdateQuery)
   }
 
-  private fun requestGet(url: String): String? {
-    Log.i(TAG, "requestGet : ${Thread.currentThread().name}")
+  private fun requestGet(url: String): Observable<String> {
+    return Observable.create {
+      val request = Request.Builder().url(url).build()
+      val response = okHttpClient.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+          it.onError(e)
+        }
 
-    val client = OkHttpClient()
-    val request = Request.Builder().url(url).build()
-    var response = client.newCall(request).execute()
-    return response?.body()?.string()
+        override fun onResponse(call: Call, response: Response) {
+          if (response.isSuccessful) {
+            response.body()?.string()?.let { res ->
+              it.onNext(res)
+              it.onComplete()
+            }
+            return;
+          }
+
+          if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
+            it.onError(Throwable("⚠️ GitHub API rate limit exceeded. Wait for 60 seconds and try again."))
+            return;
+          }
+
+          it.onError(Throwable("Unknown error."))
+        }
+      })
+    }
   }
 }
