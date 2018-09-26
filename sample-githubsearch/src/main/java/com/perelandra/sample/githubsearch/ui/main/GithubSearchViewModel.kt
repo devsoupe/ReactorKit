@@ -24,6 +24,7 @@ class GithubSearchViewModel() :
   override var initialState: State = State()
 
   private val okHttpClient = OkHttpClient()
+  private val gson = GsonBuilder().create()
 
   sealed class Action {
     data class UpdateQuery(val query: String) : Action()
@@ -78,7 +79,6 @@ class GithubSearchViewModel() :
     return requestGet(url)
       .subscribeOn(Schedulers.io())
       .map {
-        val gson = GsonBuilder().create()
         val dict = gson.fromJson(it, JsonObject::class.java)
         val items = gson.fromJson(dict["items"], object : TypeToken<ArrayList<JsonElement>>() {}.type) as ArrayList<JsonElement>
         val repos = items.flatMap { arrayListOf(it.asJsonObject["full_name"].asString) }
