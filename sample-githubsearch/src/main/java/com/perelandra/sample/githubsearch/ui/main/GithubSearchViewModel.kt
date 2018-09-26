@@ -109,12 +109,12 @@ class GithubSearchViewModel() :
               it.onNext(res)
               it.onComplete()
             }
-            return;
+            return
           }
 
           if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
             it.onError(Throwable("⚠️ GitHub API rate limit exceeded. Wait for 60 seconds and try again."))
-            return;
+            return
           }
 
           it.onError(Throwable("Unknown error."))
