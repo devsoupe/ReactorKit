@@ -13,6 +13,7 @@ import com.perelandra.reactorviewmodel.bind
 import com.perelandra.reactorviewmodel.disposed
 import com.perelandra.reactorviewmodel.of
 import com.perelandra.sample.githubsearch.R
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_github_search.*
 
 class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
@@ -35,7 +36,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
 
     setHasOptionsMenu(true)
 
-    viewModel = GithubSearchViewModel().of(this)
+    viewmodel = GithubSearchViewModel().of(this)
   }
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -52,7 +53,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
       .map { GithubSearchViewModel.Action.UpdateQuery(it.toString()) }
-      .bind(to = viewModel.action)
+      .bind(to = viewmodel.action)
       .disposed(by = disposeBag)
 
     super.onCreateOptionsMenu(menu, inflater)
@@ -63,17 +64,17 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
     viewmodel.state.map { it.query }
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
-      .subscribe { Log.i(TAG, "bindStates :: query : $it")}
+      .subscribe { Log.i(TAG, "bindStates :: query : $it") }
       .disposed(by = disposeBag)
 
     viewmodel.state.map { it.repos }
       .distinctUntilChanged()
-      .subscribe { Log.i(TAG, "bindStates :: repos : $it")}
+      .subscribe { Log.i(TAG, "bindStates :: repos : $it") }
       .disposed(by = disposeBag)
 
     viewmodel.state.map { it.nextPage }
       .distinctUntilChanged()
-      .subscribe { Log.i(TAG, "bindStates :: nextPage : $it")}
+      .subscribe { Log.i(TAG, "bindStates :: nextPage : $it") }
       .disposed(by = disposeBag)
 
     return this
