@@ -2,13 +2,20 @@ package com.perelandra.reactorviewmodel
 
 interface ReactorView<T> : AssociatedObjectStore {
 
+  companion object {
+    private const val viewmodelKey = "viewmodel"
+    private const val disposeBagKey = "disposeBag"
+    private const val isReactorBindedKey = "isReactorBinded"
+    private const val reactorViewKey = "reactorView"
+  }
+
   var disposeBag: DisposeBag
     get() = getAssociatedObject<DisposeBag>(disposeBagKey)
     set(value) {
       setAssociatedObject<DisposeBag>(value, disposeBagKey)
     }
 
-  var viewModel: T
+  var viewmodel: T
     get() = getAssociatedObject<T>(viewmodelKey)
     set(value) {
       setAssociatedObject<T>(value, viewmodelKey)
@@ -17,10 +24,16 @@ interface ReactorView<T> : AssociatedObjectStore {
       performBinding()
     }
 
+  var <T> ReactorView<T>.isReactorBinded: Boolean
+    get() = getAssociatedObject<Boolean>(isReactorBindedKey, false)
+    set(value) {
+      setAssociatedObject<Boolean>(value, isReactorBindedKey)
+    }
+
   fun performBinding() {
-    if (viewModel == null) return
+    if (viewmodel == null) return
     if (isReactorBinded) return
-    setAssociatedObject<ReactorView<T>>(bind(viewmodel = viewModel), reactorViewKey)
+    setAssociatedObject<ReactorView<T>>(bind(viewmodel), reactorViewKey)
     isReactorBinded = true
   }
 
@@ -31,13 +44,4 @@ interface ReactorView<T> : AssociatedObjectStore {
     clearAssociatedObject(getAssociatedObject<ReactorView<T>>(reactorViewKey).id)
   }
 }
-
-private var viewmodelKey = "viewModel"
-private var disposeBagKey = "disposeBag"
-private var isReactorBindedKey = "isReactorBinded"
-private var reactorViewKey = "reactorView"
-
-var <T> ReactorView<T>.isReactorBinded: Boolean
-  get() = getAssociatedObject<Boolean>(key = isReactorBindedKey, default = false)
-  set(value) { setAssociatedObject<Boolean>(value, isReactorBindedKey) }
 
