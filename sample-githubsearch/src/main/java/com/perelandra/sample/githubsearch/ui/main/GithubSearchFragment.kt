@@ -13,7 +13,6 @@ import com.perelandra.reactorviewmodel.bind
 import com.perelandra.reactorviewmodel.disposed
 import com.perelandra.reactorviewmodel.of
 import com.perelandra.sample.githubsearch.R
-import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_github_search.*
 
 class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
@@ -52,7 +51,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
       .skipInitialValue()
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
-      .map { GithubSearchViewModel.Action.UpdateQuery(it.toString()) }
+      .map { GithubSearchViewModel.Action.updateQuery(it.toString()) }
       .bind(to = viewmodel.action)
       .disposed(by = disposeBag)
 

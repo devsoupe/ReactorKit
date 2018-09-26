@@ -1,7 +1,5 @@
 package com.perelandra.sample.githubsearch.ui.main
 
-import android.arch.lifecycle.Transformations.map
-import android.net.http.HttpResponseCache
 import android.os.Parcelable
 import android.util.Log
 import com.google.gson.*
@@ -27,15 +25,15 @@ class GithubSearchViewModel() :
   private val gson = GsonBuilder().create()
 
   sealed class Action {
-    data class UpdateQuery(val query: String) : Action()
-    object LoadNextPage : Action()
+    data class updateQuery(val query: String) : Action()
+    object loadNextPage : Action()
   }
 
   sealed class Mutation {
-    data class SetQuery(val query: String) : Mutation()
-    data class SetRepos(val repos: List<String>, val nextPage: Int) : Mutation()
-    data class AppendRepos(val repos: List<String>, val nextPage: Int) : Mutation()
-    data class SetLoadingNextPage(val isLoadingNextPage: Boolean) : Mutation()
+    data class setQuery(val query: String) : Mutation()
+    data class setRepos(val repos: List<String>, val nextPage: Int) : Mutation()
+    data class appendRepos(val repos: List<String>, val nextPage: Int) : Mutation()
+    data class setLoadingNextPage(val isLoadingNextPage: Boolean) : Mutation()
   }
 
   @Parcelize
@@ -49,23 +47,23 @@ class GithubSearchViewModel() :
 
   override fun mutate(action: Action): Observable<Mutation> {
     return when (action) {
-      is Action.UpdateQuery -> Observable.concat(
+      is Action.updateQuery -> Observable.concat(
         // 1) set current state's query
-        Observable.just(Mutation.SetQuery(action.query)),
+        Observable.just(Mutation.setQuery(action.query)),
 
         // 2) call API and set repos
         this.search(action.query, 1, action)
-          // cancel previous request when the new `UpdateQuery` action is fired
+          // cancel previous request when the new `updateQuery` action is fired
           .takeUntil(this.action.filter(::isUpdateQueryAction))
-          .map { Mutation.SetRepos(it.first, it.second) })
+          .map { Mutation.setRepos(it.first, it.second) })
 
       else -> Observable.empty()
     }
   }
 
   override fun reduce(state: State, mutation: GithubSearchViewModel.Mutation): State = when (mutation) {
-    is GithubSearchViewModel.Mutation.SetQuery -> state.copy(query = mutation.query)
-    is GithubSearchViewModel.Mutation.SetRepos -> state.copy(repos = mutation.repos, nextPage = mutation.nextPage)
+    is GithubSearchViewModel.Mutation.setQuery -> state.copy(query = mutation.query)
+    is GithubSearchViewModel.Mutation.setRepos -> state.copy(repos = mutation.repos, nextPage = mutation.nextPage)
     else -> state
   }
 
@@ -90,7 +88,7 @@ class GithubSearchViewModel() :
   }
 
   private fun isUpdateQueryAction(action: Action): Boolean {
-    return (action is Action.UpdateQuery)
+    return (action is Action.updateQuery)
   }
 
   private fun requestGet(url: String): Observable<String> {
