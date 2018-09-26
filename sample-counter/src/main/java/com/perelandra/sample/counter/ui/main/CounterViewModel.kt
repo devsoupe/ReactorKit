@@ -54,8 +54,4 @@ class CounterViewModel()
     is Mutation.SetLoading -> state.copy(isLoading = mutation.isLoading)
     else -> state
   }
-
-  override fun transformState(state: Observable<State>): Observable<State> {
-    return super.transformState(state).observeOn(AndroidSchedulers.mainThread())
-  }
 }
