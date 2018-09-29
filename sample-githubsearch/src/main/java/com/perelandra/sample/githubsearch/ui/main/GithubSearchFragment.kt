@@ -3,6 +3,7 @@ package com.perelandra.sample.githubsearch.ui.main
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
@@ -13,8 +14,13 @@ import com.perelandra.reactorviewmodel.bind
 import com.perelandra.reactorviewmodel.disposed
 import com.perelandra.reactorviewmodel.of
 import com.perelandra.sample.githubsearch.R
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposables.disposed
+import io.reactivex.functions.Action
+import io.reactivex.functions.Consumer
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_github_search.*
+import java.util.concurrent.TimeUnit
 
 class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
 
@@ -31,6 +37,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
 
     (activity as AppCompatActivity).setSupportActionBar(toolbar)
 
+    list.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     list.layoutManager = LinearLayoutManager(context)
     list.adapter = GithubSearchListAdapter()
 
@@ -49,11 +56,23 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
 
     // Actions
     RxSearchView.queryTextChanges(searchView)
-      .skipInitialValue()
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
-      .map { GithubSearchViewModel.Action.UpdateQuery(it.toString()) }
-      .bind(to = viewmodel.action)
+      .map { GithubSearchViewModel.Action.updateQuery(it.toString()) }
+//      .bind(to = viewmodel.action)
+//      .subscribeBy(
+//        onNext = {
+//          viewmodel.action
+//          Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onNext : $it")
+//        },
+//        onError = {
+//          Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onError : $it")
+//        },
+//        onComplete = {
+//          Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onComplete")
+//        }
+//      )
+      .subscribe(viewmodel.action, Consumer { Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onError : $it") }, Action { Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onComplete") })
       .disposed(by = disposeBag)
 
     super.onCreateOptionsMenu(menu, inflater)
@@ -61,20 +80,21 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
 
   override fun bind(viewmodel: GithubSearchViewModel): ReactorView<GithubSearchViewModel> {
     // States
-    viewmodel.state.map { it.query }
-      .distinctUntilChanged()
-      .filter { it.isNotEmpty() }
-      .subscribe { Log.i(TAG, "bindStates :: query : $it") }
-      .disposed(by = disposeBag)
+//    viewmodel.state.map { it.query }
+//      .distinctUntilChanged()
+//      .filter { it.isNotEmpty() }
+//      .subscribe { Log.i(TAG, "bindStates :: query : $it") }
+//      .disposed(by = disposeBag)
 
+//    viewmodel.state.map { it.nextPage }
+//      .distinctUntilChanged()
+//      .subscribe { Log.i(TAG, "bindStates :: nextPage : $it") }
+//      .disposed(by = disposeBag)
+
+    // States
     viewmodel.state.map { it.repos }
       .distinctUntilChanged()
-      .subscribe { Log.i(TAG, "bindStates :: repos : $it") }
-      .disposed(by = disposeBag)
-
-    viewmodel.state.map { it.nextPage }
-      .distinctUntilChanged()
-      .subscribe { Log.i(TAG, "bindStates :: nextPage : $it") }
+      .subscribe { (list.adapter as GithubSearchListAdapter).setRepos(it) }
       .disposed(by = disposeBag)
 
     return this
