@@ -1,6 +1,5 @@
 package com.perelandra.sample.githubsearch.ui.main
 
-import android.arch.lifecycle.Transformations.map
 import android.os.Parcelable
 import android.util.Log
 import com.google.gson.*
@@ -9,7 +8,7 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.parcel.Parcelize
 import com.google.gson.reflect.TypeToken
-import com.perelandra.sample.githubsearch.provider.GithubSearchClientImpl
+import com.perelandra.sample.githubsearch.client.GithubSearchClientImpl
 
 class GithubSearchViewModel() :
   ReactorViewModel<GithubSearchViewModel.Action, GithubSearchViewModel.Mutation, GithubSearchViewModel.State>() {
