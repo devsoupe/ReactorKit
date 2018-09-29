@@ -1,4 +1,4 @@
-package com.perelandra.sample.githubsearch.provider
+package com.perelandra.sample.githubsearch.client
 
 import io.reactivex.Observable
 
