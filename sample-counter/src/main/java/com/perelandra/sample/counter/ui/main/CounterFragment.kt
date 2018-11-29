@@ -1,20 +1,19 @@
 package com.perelandra.sample.counter.ui.main
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
-import com.perelandra.reactorviewmodel.bind
-import com.perelandra.reactorviewmodel.disposed
-import com.perelandra.reactorviewmodel.of
-import com.perelandra.reactorviewmodel.ReactorView
+import com.perelandra.reactorkit.bind
+import com.perelandra.reactorkit.disposed
+import com.perelandra.reactorkit.ReactorView
 import com.perelandra.sample.counter.R
 import kotlinx.android.synthetic.main.fragment_counter.*
 
-class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
+class CounterFragment : Fragment(), ReactorView<CounterReactor> {
 
   companion object {
     fun newInstance() = CounterFragment()
@@ -25,34 +24,35 @@ class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewmodel = CounterViewModel().of(this)
+    reactor = CounterReactor()
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
+    reactor.clear();
     clearReactorView()
   }
 
-  override fun bind(viewmodel: CounterViewModel): ReactorView<CounterViewModel> {
+  override fun bind(reactor: CounterReactor): ReactorView<CounterReactor> {
     // Actions
     RxView.clicks(plusButton)
-      .map { CounterViewModel.Action.Increase }
-      .bind(to = viewmodel.action)
+      .map { CounterReactor.Action.Increase }
+      .bind(to = reactor.action)
       .disposed(by = disposeBag)
 
     RxView.clicks(minusButton)
-      .map { CounterViewModel.Action.Decrease }
-      .bind(to = viewmodel.action)
+      .map { CounterReactor.Action.Decrease }
+      .bind(to = reactor.action)
       .disposed(by = disposeBag)
 
     // States
-    viewmodel.state.map { it.value }
+    reactor.state.map { it.value }
       .distinctUntilChanged()
       .map { "$it" }
       .bind(to = RxTextView.text(valueTextView))
       .disposed(by = disposeBag)
 
-    viewmodel.state.map { it.isLoading }
+    reactor.state.map { it.isLoading }
       .distinctUntilChanged()
       .bind(to = RxView.visibility(progressBar, View.GONE))
       .disposed(by = disposeBag)
