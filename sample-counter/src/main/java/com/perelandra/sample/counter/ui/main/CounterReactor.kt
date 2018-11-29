@@ -1,13 +1,13 @@
 package com.perelandra.sample.counter.ui.main
 
 import android.os.Parcelable
-import com.perelandra.reactorkit.ReactorKit
+import com.perelandra.reactorkit.Reactor
 import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
 import java.util.concurrent.TimeUnit
 
 class CounterReactor()
-  : ReactorKit<CounterReactor.Action, CounterReactor.Mutation, CounterReactor.State>() {
+  : Reactor<CounterReactor.Action, CounterReactor.Mutation, CounterReactor.State> {
 
   companion object {
     private val TAG = CounterReactor::class.java.simpleName
