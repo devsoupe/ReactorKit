@@ -3,15 +3,15 @@ package com.perelandra.sample.githubsearch.ui.main
 import android.os.Parcelable
 import android.util.Log
 import com.google.gson.*
-import com.perelandra.reactorkit.ReactorKit
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.parcel.Parcelize
 import com.google.gson.reflect.TypeToken
+import com.perelandra.reactorkit.Reactor
 import com.perelandra.sample.githubsearch.client.GithubSearchClientImpl
 
 class GithubSearchReactor() :
-  ReactorKit<GithubSearchReactor.Action, GithubSearchReactor.Mutation, GithubSearchReactor.State>() {
+  Reactor<GithubSearchReactor.Action, GithubSearchReactor.Mutation, GithubSearchReactor.State> {
 
   companion object {
     private val TAG = GithubSearchReactor::class.java.simpleName

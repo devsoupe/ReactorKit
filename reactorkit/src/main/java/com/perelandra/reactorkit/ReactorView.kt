@@ -3,7 +3,7 @@ package com.perelandra.reactorkit
 interface ReactorView<T> : AssociatedObjectStore {
 
   companion object {
-    private const val viewmodelKey = "viewmodel"
+    private const val reactorKey = "reactor"
     private const val disposeBagKey = "disposeBag"
     private const val isReactorBindedKey = "isReactorBinded"
     private const val reactorViewKey = "reactorView"
@@ -15,10 +15,10 @@ interface ReactorView<T> : AssociatedObjectStore {
       setAssociatedObject<DisposeBag>(value, disposeBagKey)
     }
 
-  var viewmodel: T
-    get() = getAssociatedObject<T>(viewmodelKey)
+  var reactor: T
+    get() = getAssociatedObject<T>(reactorKey)
     set(value) {
-      setAssociatedObject<T>(value, viewmodelKey)
+      setAssociatedObject<T>(value, reactorKey)
       isReactorBinded = false
       disposeBag = DisposeBag()
       performBinding()
@@ -31,13 +31,13 @@ interface ReactorView<T> : AssociatedObjectStore {
     }
 
   fun performBinding() {
-    if (viewmodel == null) return
+    if (reactor == null) return
     if (isReactorBinded) return
-    setAssociatedObject<ReactorView<T>>(bind(viewmodel), reactorViewKey)
+    setAssociatedObject<ReactorView<T>>(bind(reactor), reactorViewKey)
     isReactorBinded = true
   }
 
-  fun bind(viewmodel: T): ReactorView<T>
+  fun bind(reactor: T): ReactorView<T>
 
   fun clearReactorView() {
     disposeBag.clear();

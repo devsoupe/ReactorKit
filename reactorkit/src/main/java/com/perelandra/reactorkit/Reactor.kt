@@ -69,7 +69,7 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
 
   open fun transformState(state: Observable<State>): Observable<State> = state
 
-  fun clearReactor() {
+  fun clear() {
     disposeBag.clear()
     clearAssociatedObject(id)
   }

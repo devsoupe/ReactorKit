@@ -1,17 +1,16 @@
 package com.perelandra.sample.githubsearch.ui.main
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.SearchView
 import android.util.Log
 import android.view.*
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
 import com.perelandra.reactorkit.ReactorView
 import com.perelandra.reactorkit.disposed
-import com.perelandra.reactorkit.of
 import com.perelandra.sample.githubsearch.R
 import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
@@ -38,7 +37,13 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
 
     setHasOptionsMenu(true)
 
-    viewmodel = GithubSearchReactor().of(this)
+    reactor = GithubSearchReactor()
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    reactor.clear()
+    clearReactorView()
   }
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -54,10 +59,10 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
       .map { GithubSearchReactor.Action.updateQuery(it.toString()) }
-//      .bind(to = viewmodel.action)
+//      .bind(to = reactor.action)
 //      .subscribeBy(
 //        onNext = {
-//          viewmodel.action
+//          reactor.action
 //          Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onNext : $it")
 //        },
 //        onError = {
@@ -67,27 +72,27 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
 //          Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onComplete")
 //        }
 //      )
-      .subscribe(viewmodel.action, Consumer { Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onError : $it") }, Action { Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onComplete") })
+      .subscribe(reactor.action, Consumer { Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onError : $it") }, Action { Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onComplete") })
       .disposed(by = disposeBag)
 
     super.onCreateOptionsMenu(menu, inflater)
   }
 
-  override fun bind(viewmodel: GithubSearchReactor): ReactorView<GithubSearchReactor> {
+  override fun bind(reactor: GithubSearchReactor): ReactorView<GithubSearchReactor> {
     // States
-//    viewmodel.state.map { it.query }
+//    reactor.state.map { it.query }
 //      .distinctUntilChanged()
 //      .filter { it.isNotEmpty() }
 //      .subscribe { Log.i(TAG, "bindStates :: query : $it") }
 //      .disposed(by = disposeBag)
 
-//    viewmodel.state.map { it.nextPage }
+//    reactor.state.map { it.nextPage }
 //      .distinctUntilChanged()
 //      .subscribe { Log.i(TAG, "bindStates :: nextPage : $it") }
 //      .disposed(by = disposeBag)
 
     // States
-    viewmodel.state.map { it.repos }
+    reactor.state.map { it.repos }
       .distinctUntilChanged()
       .subscribe { (list.adapter as GithubSearchListAdapter).setRepos(it) }
       .disposed(by = disposeBag)
