@@ -1,4 +1,4 @@
-package com.perelandra.sample.githubsearch;
+package com.perelandra.reactorkit;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.perelandra.sample.githubsearch.test", appContext.getPackageName());
+        assertEquals("com.perelandra.reactorkit.test", appContext.getPackageName());
     }
 }
