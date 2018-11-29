@@ -9,20 +9,15 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
-import com.perelandra.reactorviewmodel.ReactorView
-import com.perelandra.reactorviewmodel.bind
-import com.perelandra.reactorviewmodel.disposed
-import com.perelandra.reactorviewmodel.of
+import com.perelandra.reactorkit.ReactorView
+import com.perelandra.reactorkit.disposed
+import com.perelandra.reactorkit.of
 import com.perelandra.sample.githubsearch.R
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposables.disposed
 import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
-import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_github_search.*
-import java.util.concurrent.TimeUnit
 
-class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
+class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
 
   companion object {
     private val TAG = GithubSearchFragment::class.java.simpleName
@@ -43,7 +38,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
 
     setHasOptionsMenu(true)
 
-    viewmodel = GithubSearchViewModel().of(this)
+    viewmodel = GithubSearchReactor().of(this)
   }
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -58,7 +53,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
     RxSearchView.queryTextChanges(searchView)
       .distinctUntilChanged()
       .filter { it.isNotEmpty() }
-      .map { GithubSearchViewModel.Action.updateQuery(it.toString()) }
+      .map { GithubSearchReactor.Action.updateQuery(it.toString()) }
 //      .bind(to = viewmodel.action)
 //      .subscribeBy(
 //        onNext = {
@@ -78,7 +73,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchViewModel> {
     super.onCreateOptionsMenu(menu, inflater)
   }
 
-  override fun bind(viewmodel: GithubSearchViewModel): ReactorView<GithubSearchViewModel> {
+  override fun bind(viewmodel: GithubSearchReactor): ReactorView<GithubSearchReactor> {
     // States
 //    viewmodel.state.map { it.query }
 //      .distinctUntilChanged()

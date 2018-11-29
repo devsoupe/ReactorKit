@@ -1,4 +1,4 @@
-# ReactorViewModel
+# ReactorKit
 
 A framework for a reactive and unidirectional android application architecture 
 
@@ -7,4 +7,3 @@ A framework for a reactive and unidirectional android application architecture
 
 <!-- > Port of https://github.com/ReactorKit/ReactorKit to Kotlin -->
 <!-- ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square) -->
-<!-- (ReactorKit + ViewModel by Android Architecture Component) -->
