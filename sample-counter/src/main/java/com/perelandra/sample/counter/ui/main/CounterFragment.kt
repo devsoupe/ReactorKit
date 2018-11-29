@@ -7,14 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
-import com.perelandra.reactorviewmodel.bind
-import com.perelandra.reactorviewmodel.disposed
-import com.perelandra.reactorviewmodel.of
-import com.perelandra.reactorviewmodel.ReactorView
+import com.perelandra.reactorkit.bind
+import com.perelandra.reactorkit.disposed
+import com.perelandra.reactorkit.of
+import com.perelandra.reactorkit.ReactorView
 import com.perelandra.sample.counter.R
 import kotlinx.android.synthetic.main.fragment_counter.*
 
-class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
+class CounterFragment : Fragment(), ReactorView<CounterReactor> {
 
   companion object {
     fun newInstance() = CounterFragment()
@@ -25,7 +25,7 @@ class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewmodel = CounterViewModel().of(this)
+    viewmodel = CounterReactor().of(this)
   }
 
   override fun onDestroyView() {
@@ -33,15 +33,15 @@ class CounterFragment : Fragment(), ReactorView<CounterViewModel> {
     clearReactorView()
   }
 
-  override fun bind(viewmodel: CounterViewModel): ReactorView<CounterViewModel> {
+  override fun bind(viewmodel: CounterReactor): ReactorView<CounterReactor> {
     // Actions
     RxView.clicks(plusButton)
-      .map { CounterViewModel.Action.Increase }
+      .map { CounterReactor.Action.Increase }
       .bind(to = viewmodel.action)
       .disposed(by = disposeBag)
 
     RxView.clicks(minusButton)
-      .map { CounterViewModel.Action.Decrease }
+      .map { CounterReactor.Action.Decrease }
       .bind(to = viewmodel.action)
       .disposed(by = disposeBag)
 
