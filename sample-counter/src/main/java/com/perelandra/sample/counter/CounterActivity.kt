@@ -1,6 +1,6 @@
 package com.perelandra.sample.counter
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.perelandra.sample.counter.ui.main.CounterFragment
 
