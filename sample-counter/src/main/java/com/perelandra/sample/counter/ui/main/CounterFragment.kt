@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
-import com.perelandra.reactorkit.bind
-import com.perelandra.reactorkit.disposed
-import com.perelandra.reactorkit.ReactorView
+import com.perelandra.reactorkit.*
 import com.perelandra.sample.counter.R
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_counter.*
 
 class CounterFragment : Fragment(), ReactorView<CounterReactor> {
@@ -24,28 +24,27 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    reactor = CounterReactor()
+    reactor = CounterReactor().of(this)
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
-    reactor.clear();
     clearReactorView()
   }
 
-  override fun bind(reactor: CounterReactor): ReactorView<CounterReactor> {
-    // Actions
+  override fun onBindAction(reactor: CounterReactor) {
     RxView.clicks(plusButton)
       .map { CounterReactor.Action.Increase }
       .bind(to = reactor.action)
-      .disposed(by = disposeBag)
+      .disposed(disposeBag)
 
     RxView.clicks(minusButton)
       .map { CounterReactor.Action.Decrease }
       .bind(to = reactor.action)
       .disposed(by = disposeBag)
+  }
 
-    // States
+  override fun onBindState(reactor: CounterReactor) {
     reactor.state.map { it.value }
       .distinctUntilChanged()
       .map { "$it" }
@@ -56,7 +55,5 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
       .distinctUntilChanged()
       .bind(to = RxView.visibility(progressBar, View.GONE))
       .disposed(by = disposeBag)
-
-    return this
   }
 }

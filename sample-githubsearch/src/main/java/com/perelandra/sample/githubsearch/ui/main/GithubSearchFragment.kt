@@ -1,6 +1,7 @@
 package com.perelandra.sample.githubsearch.ui.main
 
 import android.os.Bundle
+import android.text.method.TextKeyListener.clear
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -42,7 +43,6 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
 
   override fun onDestroyView() {
     super.onDestroyView()
-    reactor.clear()
     clearReactorView()
   }
 
@@ -78,17 +78,21 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
     super.onCreateOptionsMenu(menu, inflater)
   }
 
-  override fun bind(reactor: GithubSearchReactor): ReactorView<GithubSearchReactor> {
+  override fun onBindAction(reactor: GithubSearchReactor) {
+
+  }
+
+  override fun onBindState(reactor: GithubSearchReactor) {
     // States
 //    reactor.state.map { it.query }
 //      .distinctUntilChanged()
 //      .filter { it.isNotEmpty() }
-//      .subscribe { Log.i(TAG, "bindStates :: query : $it") }
+//      .subscribe { Log.i(TAG, "onBindState :: query : $it") }
 //      .disposed(by = disposeBag)
 
 //    reactor.state.map { it.nextPage }
 //      .distinctUntilChanged()
-//      .subscribe { Log.i(TAG, "bindStates :: nextPage : $it") }
+//      .subscribe { Log.i(TAG, "onBindState :: nextPage : $it") }
 //      .disposed(by = disposeBag)
 
     // States
@@ -96,7 +100,5 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
       .distinctUntilChanged()
       .subscribe { (list.adapter as GithubSearchListAdapter).setRepos(it) }
       .disposed(by = disposeBag)
-
-    return this
   }
 }
