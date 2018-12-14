@@ -33,15 +33,19 @@ interface ReactorView<T> : AssociatedObjectStore {
   fun performBinding() {
     if (reactor == null) return
     if (isReactorBinded) return
-    setAssociatedObject<ReactorView<T>>(bind(reactor), reactorViewKey)
+    onBindAction(reactor)
+    onBindState(reactor)
+    setAssociatedObject<ReactorView<T>>(this, reactorViewKey)
     isReactorBinded = true
   }
-
-  fun bind(reactor: T): ReactorView<T>
 
   fun clearReactorView() {
     disposeBag.clear();
     clearAssociatedObject(getAssociatedObject<ReactorView<T>>(reactorViewKey).id)
   }
+
+  fun onBindAction(reactor: T)
+
+  fun onBindState(reactor: T)
 }
 

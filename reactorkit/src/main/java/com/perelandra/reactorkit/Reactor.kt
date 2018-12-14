@@ -1,9 +1,19 @@
 package com.perelandra.reactorkit
 
+import android.text.method.TextKeyListener.clear
+import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 
-interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
+abstract class Reactor<Action, Mutation, State>() : ReactorInterface<Action, Mutation, State>, ViewModel() {
+
+  override fun onCleared() {
+    super.onCleared()
+    clear()
+  }
+}
+
+private interface ReactorInterface<Action, Mutation, State> : AssociatedObjectStore {
 
   companion object {
     private const val actionKey = "action"
