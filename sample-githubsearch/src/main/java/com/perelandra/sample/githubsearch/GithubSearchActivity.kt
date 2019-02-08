@@ -1,7 +1,7 @@
 package com.perelandra.sample.githubsearch
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.perelandra.sample.githubsearch.ui.main.GithubSearchFragment
 
 class GithubSearchActivity : AppCompatActivity() {
@@ -12,8 +12,8 @@ class GithubSearchActivity : AppCompatActivity() {
 
     if (savedInstanceState == null) {
       supportFragmentManager.beginTransaction()
-        .replace(R.id.container, GithubSearchFragment.newInstance())
-        .commitNow()
+          .replace(R.id.container, GithubSearchFragment.newInstance())
+          .commitNow()
     }
   }
 }
