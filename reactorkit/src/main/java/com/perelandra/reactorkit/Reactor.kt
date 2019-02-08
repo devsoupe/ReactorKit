@@ -1,6 +1,5 @@
 package com.perelandra.reactorkit
 
-import android.text.method.TextKeyListener.clear
 import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -53,18 +52,18 @@ private interface ReactorInterface<Action, Mutation, State> : AssociatedObjectSt
     val action = this.action
     val transformedAction = transformAction(action)
     val mutation = transformedAction
-      .flatMap { action ->
-        mutate(action).onErrorResumeNext { _: Throwable -> Observable.empty() }
-      }
+        .flatMap { action ->
+          mutate(action).onErrorResumeNext { _: Throwable -> Observable.empty() }
+        }
     val transformedMutation = transformMutation(mutation)
     val state = transformedMutation
-      .scan(initialState) { state, mutate -> reduce(state, mutate) }
-      .onErrorResumeNext { _: Throwable -> Observable.empty() }
-      .startWith(initialState)
-      .observeOn(AndroidSchedulers.mainThread())
+        .scan(initialState) { state, mutate -> reduce(state, mutate) }
+        .onErrorResumeNext { _: Throwable -> Observable.empty() }
+        .startWith(initialState)
+        .observeOn(AndroidSchedulers.mainThread())
     val transformedState = transformState(state)
-      .doOnNext { currentState = it }
-      .replay(1)
+        .doOnNext { currentState = it }
+        .replay(1)
     transformedState.connect().disposed(by = disposeBag)
     return transformedState
   }
