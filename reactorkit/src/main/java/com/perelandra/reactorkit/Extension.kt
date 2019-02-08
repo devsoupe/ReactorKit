@@ -16,9 +16,10 @@ fun <T> Observable<T>.bind(to: Consumer<in T>): Disposable = this.subscribe(to)
 fun <T> Observable<T>.bind(to: Observer<in T>) = this.subscribe(to)
 
 fun <T : ViewModel> T.of(fragment: Fragment): T =
-  ViewModelProviders.of(fragment, createViewModel(this)).get(this.javaClass)
+    ViewModelProviders.of(fragment, createViewModel(this)).get(this.javaClass)
+
 fun <T : ViewModel> T.of(fragmentActivity: FragmentActivity): T =
-  ViewModelProviders.of(fragmentActivity, createViewModel(this)).get(this.javaClass)
+    ViewModelProviders.of(fragmentActivity, createViewModel(this)).get(this.javaClass)
 
 private fun <T : ViewModel> createViewModel(model: T) = object : ViewModelProvider.Factory {
   override fun <T : ViewModel?> create(modelClass: Class<T>): T = model as T

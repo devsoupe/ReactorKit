@@ -28,21 +28,21 @@ class CounterReactor()
 
   @Parcelize
   data class State(
-    val name: String = TAG,
-    val value: Int = 0,
-    val isLoading: Boolean = false
+      val name: String = TAG,
+      val value: Int = 0,
+      val isLoading: Boolean = false
   ) : Parcelable
 
   override fun mutate(action: Action): Observable<Mutation> = when (action) {
     is Action.Increase -> Observable.concat(
-      Observable.just(Mutation.SetLoading(true)),
-      Observable.just(Mutation.IncreaseValue).delay(500, TimeUnit.MILLISECONDS),
-      Observable.just(Mutation.SetLoading(false)))
+        Observable.just(Mutation.SetLoading(true)),
+        Observable.just(Mutation.IncreaseValue).delay(500, TimeUnit.MILLISECONDS),
+        Observable.just(Mutation.SetLoading(false)))
 
     is Action.Decrease -> Observable.concat(
-      Observable.just(Mutation.SetLoading(true)),
-      Observable.just(Mutation.DecreaseValue).delay(500, TimeUnit.MILLISECONDS),
-      Observable.just(Mutation.SetLoading(false)))
+        Observable.just(Mutation.SetLoading(true)),
+        Observable.just(Mutation.DecreaseValue).delay(500, TimeUnit.MILLISECONDS),
+        Observable.just(Mutation.SetLoading(false)))
 
     else -> Observable.empty()
   }
