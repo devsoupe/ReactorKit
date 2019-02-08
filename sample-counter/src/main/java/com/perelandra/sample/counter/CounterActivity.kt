@@ -1,7 +1,7 @@
 package com.perelandra.sample.counter
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.perelandra.sample.counter.ui.main.CounterFragment
 
 class CounterActivity : AppCompatActivity() {
@@ -12,8 +12,8 @@ class CounterActivity : AppCompatActivity() {
 
     if (savedInstanceState == null) {
       supportFragmentManager.beginTransaction()
-        .replace(R.id.container, CounterFragment.newInstance())
-        .commitNow()
+          .replace(R.id.container, CounterFragment.newInstance())
+          .commitNow()
     }
   }
 }

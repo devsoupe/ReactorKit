@@ -1,9 +1,9 @@
 package com.perelandra.sample.githubsearch.ui.main
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.perelandra.sample.githubsearch.R
 import kotlinx.android.synthetic.main.recyclerview_item_github_search.view.*
 
