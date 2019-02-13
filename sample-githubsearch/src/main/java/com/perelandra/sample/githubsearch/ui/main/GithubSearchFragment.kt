@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
 import com.perelandra.reactorkit.ReactorView
-import com.perelandra.reactorkit.disposed
+import com.perelandra.reactorkit.extras.disposed
 import com.perelandra.sample.githubsearch.R
 import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
@@ -36,13 +36,12 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
     list.adapter = GithubSearchListAdapter()
 
     setHasOptionsMenu(true)
-
-    reactor = GithubSearchReactor()
+    createReactor(GithubSearchReactor())
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
-    clearReactorView()
+    destroyReactor()
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -77,21 +76,17 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
     super.onCreateOptionsMenu(menu, inflater)
   }
 
-  override fun onBindAction(reactor: GithubSearchReactor) {
-
-  }
-
-  override fun onBindState(reactor: GithubSearchReactor) {
+  override fun bind(reactor: GithubSearchReactor) {
     // States
 //    reactor.state.map { it.query }
 //      .distinctUntilChanged()
 //      .filter { it.isNotEmpty() }
-//      .subscribe { Log.i(TAG, "onBindState :: query : $it") }
+//      .subscribe { Log.i(TAG, "bindState :: query : $it") }
 //      .disposed(by = disposeBag)
 
 //    reactor.state.map { it.nextPage }
 //      .distinctUntilChanged()
-//      .subscribe { Log.i(TAG, "onBindState :: nextPage : $it") }
+//      .subscribe { Log.i(TAG, "bindState :: nextPage : $it") }
 //      .disposed(by = disposeBag)
 
     // States

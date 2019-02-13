@@ -1,52 +1,28 @@
 package com.perelandra.reactorkit
 
-import androidx.lifecycle.ViewModel
+import com.perelandra.reactorkit.extras.DisposeBag
+import com.perelandra.reactorkit.extras.disposed
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 
-abstract class Reactor<Action, Mutation, State>() : ReactorInterface<Action, Mutation, State>, ViewModel() {
-
-  override fun onCleared() {
-    super.onCleared()
-    clear()
-  }
-}
-
-private interface ReactorInterface<Action, Mutation, State> : AssociatedObjectStore {
-
-  companion object {
-    private const val actionKey = "action"
-    private const val initialStateKey = "initialState"
-    private const val currentStateKey = "currentState"
-    private const val stateKey = "state"
-    private const val disposeBagKey = "disposeBag"
-  }
+interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
 
   val action: ActionSubject<Action>
-    get() {
-      getAssociatedObject<ActionSubject<Action>>(actionKey)?.run { return this }
-      return getAssociatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
-    }
+    //    get() = if (stub.isEnabled) stub.action else associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
+    get() = associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
 
   var initialState: State
 
   private var currentState: State
-    get() = getAssociatedObject<State>(currentStateKey, initialState)
-    set(value) {
-      this.setAssociatedObject(value, currentStateKey)
-    }
+    get() = associatedObject(currentStateKey, initialState)
+    set(value) = this.setAssociatedObject(value, currentStateKey)
 
   val state: Observable<State>
-    get() {
-      getAssociatedObject<Observable<State>>(stateKey)?.run { return this }
-      return getAssociatedObject<Observable<State>>(stateKey, createStateStream())
-    }
+    //    get() = if (stub.isEnabled) stub.state else associatedObject(stateKey, createStateStream())
+    get() = associatedObject(stateKey, createStateStream())
 
   private val disposeBag: DisposeBag
-    get() {
-      getAssociatedObject<DisposeBag>(disposeBagKey)?.run { return this }
-      return getAssociatedObject<DisposeBag>(disposeBagKey, DisposeBag())
-    }
+    get() = associatedObject(disposeBagKey, DisposeBag())
 
   private fun createStateStream(): Observable<State> {
     val action = this.action
@@ -64,23 +40,33 @@ private interface ReactorInterface<Action, Mutation, State> : AssociatedObjectSt
     val transformedState = transformState(state)
         .doOnNext { currentState = it }
         .replay(1)
-    transformedState.connect().disposed(by = disposeBag)
+    transformedState.connect().disposed(disposeBag)
     return transformedState
   }
 
-  open fun transformAction(action: Observable<Action>): Observable<Action> = action
+  fun transformAction(action: Observable<Action>): Observable<Action> = action
 
-  open fun mutate(action: Action): Observable<Mutation> = Observable.empty()
+  fun mutate(action: Action): Observable<Mutation> = Observable.empty()
 
-  open fun transformMutation(mutation: Observable<Mutation>): Observable<Mutation> = mutation
+  fun transformMutation(mutation: Observable<Mutation>): Observable<Mutation> = mutation
 
-  open fun reduce(state: State, mutation: Mutation): State = state
+  fun reduce(state: State, mutation: Mutation): State = state
 
-  open fun transformState(state: Observable<State>): Observable<State> = state
+  fun transformState(state: Observable<State>): Observable<State> = state
 
   fun clear() {
     disposeBag.clear()
-    clearAssociatedObject(id)
+    clearAssociatedObject()
   }
-}
 
+  companion object {
+    private const val actionKey = "action"
+    private const val currentStateKey = "currentState"
+    private const val stateKey = "state"
+    private const val disposeBagKey = "disposeBag"
+    private const val stubKey = "stub"
+  }
+
+//  val stub: Stub<Action, Mutation, State>
+//    get() = associatedObject(stubKey, Stub())
+}

@@ -6,8 +6,8 @@ import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
 import java.util.concurrent.TimeUnit
 
-class CounterReactor()
-  : Reactor<CounterReactor.Action, CounterReactor.Mutation, CounterReactor.State>() {
+class CounterReactor
+  : Reactor<CounterReactor.Action, CounterReactor.Mutation, CounterReactor.State> {
 
   companion object {
     private val TAG = CounterReactor::class.java.simpleName
