@@ -1,4 +1,4 @@
-package com.perelandra.reactorkit
+package com.perelandra.reactorkit.extras
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
