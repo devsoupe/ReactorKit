@@ -13,7 +13,7 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
 
   var initialState: State
 
-  private var currentState: State
+  var currentState: State
     get() = associatedObject(currentStateKey, initialState)
     set(value) = this.setAssociatedObject(value, currentStateKey)
 
