@@ -1,4 +1,4 @@
-package com.perelandra.reactorkit
+package com.perelandra.reactorkit.extras
 
 import io.reactivex.disposables.CompositeDisposable
 
