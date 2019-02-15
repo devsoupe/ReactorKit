@@ -1,6 +1,6 @@
 # ReactorKit
 
-[![](https://jitpack.io/v/perelandrax/reactorkit.svg)](https://jitpack.io/#perelandrax/reactorkit) ![](https://travis-ci.com/perelandrax/ReactorKit.svg?branch=master)
+[![](https://jitpack.io/v/perelandrax/reactorkit.svg)](https://jitpack.io/#perelandrax/reactorkit) [![Travis branch](https://img.shields.io/travis/perelandrax/ReactorKit.svg?maxAge=2592000)](https://travis-ci.com/perelandrax/ReactorKit.svg?branch=master)
 
 <!-- ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square) -->
 
