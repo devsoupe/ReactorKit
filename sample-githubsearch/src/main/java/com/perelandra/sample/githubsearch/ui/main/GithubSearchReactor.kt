@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.parcel.Parcelize
 
 class GithubSearchReactor :
-    Reactor<GithubSearchReactor.Action, GithubSearchReactor.Mutation, GithubSearchReactor.State>() {
+    Reactor<GithubSearchReactor.Action, GithubSearchReactor.Mutation, GithubSearchReactor.State> {
 
   companion object {
     private val TAG = GithubSearchReactor::class.java.simpleName
