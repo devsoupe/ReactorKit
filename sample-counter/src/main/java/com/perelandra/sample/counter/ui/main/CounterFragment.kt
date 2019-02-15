@@ -8,9 +8,8 @@ import androidx.fragment.app.Fragment
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.perelandra.reactorkit.ReactorView
-import com.perelandra.reactorkit.bind
-import com.perelandra.reactorkit.disposed
-import com.perelandra.reactorkit.of
+import com.perelandra.reactorkit.extras.bind
+import com.perelandra.reactorkit.extras.disposed
 import com.perelandra.sample.counter.R
 import kotlinx.android.synthetic.main.fragment_counter.*
 
@@ -25,15 +24,16 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    reactor = CounterReactor().of(this)
+    createReactor(CounterReactor())
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
-    clearReactorView()
+    destroyReactor()
   }
 
-  override fun onBindAction(reactor: CounterReactor) {
+  override fun bind(reactor: CounterReactor) {
+    // Action
     RxView.clicks(plusButton)
         .map { CounterReactor.Action.Increase }
         .bind(to = reactor.action)
@@ -43,9 +43,8 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
         .map { CounterReactor.Action.Decrease }
         .bind(to = reactor.action)
         .disposed(by = disposeBag)
-  }
 
-  override fun onBindState(reactor: CounterReactor) {
+    // State
     reactor.state.map { it.value }
         .distinctUntilChanged()
         .map { "$it" }
