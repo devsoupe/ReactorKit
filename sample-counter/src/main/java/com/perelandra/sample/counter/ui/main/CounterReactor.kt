@@ -4,10 +4,9 @@ import android.os.Parcelable
 import com.perelandra.reactorkit.Reactor
 import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
-import java.util.concurrent.TimeUnit
 
-class CounterReactor()
-  : Reactor<CounterReactor.Action, CounterReactor.Mutation, CounterReactor.State>() {
+class CounterReactor
+  : Reactor<CounterReactor.Action, CounterReactor.Mutation, CounterReactor.State> {
 
   companion object {
     private val TAG = CounterReactor::class.java.simpleName
@@ -36,12 +35,12 @@ class CounterReactor()
   override fun mutate(action: Action): Observable<Mutation> = when (action) {
     is Action.Increase -> Observable.concat(
         Observable.just(Mutation.SetLoading(true)),
-        Observable.just(Mutation.IncreaseValue).delay(500, TimeUnit.MILLISECONDS),
+        Observable.just(Mutation.IncreaseValue), //.delay(500, TimeUnit.MILLISECONDS),
         Observable.just(Mutation.SetLoading(false)))
 
     is Action.Decrease -> Observable.concat(
         Observable.just(Mutation.SetLoading(true)),
-        Observable.just(Mutation.DecreaseValue).delay(500, TimeUnit.MILLISECONDS),
+        Observable.just(Mutation.DecreaseValue), //.delay(500, TimeUnit.MILLISECONDS),
         Observable.just(Mutation.SetLoading(false)))
 
     else -> Observable.empty()

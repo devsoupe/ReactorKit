@@ -1,51 +1,39 @@
 package com.perelandra.reactorkit
 
-interface ReactorView<T> : AssociatedObjectStore {
+import com.perelandra.reactorkit.View.Companion.reactorKey
 
-  companion object {
-    private const val reactorKey = "reactor"
-    private const val disposeBagKey = "disposeBag"
-    private const val isReactorBindedKey = "isReactorBinded"
-    private const val reactorViewKey = "reactorView"
-  }
+interface ReactorView<T> : View<T>, AssociatedObjectStore {
 
-  var disposeBag: DisposeBag
-    get() = getAssociatedObject<DisposeBag>(disposeBagKey)
+  override var reactor: T
+    get() = associatedObject(reactorKey)
     set(value) {
-      setAssociatedObject<DisposeBag>(value, disposeBagKey)
-    }
-
-  var reactor: T
-    get() = getAssociatedObject<T>(reactorKey)
-    set(value) {
-      setAssociatedObject<T>(value, reactorKey)
+      setAssociatedObject(value, reactorKey)
       isReactorBinded = false
-      disposeBag = DisposeBag()
       performBinding()
     }
 
-  var <T> ReactorView<T>.isReactorBinded: Boolean
-    get() = getAssociatedObject<Boolean>(isReactorBindedKey, false)
-    set(value) {
-      setAssociatedObject<Boolean>(value, isReactorBindedKey)
-    }
+  var isReactorBinded: Boolean
+    get() = associatedObject(isReactorBindedKey, false)
+    set(value) = setAssociatedObject(value, isReactorBindedKey)
 
   fun performBinding() {
     if (reactor == null) return
     if (isReactorBinded) return
-    onBindAction(reactor)
-    onBindState(reactor)
-    setAssociatedObject<ReactorView<T>>(this, reactorViewKey)
+    bind(reactor)
     isReactorBinded = true
   }
 
-  fun clearReactorView() {
-    disposeBag.clear();
-    clearAssociatedObject(getAssociatedObject<ReactorView<T>>(reactorViewKey).id)
+  fun createReactor(reactor: T) {
+    this.reactor = reactor
   }
 
-  fun onBindAction(reactor: T)
+  fun destroyReactor() {
+    (reactor as Reactor<*, *, *>).clear()
+    disposeBag.clear()
+    clearAssociatedObject()
+  }
 
-  fun onBindState(reactor: T)
+  companion object {
+    private const val isReactorBindedKey = "isReactorBinded"
+  }
 }
-
