@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding2.widget.RxCompoundButton
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.perelandra.reactorkit.ReactorView
 import com.perelandra.reactorkit.extras.bind
@@ -37,7 +38,7 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
     RxView.clicks(plusButton)
         .map { CounterReactor.Action.Increase }
         .bind(to = reactor.action)
-        .disposed(disposeBag)
+        .disposed(by = disposeBag)
 
     RxView.clicks(minusButton)
         .map { CounterReactor.Action.Decrease }
