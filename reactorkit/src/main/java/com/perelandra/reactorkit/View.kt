@@ -2,7 +2,7 @@ package com.perelandra.reactorkit
 
 import com.perelandra.reactorkit.extras.DisposeBag
 
-interface View<T> : AssociatedObjectStore {
+interface View<T : Reactor<*, *, *>> : AssociatedObjectStore {
 
   /**
    * A dispose bag. It is disposed each time the `reactor` is assigned.
