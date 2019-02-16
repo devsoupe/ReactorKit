@@ -2,9 +2,11 @@ sudo: false
 language: android
 jdk:
   - oraclejdk8
+  
 branches:
   only:
   - master
+
 install:
 # Let's use the new command 'sdkmanager' to install Android SDK components
 - yes | sdkmanager --verbose "build-tools;26.0.3"
@@ -26,6 +28,7 @@ install:
 - yes | sdkmanager --verbose tools
 script:
 - ./gradlew clean build
+
 env:
   global:
   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
@@ -36,3 +39,4 @@ env:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash) -t 942d6e8c-15de-4b8a-a96e-81f0f4fde046
+  - cat $TRAVIS_BUILD_DIR/app/build/reports/lint-results.xml
