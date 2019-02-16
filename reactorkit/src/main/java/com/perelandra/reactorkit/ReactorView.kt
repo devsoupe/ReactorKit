@@ -2,7 +2,7 @@ package com.perelandra.reactorkit
 
 import com.perelandra.reactorkit.View.Companion.reactorKey
 
-interface ReactorView<T> : View<T>, AssociatedObjectStore {
+interface ReactorView<T : Reactor<*, *, *>> : View<T>, AssociatedObjectStore {
 
   override var reactor: T
     get() = associatedObject(reactorKey)
@@ -28,7 +28,7 @@ interface ReactorView<T> : View<T>, AssociatedObjectStore {
   }
 
   fun destroyReactor() {
-    (reactor as Reactor<*, *, *>).clear()
+    reactor.clear()
     disposeBag.clear()
     clearAssociatedObject()
   }
