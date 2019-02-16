@@ -25,9 +25,9 @@ ReactorKit is a combination of [Flux](https://facebook.github.io/flux/) and [Rea
 
 ### View
 
-A *View* displays data. A view controller and a cell are treated as a view. The view binds user inputs to the action stream and binds the view states to each UI component. There's no business logic in a view layer. A view just defines how to map the action stream and the state stream.
+A *View* displays data. A activity and fragment are treated as a view. The view binds user inputs to the action stream and binds the view states to each UI component. There's no business logic in a view layer. A view just defines how to map the action stream and the state stream.
 
-To define a view, just have an existing class conform a protocol named `View`. Then your class will have a property named `reactor` automatically. This property is typically set outside of the view.
+To define a view, just have an existing class conform a interface named `ReactorView`. Then your class will have a property named `reactor` automatically. This property is typically set outside of the view.
 
 ```kotlin
 class ProfileFragment : Fragment(), ReactorView<ProfileReactor> {
@@ -45,7 +45,7 @@ class ProfileFragment : Fragment(), ReactorView<ProfileReactor> {
 }
 ```
 
-When the `reactor` property has changed, `bind(reactor: T)` gets called. Implement this method to define the bindings of an action stream and a state stream.
+When the `reactor` property has changed, `bind(reactor: Reactor)` gets called. Implement this method to define the bindings of an action stream and a state stream.
 
 ```kotlin
 override fun bind(reactor: ProfileReactor) {
