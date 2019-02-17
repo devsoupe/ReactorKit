@@ -4,6 +4,7 @@
 [![](https://img.shields.io/badge/gradle-3.5.0--alpha04-blue.svg)](https://gradle.org/)
 [![](https://img.shields.io/badge/platform-android-lightgrey.svg)](https://developer.android.com/)
 [![](https://jitpack.io/v/perelandrax/reactorkit.svg)](https://jitpack.io/#perelandrax/reactorkit) [![](https://travis-ci.org/perelandrax/ReactorKit.svg?branch=master)](https://travis-ci.org/perelandrax/ReactorKit)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <!-- ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square) -->
 
@@ -11,9 +12,30 @@
 
 ## Getting Started Guide
 
-Please refer to original ReactorKit's: [Table of Contents](https://github.com/ReactorKit/ReactorKit#table-of-contents) that describes the core components of apps built with ReactorKit.
+Please refer to original ReactorKit's : [ReactorKit Documentation](https://github.com/ReactorKit/ReactorKit/blob/master/README.md) that describes the core components of apps built with ReactorKit.
 
 To get an understanding of the core principles we recommend reading the brilliant flux and reactive programming documentation.
+
+## Installation
+
+Step 1. Add the JitPack repository to your build file
+
+```groovy
+allprojects {
+  repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+  }
+}
+```
+
+Step 2. Add the dependency
+
+```groovy
+dependencies {
+  implementation 'com.github.perelandrax:reactorkit:${version}'
+}
+```
 
 ## Basic Concept
 
@@ -191,24 +213,3 @@ Then the mutation will be emitted each time the view sends an action to a reacto
 
 * [Counter](https://github.com/perelandrax/ReactorKit/tree/master/sample-counter) : The most simple and basic example of ReactorKit
 * [GitHub Search 🚧](https://github.com/perelandrax/ReactorKit/tree/master/sample-githubsearch) : A simple application which provides a GitHub repository search (Under Construction)
-
-## Installation
-
-Step 1. Add the JitPack repository to your build file
-
-```groovy
-allprojects {
-  repositories {
-    ...
-    maven { url 'https://jitpack.io' }
-  }
-}
-```
-
-Step 2. Add the dependency
-
-```groovy
-dependencies {
-  implementation 'com.github.perelandrax:reactorkit:${version}'
-}
-```
