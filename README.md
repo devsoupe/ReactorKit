@@ -6,36 +6,27 @@
 [![](https://jitpack.io/v/perelandrax/reactorkit.svg)](https://jitpack.io/#perelandrax/reactorkit) [![](https://travis-ci.org/perelandrax/ReactorKit.svg?branch=master)](https://travis-ci.org/perelandrax/ReactorKit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-<!-- ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square) -->
-
 🏠 <b>Port of [ReactorKit](https://github.com/ReactorKit/ReactorKit) to Kotlin, which corresponds to [ReactorKit/1.2.1](https://github.com/ReactorKit/ReactorKit/releases/tag/1.2.1)</b>
 
-## Getting Started Guide
+## Getting Started
 
-Please refer to original ReactorKit's : [ReactorKit Documentation](https://github.com/ReactorKit/ReactorKit/blob/master/README.md) that describes the core components of apps built with ReactorKit.
+<b>Please refer to original ReactorKit's</b> : [ReactorKit Documentation](https://github.com/ReactorKit/ReactorKit/blob/master/README.md) that describes the core components of apps built with ReactorKit. To get an understanding of the core principles we recommend reading the brilliant flux and reactive programming documentation.
 
-To get an understanding of the core principles we recommend reading the brilliant flux and reactive programming documentation.
+ReactorKit is a framework for a reactive and unidirectional Kotlin application architecture. This repository introduces the basic concept of ReactorKit and describes how to build an application using ReactorKit. You may want to see the Examples section first if you'd like to see the actual code. 
 
-## Installation
+## Table of Contents
 
-Step 1. Add the JitPack repository to your build file
-
-```groovy
-allprojects {
-  repositories {
-    ...
-    maven { url 'https://jitpack.io' }
-  }
-}
-```
-
-Step 2. Add the dependency
-
-```groovy
-dependencies {
-  implementation 'com.github.perelandrax:reactorkit:${version}'
-}
-```
+* [Basic Concept](#basic-concept)
+    * [Design Goal](#design-goal)
+    * [View](#view)
+    * [Reactor](#reactor)
+* [Advanced](#advanced)
+    * [Global States](#global-states)
+    * [View Communication](#view-communication)
+    * [Testing](#testing)
+* [Examples](#examples)
+* [Installation](#installation)
+* [License](#license)
 
 ## Basic Concept
 
@@ -45,11 +36,17 @@ ReactorKit is a combination of [Flux](https://facebook.github.io/flux/) and [Rea
   <img alt="flow" src="https://cloud.githubusercontent.com/assets/931655/25073432/a91c1688-2321-11e7-8f04-bf91031a09dd.png" width="600">
 </p>
 
+### Design Goal
+
+* **Testability**: The first purpose of ReactorKit is to separate the business logic from a view. This can make the code testable. A reactor doesn't have any dependency to a view. Just test reactors and test view bindings. See [Testing](#testing) section for details.
+* **Start Small**: ReactorKit doesn't require the whole application to follow a single architecture. ReactorKit can be adopted partially, for one or more specific views. You don't need to rewrite everything to use ReactorKit on your existing project.
+* **Less Typing**: ReactorKit focuses on avoiding complicated code for a simple thing. ReactorKit requires less code compared to other architectures. Start simple and scale up.
+
 ### View
 
 A *View* displays data. A activity and fragment are treated as a view. The view binds user inputs to the action stream and binds the view states to each UI component. There's no business logic in a view layer. A view just defines how to map the action stream and the state stream.
 
-To define a view, just have an existing class conform a interface named `ReactorView`. Then your class will have a property named `reactor` automatically. This property is typically set outside of the view.
+To define a view, just have an existing class conform a interface named `ReactorView`. Then your class will have a property named `reactor` automatically. This property is typically set using createReactor method's parameter.
 
 ```kotlin
 class ProfileFragment : Fragment(), ReactorView<ProfileReactor> {
@@ -67,7 +64,7 @@ class ProfileFragment : Fragment(), ReactorView<ProfileReactor> {
 }
 ```
 
-When the `reactor` property has changed, `bind(reactor: Reactor)` gets called. Implement this method to define the bindings of an action stream and a state stream.
+When the `reactor` property has changed, `bind(reactor: <T : Reactor<*, *, *>>)` gets called. Implement this method to define the bindings of an action stream and a state stream.
 
 ```kotlin
 override fun bind(reactor: ProfileReactor) {
@@ -213,3 +210,29 @@ Then the mutation will be emitted each time the view sends an action to a reacto
 
 * [Counter](https://github.com/perelandrax/ReactorKit/tree/master/sample-counter) : The most simple and basic example of ReactorKit
 * [GitHub Search 🚧](https://github.com/perelandrax/ReactorKit/tree/master/sample-githubsearch) : A simple application which provides a GitHub repository search (Under Construction)
+
+## Installation
+
+ReactorKit officially supports JitPack only.
+
+**JitPack**
+
+Add the JitPack repository and dependency to your build file
+
+```groovy
+allprojects {
+  repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+  }
+}
+```
+
+```groovy
+dependencies {
+  implementation 'com.github.perelandrax:reactorkit:${version}'
+}
+```
+
+## License
+ReactorKit is under MIT license. See the LICENSE for more info.
