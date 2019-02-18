@@ -35,12 +35,14 @@ class CounterReactorTests {
   @Test
   fun testActionIncrease_StateValuePlus1() {
     reactor.action.accept(CounterReactor.Action.Increase)
+    Thread.sleep(1000)
     assertEquals(reactor.currentState.value, 1)
   }
 
   @Test
   fun testActionDecrease_StateValueMinus1() {
     reactor.action.accept(CounterReactor.Action.Decrease)
+    Thread.sleep(1000)
     assertEquals(reactor.currentState.value, -1)
   }
 }
