@@ -6,7 +6,8 @@
 [![](https://jitpack.io/v/perelandrax/reactorkit.svg)](https://jitpack.io/#perelandrax/reactorkit) [![](https://travis-ci.org/perelandrax/ReactorKit.svg?branch=master)](https://travis-ci.org/perelandrax/ReactorKit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-🏠 <b>Port of [ReactorKit](https://github.com/ReactorKit/ReactorKit) to Kotlin, which corresponds to [ReactorKit/1.2.1](https://github.com/ReactorKit/ReactorKit/releases/tag/1.2.1)</b>
+🏠 <b>Port of [ReactorKit](https://github.com/ReactorKit/ReactorKit) to Kotlin, which corresponds to [ReactorKit/1.2.1](https://github.com/ReactorKit/ReactorKit/releases/tag/1.2.1)</b><br>
+😬 <b>Please let me know if you need to fix this document or your license. Thank you, [Suyeol Jeon (devxoul)](https://github.com/devxoul)</b>
 
 ## Getting Started
 
