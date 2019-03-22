@@ -1,4 +1,4 @@
-# ReactorKit
+# ReactorKit (MVI architecture for android)
 
 [![](https://img.shields.io/badge/Kotlin-1.3.21-orange.svg)](https://kotlinlang.org/)
 [![](https://img.shields.io/badge/gradle-3.5.0--alpha04-blue.svg)](https://gradle.org/)
