@@ -19,7 +19,7 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
 
   val state: Observable<State>
     //    get() = if (stub.isEnabled) stub.state else associatedObject(stateKey, createStateStream())
-    get() = associatedObject(stateKey, createStateStream())
+    get() = associatedObject(stateKey) ?: associatedObject(stateKey, createStateStream())
 
   private val disposeBag: DisposeBag
     get() = associatedObject(disposeBagKey, DisposeBag())
