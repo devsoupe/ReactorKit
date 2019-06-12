@@ -61,9 +61,9 @@ class GithubSearchReactor :
     }
   }
 
-  override fun reduce(state: State, mutation: GithubSearchReactor.Mutation): State = when (mutation) {
-    is GithubSearchReactor.Mutation.setQuery -> state.copy(query = mutation.query)
-    is GithubSearchReactor.Mutation.setRepos -> state.copy(repos = mutation.repos, nextPage = mutation.nextPage)
+  override fun reduce(state: State, mutation: Mutation): State = when (mutation) {
+    is Mutation.setQuery -> state.copy(query = mutation.query)
+    is Mutation.setRepos -> state.copy(repos = mutation.repos, nextPage = mutation.nextPage)
     else -> state
   }
 

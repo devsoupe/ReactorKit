@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
 import com.perelandra.reactorkit.ReactorView
+import com.perelandra.reactorkit.extras.bind
 import com.perelandra.reactorkit.extras.disposed
 import com.perelandra.sample.githubsearch.R
 import io.reactivex.functions.Action
@@ -57,38 +58,13 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
         .distinctUntilChanged()
         .filter { it.isNotEmpty() }
         .map { GithubSearchReactor.Action.updateQuery(it.toString()) }
-//      .bind(to = reactor.action)
-//      .subscribeBy(
-//        onNext = {
-//          reactor.action
-//          Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onNext : $it")
-//        },
-//        onError = {
-//          Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onError : $it")
-//        },
-//        onComplete = {
-//          Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onComplete")
-//        }
-//      )
-        .subscribe(reactor.action, Consumer { Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onError : $it") }, Action { Log.i(TAG, "onCreateOptionsMenu : RxSearchView.queryTextChanges : onComplete") })
+        .bind(to = reactor.action)
         .disposed(by = disposeBag)
 
     super.onCreateOptionsMenu(menu, inflater)
   }
 
   override fun bind(reactor: GithubSearchReactor) {
-    // States
-//    reactor.state.map { it.query }
-//      .distinctUntilChanged()
-//      .filter { it.isNotEmpty() }
-//      .subscribe { Log.i(TAG, "bindState :: query : $it") }
-//      .disposed(by = disposeBag)
-
-//    reactor.state.map { it.nextPage }
-//      .distinctUntilChanged()
-//      .subscribe { Log.i(TAG, "bindState :: nextPage : $it") }
-//      .disposed(by = disposeBag)
-
     // States
     reactor.state.map { it.repos }
         .distinctUntilChanged()
