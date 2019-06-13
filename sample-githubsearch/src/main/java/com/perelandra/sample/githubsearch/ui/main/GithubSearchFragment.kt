@@ -13,9 +13,12 @@ import com.perelandra.reactorkit.ReactorView
 import com.perelandra.reactorkit.extras.bind
 import com.perelandra.reactorkit.extras.disposed
 import com.perelandra.sample.githubsearch.R
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_github_search.*
+import java.util.concurrent.TimeUnit
 
 class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
 
@@ -55,7 +58,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
 
     // Actions
     RxSearchView.queryTextChanges(searchView)
-        .distinctUntilChanged()
+        .debounce(300, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
         .filter { it.isNotEmpty() }
         .map { GithubSearchReactor.Action.updateQuery(it.toString()) }
         .bind(to = reactor.action)

@@ -54,7 +54,7 @@ class GithubSearchReactor :
           // 2) call API and set repos
           this.search(action.query, 1, action)
               // cancel previous request when the new `updateQuery` action is fired
-              .takeUntil(this.action.filter { isUpdateQueryAction(action) }.map { client.cancel() })
+              .takeUntil(this.action.filter { isUpdateQueryAction(action) })
               .map { Mutation.setRepos(it.first, it.second) })
 
       else -> Observable.empty()
