@@ -2,12 +2,17 @@ package com.perelandra.sample.githubsearch.client
 
 import io.reactivex.Observable
 import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 import java.net.HttpURLConnection
 
 class GithubSearchClientImpl : GithubSearchClient {
 
-  private val client = OkHttpClient()
+  private val client = OkHttpClient.Builder().apply {
+    val logging = HttpLoggingInterceptor()
+    logging.level = HttpLoggingInterceptor.Level.BODY
+    addInterceptor(logging)
+  }.build()
 
   override fun request(url: String): Observable<String> {
     return Observable.create {
