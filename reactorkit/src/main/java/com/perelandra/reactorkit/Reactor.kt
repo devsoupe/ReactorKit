@@ -33,7 +33,7 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
         }
     val transformedMutation = transformMutation(mutation)
     val state = transformedMutation
-        .scan(initialState) { state, mutate -> reduce(state, mutate) }
+        .scan(initialState) { state, mutate -> reduce(state, mutate).apply { currentState = this } }
         .onErrorResumeNext { _: Throwable -> Observable.empty() }
         .startWith(initialState)
         .observeOn(AndroidSchedulers.mainThread())
