@@ -30,7 +30,7 @@ android {
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-  implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
+  implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01'
 
   implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
   implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
@@ -40,7 +40,7 @@ dependencies {
 
   testImplementation 'junit:junit:4.13-beta-2'
 
-  androidTestImplementation 'androidx.test:runner:1.1.2-alpha01'
-  androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
+  androidTestImplementation 'androidx.test:runner:1.2.0'
+  androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
   implementation 'com.android.support:appcompat-v7:28.0.0'
 }

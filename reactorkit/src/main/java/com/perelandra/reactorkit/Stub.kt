@@ -13,7 +13,13 @@ class Stub<Action, Mutation, State>(reactor: Reactor<Action, Mutation, State>, d
 
   init {
     state.accept(reactor.initialState)
-    state.subscribe { state -> reactor.currentState = state }.disposed(disposeBag)
-    action.subscribe { action -> actions.add(action) }.disposed(disposeBag)
+
+    state.subscribe { state ->
+      reactor.currentState = state
+    }.disposed(disposeBag)
+
+    action.subscribe {
+      action -> actions.add(action)
+    }.disposed(disposeBag)
   }
 }

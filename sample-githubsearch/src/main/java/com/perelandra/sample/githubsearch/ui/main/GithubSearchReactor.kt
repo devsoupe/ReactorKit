@@ -54,16 +54,16 @@ class GithubSearchReactor :
           // 2) call API and set repos
           this.search(action.query, 1, action)
               // cancel previous request when the new `updateQuery` action is fired
-              .takeUntil(this.action.filter { isUpdateQueryAction(action) }.map { client.cancel() })
+              .takeUntil(this.action.filter { isUpdateQueryAction(action) })
               .map { Mutation.setRepos(it.first, it.second) })
 
       else -> Observable.empty()
     }
   }
 
-  override fun reduce(state: State, mutation: GithubSearchReactor.Mutation): State = when (mutation) {
-    is GithubSearchReactor.Mutation.setQuery -> state.copy(query = mutation.query)
-    is GithubSearchReactor.Mutation.setRepos -> state.copy(repos = mutation.repos, nextPage = mutation.nextPage)
+  override fun reduce(state: State, mutation: Mutation): State = when (mutation) {
+    is Mutation.setQuery -> state.copy(query = mutation.query)
+    is Mutation.setRepos -> state.copy(repos = mutation.repos, nextPage = mutation.nextPage)
     else -> state
   }
 
