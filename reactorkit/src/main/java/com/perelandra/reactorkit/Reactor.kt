@@ -8,8 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
 
   val action: ActionSubject<Action>
-    //    get() = if (stub.isEnabled) stub.action else associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
-    get() = associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
+    get() = if (stub.isEnabled) stub.action else associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
 
   var initialState: State
 
@@ -18,8 +17,7 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
     set(value) = this.setAssociatedObject(value, currentStateKey)
 
   val state: Observable<State>
-    //    get() = if (stub.isEnabled) stub.state else associatedObject(stateKey, createStateStream())
-    get() = associatedObject(stateKey) ?: associatedObject(stateKey, createStateStream())
+    get() = if (stub.isEnabled) stub.state else associatedObject(stateKey) ?: associatedObject(stateKey, createStateStream())
 
   private val disposeBag: DisposeBag
     get() = associatedObject(disposeBagKey, DisposeBag())
@@ -67,6 +65,8 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
     private const val stubKey = "stub"
   }
 
-//  val stub: Stub<Action, Mutation, State>
-//    get() = associatedObject(stubKey, Stub())
+  val stub: Stub<Action, Mutation, State>
+    get() = associatedObject(stubKey, Stub(this, disposeBag))
 }
+
+
