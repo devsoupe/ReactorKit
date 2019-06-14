@@ -58,7 +58,7 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
 
     // Actions
     RxSearchView.queryTextChanges(searchView)
-        .debounce(300, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+        .debounce(400, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
         .filter { it.isNotEmpty() }
         .map { GithubSearchReactor.Action.updateQuery(it.toString()) }
         .bind(to = reactor.action)
