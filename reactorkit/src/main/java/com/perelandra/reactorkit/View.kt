@@ -20,8 +20,32 @@ interface View<T : Reactor<*, *, *>> : AssociatedObjectStore {
       bind(value)
     }
 
+  /**
+   * Creates RxKotlin bindings. This method is called each time the `reactor` is assigned.
+   *
+   * Here is a typical implementation example:
+   *
+   * ```
+   * fun bind(reactor: MyReactor) {
+   *   // Action
+   *   RxView.clicks(increaseButton)
+   *     .bind(to = Reactor.Action.Increase)
+   *     .disposed(by = disposeBag)
+   *
+   *   // State
+   *   reactor.state.map { it.count }
+   *     .bind(to = RxTextView.text(countLabel))
+   *     .disposed(by = disposeBag)
+   * }
+   * ```
+   *
+   * - warning: It's not recommended to call this method directly.
+   */
   fun bind(reactor: T)
 
+  /**
+   * Associated Object Keys
+   */
   companion object {
     const val reactorKey = "reactor"
     private const val disposeBagKey = "disposeBag"
