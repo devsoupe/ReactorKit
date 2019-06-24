@@ -1,8 +1,13 @@
 # ReactorKit (MVI architecture for android)
 
-[![](https://img.shields.io/badge/Kotlin-1.3.21-orange.svg)](https://kotlinlang.org/)
-[![](https://img.shields.io/badge/gradle-3.5.0--alpha04-blue.svg)](https://gradle.org/)
+<p align="center">
+  <img alt="flow" src="https://cloud.githubusercontent.com/assets/931655/25277625/6aa05998-26da-11e7-9b85-e48bec938a6e.png">
+</p>
+
+[![](https://img.shields.io/static/v1.svg?label=AndroidStudio&message=3.4.1&color=blueviolet)](https://developer.android.com/studio)
 [![](https://img.shields.io/badge/platform-android-lightgrey.svg)](https://developer.android.com/)
+[![](https://img.shields.io/badge/Kotlin-1.3.10-orange.svg)](https://kotlinlang.org/)
+[![](https://img.shields.io/badge/gradle-3.4.1-blue.svg)](https://gradle.org/)
 [![](https://jitpack.io/v/perelandrax/reactorkit.svg)](https://jitpack.io/#perelandrax/reactorkit) [![](https://travis-ci.org/perelandrax/ReactorKit.svg?branch=master)](https://travis-ci.org/perelandrax/ReactorKit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -70,13 +75,13 @@ When the `reactor` property has changed, `bind(reactor: <T : Reactor<*, *, *>>)`
 ```kotlin
 override fun bind(reactor: ProfileReactor) {
   ...
-  // action (View -> Reactor)
+  // Action (View -> Reactor)
   RxView.clicks(refreshButton)
       .map { ProfileReactor.Action.Refresh }
       .bind(to = reactor.action)
       .disposed(by = disposeBag)
 
-  // state (Reactor -> View)
+  // State (Reactor -> View)
   reactor.state.map { it.name }
       .distinctUntilChanged()
       .bind(to = RxCompoundButton.checked(followButton))
