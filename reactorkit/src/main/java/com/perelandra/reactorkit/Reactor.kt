@@ -18,7 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
 
   private val _action: ActionSubject<Action>
-    get() = if (stub.isEnabled) stub.action else associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
+    get() = if (stub.isEnabled) stub.action else associatedObject(stateKey) ?: associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
 
   private val _state: Observable<State>
     get() = if (stub.isEnabled) stub.state else associatedObject(stateKey) ?: associatedObject(stateKey, createStateStream())
