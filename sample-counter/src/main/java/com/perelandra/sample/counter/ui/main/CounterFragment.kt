@@ -1,6 +1,7 @@
 package com.perelandra.sample.counter.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import com.perelandra.reactorkit.ReactorView
 import com.perelandra.reactorkit.extras.bind
 import com.perelandra.reactorkit.extras.disposed
 import com.perelandra.sample.counter.R
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_counter.*
 
 class CounterFragment : Fragment(), ReactorView<CounterReactor> {
@@ -34,6 +37,8 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
   }
 
   override fun bind(reactor: CounterReactor) {
+    Log.i("SETH_DEBUG", "bind : Thread : ${Thread.currentThread().name}")
+
     // Action
     RxView.clicks(plusButton)
         .map { CounterReactor.Action.Increase }
