@@ -1,6 +1,5 @@
 package com.perelandra.reactorkit
 
-import android.util.Log
 import com.perelandra.reactorkit.extras.DisposeBag
 import com.perelandra.reactorkit.extras.disposed
 import io.reactivex.Observable
@@ -19,10 +18,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
 
   private val _action: ActionSubject<Action>
-    get() = if (stub.isEnabled) stub.action else associatedObject(actionKey) ?: associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
+    get() = if (stub.isEnabled) stub.action else associatedObject(actionKey)
+        ?: associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
 
   private val _state: Observable<State>
-    get() = if (stub.isEnabled) stub.state else associatedObject(stateKey) ?: associatedObject(stateKey, createStateStream())
+    get() = if (stub.isEnabled) stub.state else associatedObject(stateKey)
+        ?: associatedObject(stateKey, createStateStream())
 
   /**
    * The action from the view. Bind user inputs to this subject.

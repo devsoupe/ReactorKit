@@ -1,7 +1,6 @@
 package com.perelandra.sample.githubsearch.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -14,9 +13,6 @@ import com.perelandra.reactorkit.extras.bind
 import com.perelandra.reactorkit.extras.disposed
 import com.perelandra.sample.githubsearch.R
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Action
-import io.reactivex.functions.Consumer
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_github_search.*
 import java.util.concurrent.TimeUnit
 

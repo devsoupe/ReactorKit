@@ -37,4 +37,11 @@ dependencies {
   implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
 
   implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0'
+
+  androidTestImplementation 'androidx.arch.core:core-testing:2.0.1'
+  androidTestImplementation 'androidx.test:runner:1.2.0'
+  androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+  androidTestImplementation 'androidx.test:rules:1.2.0'
+  androidTestImplementation 'androidx.test.ext:truth:1.2.0'
+  androidTestImplementation 'androidx.test.ext:junit:1.1.1'
 }

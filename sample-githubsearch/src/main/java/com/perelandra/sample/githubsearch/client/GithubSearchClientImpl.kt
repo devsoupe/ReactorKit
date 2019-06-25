@@ -2,7 +2,8 @@ package com.perelandra.sample.githubsearch.client
 
 import android.util.Log
 import io.reactivex.Observable
-import okhttp3.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 import java.net.HttpURLConnection
