@@ -1,12 +1,11 @@
 package com.perelandra.sample.counter
 
 import com.perelandra.sample.counter.ui.main.CounterReactor
-import com.perelandra.sample.counter.ui.main.CounterReactor.Action.*
-import io.reactivex.android.plugins.RxAndroidPlugins
-import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.schedulers.Schedulers
+import com.perelandra.sample.counter.ui.main.CounterReactor.Action.Decrease
+import com.perelandra.sample.counter.ui.main.CounterReactor.Action.Increase
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -20,16 +19,17 @@ import kotlin.test.assertEquals
  */
 class CounterReactorTest {
 
+  @get:Rule
+  val schedulersRule = SchedulersRule()
+
   @Before
-  fun setup() {
-    RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
-    RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
+  fun setUp() {
+
   }
 
   @After
-  fun teardown() {
-    RxJavaPlugins.reset()
-    RxAndroidPlugins.reset()
+  fun tearDown() {
+
   }
 
   /**

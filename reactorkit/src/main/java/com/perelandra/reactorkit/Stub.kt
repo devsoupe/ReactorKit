@@ -7,9 +7,9 @@ class Stub<Action, Mutation, State>(reactor: Reactor<Action, Mutation, State>, d
 
   var isEnabled: Boolean = false
 
-  var state: StateRelay<State> = StateRelay.create()
-  var action: ActionSubject<Action> = ActionSubject.create()
-  var actions: MutableList<Action> = mutableListOf()
+  val state: StateRelay<State> = StateRelay.create()
+  val action: ActionSubject<Action> = ActionSubject.create()
+  val actions: MutableList<Action> = mutableListOf()
 
   init {
     state.accept(reactor.initialState)
@@ -18,8 +18,8 @@ class Stub<Action, Mutation, State>(reactor: Reactor<Action, Mutation, State>, d
       reactor.currentState = state
     }.disposed(disposeBag)
 
-    action.subscribe {
-      action -> actions.add(action)
+    action.subscribe { action ->
+      actions.add(action)
     }.disposed(disposeBag)
   }
 }
