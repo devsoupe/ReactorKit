@@ -37,8 +37,6 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
   }
 
   override fun bind(reactor: CounterReactor) {
-    Log.i("SETH_DEBUG", "bind : Thread : ${Thread.currentThread().name}")
-
     // Action
     RxView.clicks(plusButton)
         .map { CounterReactor.Action.Increase }

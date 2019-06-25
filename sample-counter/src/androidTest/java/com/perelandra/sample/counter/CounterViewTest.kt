@@ -123,6 +123,9 @@ class CounterViewTest {
     onView(withId(R.id.valueTextView)).check(matches(withText("1")))
   }
 
+  /**
+   * ProgressBar 테스트는 로딩이 끝나지 않는 문제가 있음. 해결책 찾는 중.
+   */
 //  /**
 //   * State isLoading 값이 true 인 경우 프로그래스바가 보여야 한다.
 //   */
