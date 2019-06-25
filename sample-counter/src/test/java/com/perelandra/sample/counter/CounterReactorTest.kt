@@ -1,8 +1,7 @@
 package com.perelandra.sample.counter
 
 import com.perelandra.sample.counter.ui.main.CounterReactor
-import com.perelandra.sample.counter.ui.main.CounterReactor.Action.Decrease
-import com.perelandra.sample.counter.ui.main.CounterReactor.Action.Increase
+import com.perelandra.sample.counter.ui.main.CounterReactor.Action.*
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
@@ -14,7 +13,7 @@ import kotlin.test.assertEquals
 /**
  * Reactor 테스트
  *
- * 1. Action을 받았을때 원하는 State로 잘 변경되는지
+ * Action을 받았을때 원하는 State로 잘 변경되는지
  *
  */
 class CounterReactorTest {
@@ -31,27 +30,53 @@ class CounterReactorTest {
     RxAndroidPlugins.reset()
   }
 
+  /**
+   * Increase 액션이 발생할 경우 값을 1 증가시킨다.
+   */
   @Test
-  fun testIncrease() {
-    // 1. 리액터를 준비합니다.
+  fun test_ActionIncreaseTrigger_ToStateValue1() {
+    /**
+     * given
+     * 1. 리액터의 State value 값을 0으로 세팅한다.
+     */
     val reactor = CounterReactor()
+    reactor.initialState = CounterReactor.State(value = 0)
 
-    // 2. 리액터에 액션을 전달합니다.
+    /**
+     * when
+     * 2. 리액터에 Action Increase를 전달한다.
+     */
     reactor.action.accept(Increase).apply { Thread.sleep(500) }
 
-    // 3. 리액터의 상태가 변경되는지를 검증합니다.
+    /**
+     * then
+     * 3. 리액터 State의 value 값이 1이 되었는지 검증한다.
+     */
     assertEquals(reactor.currentState.value, 1)
   }
 
+  /**
+   * Decrease 액션이 발생할 경우 값을 1 감소시킨다.
+   */
   @Test
-  fun testDecrease() {
-    // 1. 리액터를 준비합니다.
+  fun test_ActionDecreaseTrigger_ToStateValueMinus1() {
+    /**
+     * given
+     * 1. 리액터의 State value 값을 0으로 세팅한다.
+     */
     val reactor = CounterReactor()
+    reactor.initialState = CounterReactor.State(value = 0)
 
-    // 2. 리액터에 액션을 전달합니다.
+    /**
+     * when
+     * 2. 리액터에 Action Decrease를 전달한다.
+     */
     reactor.action.accept(Decrease).apply { Thread.sleep(500) }
 
-    // 3. 리액터의 상태가 변경되는지를 검증합니다.
+    /**
+     * then
+     * 3. 리액터 State의 value 값이 -1이 되었는지 검증한다.
+     */
     assertEquals(reactor.currentState.value, -1)
   }
 }
