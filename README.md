@@ -193,7 +193,6 @@ Unlike Redux, ReactorKit doesn't define a global app state. It means that you ca
 
 There is no global state in the **Action → Mutation → State** flow. You should use `transformMutation(mutation: Observable<Mutation>)` to transform the global state to a mutation. Let's assume that we have a global `BehaviorSubject` which stores the current authenticated user. If you'd like to emit a `Mutation.setUser(val user: User?)` when the `currentUser` is changed, you can do as following:
 
-
 ```kotlin
 var currentUser: BehaviorSubject<User> // global state
 
@@ -210,7 +209,81 @@ Then the mutation will be emitted each time the view sends an action to a reacto
 
 ### Testing
 
-* TBD
+ReactorKit has a built-in functionality for a testing. You'll be able to easily test both a view and a reactor with a following instruction.
+
+#### What to test
+
+First of all, you have to decide what to test. There are two things to test: a view and a reactor.
+
+* View
+  * Action: is a proper action sent to a reactor with a given user interaction?
+  * State: is a view property set properly with a following state?
+* Reactor
+  * State: is a state changed properly with an action?
+
+#### View testing
+
+A view can be tested with a *stub* reactor. A reactor has a property `stub` which can log actions and force change states. If a reactor's stub is enabled, both `mutate()` and `reduce()` are not executed. A stub has these properties:
+
+```kotlin
+var isEnabled: Bool { get set }
+var state: StateRelay<Reactor.State> { get }
+var action: ActionSubject<Reactor.Action> { get }
+var actions: [Reactor.Action] { get } // recorded actions
+```
+
+Here are some example test cases:
+
+```kotlin
+func testAction_refresh() {
+  // 1. prepare a stub reactor
+  val reactor = MyReactor().apply { stub.isEnabled = true }
+
+  // 2. prepare a view with a stub reactor
+  val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as MyFragment
+  InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
+
+  // 3. send an user interaction programatically (with ui test framework espresso)
+  onView(withId(R.id.refreshControl)).perform(click())
+
+  // 4. assert actions
+  assertEquals(reactor.stub.actions.last(), Refresh)
+}
+
+func testState_isLoading() {
+  // 1. prepare a stub reactor
+  val reactor = MyReactor().apply { stub.isEnabled = true }
+
+  // 2. prepare a view with a stub reactor
+  val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as MyFragment
+  InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
+
+  // 3. set a stub state
+  reactor.stub.state.accept(MyReactor.State(isLoading = true))
+
+  // 4. assert view properties (with ui test framework espresso)
+  onView(withId(R.id.activityIndicator)).check(matches(isDisplayed()))
+}
+```
+
+#### Reactor testing
+
+A reactor can be tested independently.
+
+```kotlin
+func testIsBookmarked() {
+  val reactor = MyReactor()
+  reactor.initialState = MyReactor.State(value = 0)
+
+  reactor.action.accept(ToggleBookmarked)  
+  assertEquals(reactor.currentState.isBookmarked, true)
+
+  reactor.action.accept(ToggleBookmarked)  
+  assertEquals(reactor.currentState.isBookmarked, false)
+}
+```
+
+Sometimes a state is changed more than one time for a single action. For example, a `Refresh` action sets `state.isLoading` to `true` at first and sets to `false` after the refreshing.
 
 ## Examples
 
