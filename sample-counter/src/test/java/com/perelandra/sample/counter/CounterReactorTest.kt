@@ -32,53 +32,37 @@ class CounterReactorTest {
 
   }
 
-  /**
-   * Increase 액션이 발생할 경우 값을 1 증가시킨다.
-   */
+  // Increase 액션이 발생할 경우 값을 1 증가시킨다.
   @Test
   fun testValue_plus1() {
-    /**
-     * given
-     * 리액터의 State value 값을 0으로 세팅한다.
-     */
+    // given
+    // 리액터의 State value 값을 0으로 세팅한다.
     val reactor = CounterReactor()
     reactor.initialState = CounterReactor.State(value = 0)
 
-    /**
-     * when
-     * 리액터에 Action Increase를 전달한다.
-     */
+    // when
+    // 리액터에 Action Increase를 전달한다.
     reactor.action.accept(Increase).apply { Thread.sleep(500) }
 
-    /**
-     * then
-     * 리액터 State의 value 값이 1이 되었는지 검증한다.
-     */
+    // then
+    //리액터 State의 value 값이 1이 되었는지 검증한다.
     assertEquals(reactor.currentState.value, 1)
   }
 
-  /**
-   * Decrease 액션이 발생할 경우 값을 1 감소시킨다.
-   */
+  // Decrease 액션이 발생할 경우 값을 1 감소시킨다.
   @Test
   fun testValue_minus1() {
-    /**
-     * given
-     * 리액터의 State value 값을 0으로 세팅한다.
-     */
+    // given
+    // 리액터의 State value 값을 0으로 세팅한다.
     val reactor = CounterReactor()
     reactor.initialState = CounterReactor.State(value = 0)
 
-    /**
-     * when
-     * 리액터에 Action Decrease를 전달한다.
-     */
+    // when
+    // 리액터에 Action Decrease를 전달한다.
     reactor.action.accept(Decrease).apply { Thread.sleep(500) }
 
-    /**
-     * then
-     * 리액터 State의 value 값이 -1이 되었는지 검증한다.
-     */
+    // then
+    // 리액터 State의 value 값이 -1이 되었는지 검증한다.
     assertEquals(reactor.currentState.value, -1)
   }
 }

@@ -45,136 +45,93 @@ class CounterViewTest {
 
   }
 
-  /**
-   * 플러스 버튼을 누른경우 Increase Action이 전달되어야 한다.
-   */
+  // 플러스 버튼을 누른경우 Increase Action이 전달되어야 한다.
   @Test
   fun testAction_increase() {
-    /**
-     * given
-     * Stub 리액터를 준비하고 뷰에 주입한다.
-     */
+    // given
+    // Stub 리액터를 준비하고 뷰에 주입한다.
     val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
     InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
 
-    /**
-     * when
-     * 플러스 버튼을 누른다.
-     */
+    // when
+    // 플러스 버튼을 누른다.
     onView(withId(R.id.plusButton)).perform(click())
 
-    /**
-     * then
-     * 리액터에 Action Increase가 잘 전달되었는지 확인한다.
-     */
+    // then
+    // 리액터에 Action Increase가 잘 전달되었는지 확인한다.
     assertEquals(reactor.stub.actions.last(), Increase)
   }
 
-  /**
-   * 마이너스 버튼을 누른경우 Decrease Action이 전달되어야 한다.
-   */
+  // 마이너스 버튼을 누른경우 Decrease Action이 전달되어야 한다.
   @Test
   fun testAction_decrease() {
-    /**
-     * given
-     * Stub 리액터를 준비하고 뷰에 주입한다.
-     */
+    // given
+    // Stub 리액터를 준비하고 뷰에 주입한다.
     val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
     InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
 
-    /**
-     * when
-     * 마이너스 버튼을 누른다.
-     */
+    // when
+    // 마이너스 버튼을 누른다.
     onView(withId(R.id.minusButton)).perform(click())
 
-    /**
-     * then
-     * 리액터에 Action Increase가 잘 전달되었는지 확인한다.
-     */
+    // then
+    // 리액터에 Action Increase가 잘 전달되었는지 확인한다.
     assertEquals(reactor.stub.actions.last(), Decrease)
   }
 
-  /**
-   * State value 값이 1로 변경된 경우 화면값이 1로 변경되어야 한다.
-   */
+  // State value 값이 1로 변경된 경우 화면값이 1로 변경되어야 한다.
   @Test
   fun testState_value() {
-    /**
-     * given
-     * Stub 리액터를 준비하고 뷰에 주입한다.
-     */
+    // given
+    // Stub 리액터를 준비하고 뷰에 주입한다.
     val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
     InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
 
-    /**
-     * when
-     * 플러스 버튼을 누른다.
-     */
+    // when
+    // 플러스 버튼을 누른다.
     reactor.stub.state.accept(CounterReactor.State(value = 1))
 
-    /**
-     * then
-     * 리액터에 Action Increase가 잘 전달되었는지 확인한다.
-     */
+    // then
+    // 리액터에 Action Increase가 잘 전달되었는지 확인한다.
     onView(withId(R.id.valueTextView)).check(matches(withText("1")))
   }
 
-  /**
-   * ProgressBar 테스트는 로딩이 끝나지 않는 문제가 있음. 해결책 찾는 중.
-   */
-//  /**
-//   * State isLoading 값이 true 인 경우 프로그래스바가 보여야 한다.
-//   */
+//  // State isLoading 값이 true 인 경우 프로그래스바가 보여야 한다.
 //  @Test
 //  fun testState_isLoading_visible() {
-//    /**
-//     * given
-//     * Stub 리액터를 준비하고 뷰에 주입한다.
-//     */
+//    // given
+//    // Stub 리액터를 준비하고 뷰에 주입한다.
 //    val reactor = CounterReactor().apply { stub.isEnabled = true }
 //    val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
 //    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
 //
-//    /**
-//     * when
-//     * 리액터 State의 isLoading 상태를 true로 변경한다.
-//     */
+//    // when
+//    // 리액터 State의 isLoading 상태를 true로 변경한다.
 //    reactor.stub.state.accept(CounterReactor.State(isLoading = true))
 //
-//    /**
-//     * then
-//     * 프로그래스바 상태가 Visible 인지 확인한다.
-//     */
+//    // then
+//    // 프로그래스바 상태가 Visible 인지 확인한다.
 //    onView(withId(R.id.progressBar)).check(matches(isDisplayed()))
 //  }
 //
-//  /**
-//   * State isLoading 값이 false 인 경우 프로그래스바가 보이지 않아야 한다.
-//   */
+//  // State isLoading 값이 false 인 경우 프로그래스바가 보이지 않아야 한다.
 //  @Test
 //  fun testState_isLoading_gone() {
-//    /**
-//     * given
-//     * Stub 리액터를 준비하고 뷰에 주입한다.
-//     */
+//    // given
+//    // Stub 리액터를 준비하고 뷰에 주입한다.
 //    val reactor = CounterReactor().apply { stub.isEnabled = true }
 //    val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
 //    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
 //
-//    /**
-//     * when
-//     * 리액터 State의 isLoading 상태를 false로 변경한다.
-//     */
+//    // when
+//    // 리액터 State의 isLoading 상태를 false로 변경한다.
 //    reactor.stub.state.accept(CounterReactor.State(isLoading = false))
 //
-//    /**
-//     * then
-//     * 프로그래스바 상태가 Gone 인지 확인한다.
-//     */
+//    // then
+//    // 프로그래스바 상태가 Gone 인지 확인한다.
 //    onView(withId(R.id.progressBar)).check(matches(isDisplayed()))
 //  }
 }
