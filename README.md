@@ -227,9 +227,9 @@ A view can be tested with a *stub* reactor. A reactor has a property `stub` whic
 
 ```kotlin
 var isEnabled: Bool { get set }
-var state: StateRelay<Reactor.State> { get }
-var action: ActionSubject<Reactor.Action> { get }
-var actions: [Reactor.Action] { get } // recorded actions
+val state: StateRelay<Reactor.State> { get }
+val action: ActionSubject<Reactor.Action> { get }
+val actions: MutableList<Action> { get } // recorded actions
 ```
 
 Here are some example test cases:
