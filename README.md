@@ -1,4 +1,4 @@
-# ReactorKit (MVI architecture for android)
+# ReactorKit (Flux and Reactive Programming Architecture for Android)
 
 <p align="center">
   <img alt="flow" src="https://cloud.githubusercontent.com/assets/931655/25277625/6aa05998-26da-11e7-9b85-e48bec938a6e.png">
@@ -235,7 +235,7 @@ val actions: MutableList<Action> { get } // recorded actions
 Here are some example test cases:
 
 ```kotlin
-func testAction_refresh() {
+fun testAction_refresh() {
   // 1. prepare a stub reactor
   val reactor = MyReactor().apply { stub.isEnabled = true }
 
@@ -250,7 +250,7 @@ func testAction_refresh() {
   assertEquals(reactor.stub.actions.last(), Refresh)
 }
 
-func testState_isLoading() {
+fun testState_isLoading() {
   // 1. prepare a stub reactor
   val reactor = MyReactor().apply { stub.isEnabled = true }
 
@@ -271,7 +271,7 @@ func testState_isLoading() {
 A reactor can be tested independently.
 
 ```kotlin
-func testIsBookmarked() {
+fun testIsBookmarked() {
   val reactor = MyReactor()
   reactor.initialState = MyReactor.State(value = 0)
 
