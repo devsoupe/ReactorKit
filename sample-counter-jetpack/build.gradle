@@ -11,7 +11,7 @@ android {
   buildToolsVersion '28.0.3'
 
   defaultConfig {
-    applicationId "com.perelandra.sample.counter"
+    applicationId "com.perelandra.sample.counter.jetpack"
     minSdkVersion 15
     targetSdkVersion 28
     versionCode 1
@@ -25,10 +25,6 @@ android {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
-  }
-
-  testOptions {
-    animationsDisabled = true
   }
 }
 

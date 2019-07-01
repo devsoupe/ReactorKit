@@ -1,4 +1,4 @@
-package com.perelandra.sample.counter
+package com.perelandra.sample.counter.jetpack
 
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
@@ -10,10 +10,11 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import com.perelandra.sample.counter.ui.main.CounterFragment
-import com.perelandra.sample.counter.ui.main.CounterReactor
-import com.perelandra.sample.counter.ui.main.CounterReactor.Action.Decrease
-import com.perelandra.sample.counter.ui.main.CounterReactor.Action.Increase
+import com.perelandra.reactorkit.extras.of
+import com.perelandra.sample.counter.jetpack.ui.main.CounterFragment
+import com.perelandra.sample.counter.jetpack.ui.main.CounterReactor
+import com.perelandra.sample.counter.jetpack.ui.main.CounterReactor.Action.Decrease
+import com.perelandra.sample.counter.jetpack.ui.main.CounterReactor.Action.Increase
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -85,12 +86,12 @@ class CounterViewTest {
   @Test
   fun givenReactorStub_whenStateValue1_thenShouldViewValuePlus1() {
     // Stub 리액터를 준비하고 뷰에 주입한다.
-    val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
+    val reactor = CounterReactor().apply { stub.isEnabled = true }
     InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
 
     // State count 값을 1로 변경한다.
-    reactor.stub.state.accept(CounterReactor.State(count = 1))
+    reactor.stub.state.value?.count?.postValue(1)
 
     // 뷰의 Value Text 값이 1로 변경되는지 확인한다.
     onView(withId(R.id.valueTextView)).check(matches(withText("1")))
@@ -102,12 +103,12 @@ class CounterViewTest {
   @Test
   fun givenReactorStub_whenStateValue1_thenShouldViewValueMinus1() {
     // Stub 리액터를 준비하고 뷰에 주입한다.
-    val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
+    val reactor = CounterReactor().apply { stub.isEnabled = true }
     InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
 
     // State count 값을 -1로 변경한다.
-    reactor.stub.state.accept(CounterReactor.State(count = -1))
+    reactor.stub.state.value?.count?.postValue(-1)
 
     // 뷰의 Value Text 값이 -1로 변경되는지 확인한다.
     onView(withId(R.id.valueTextView)).check(matches(withText("-1")))
@@ -119,8 +120,8 @@ class CounterViewTest {
   @Test
   fun givenReactorStub_whenStateIsLoadingTrue_thenShouldViewProgressBarVisible() {
     // Stub 리액터를 준비하고 뷰에 주입한다.
-    val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
+    val reactor = CounterReactor().apply { stub.isEnabled = true }
     InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
 
     // Espresso에서 ProgressBar 테스트를 위해 indeterminateDrawable의 에니메이션을 없앤다.
@@ -128,7 +129,7 @@ class CounterViewTest {
     (activityRule.activity.findViewById(R.id.progressBar) as ProgressBar).indeterminateDrawable = notAnimatedDrawable
 
     // 리액터 State의 isLoading 상태를 true로 변경한다.
-    reactor.stub.state.accept(CounterReactor.State(isLoading = true))
+    reactor.stub.state.value?.isLoading?.postValue(true)
 
     // 프로그래스바 상태가 Visible 인지 확인한다.
     onView(withId(R.id.progressBar)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
@@ -140,8 +141,8 @@ class CounterViewTest {
   @Test
   fun givenReactorStub_whenStateIsLoadingFalse_thenShouldViewProgressBarGone() {
     // Stub 리액터를 준비하고 뷰에 주입한다.
-    val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
+    val reactor = CounterReactor().apply { stub.isEnabled = true }
     InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
 
     // Espresso에서 ProgressBar 테스트를 위해 indeterminateDrawable의 에니메이션을 없앤다.
@@ -149,7 +150,7 @@ class CounterViewTest {
     (activityRule.activity.findViewById(R.id.progressBar) as ProgressBar).indeterminateDrawable = notAnimatedDrawable
 
     // 리액터 State의 isLoading 상태를 false로 변경한다.
-    reactor.stub.state.accept(CounterReactor.State(isLoading = false))
+    reactor.stub.state.value?.isLoading?.postValue(false)
 
     // 프로그래스바 상태가 Visible 인지 확인한다.
     onView(withId(R.id.progressBar)).check(matches(withEffectiveVisibility(Visibility.GONE)))
