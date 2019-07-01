@@ -1,17 +1,18 @@
-package com.perelandra.sample.counter.ui.main
+package com.perelandra.sample.counter.jetpack.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
-import com.jakewharton.rxbinding2.widget.RxTextView
 import com.perelandra.reactorkit.ReactorView
 import com.perelandra.reactorkit.extras.bind
 import com.perelandra.reactorkit.extras.disposed
-import com.perelandra.sample.counter.R
-import com.perelandra.sample.counter.ui.main.CounterReactor.Action.*
+import com.perelandra.reactorkit.extras.of
+import com.perelandra.sample.counter.jetpack.R
+import com.perelandra.sample.counter.jetpack.ui.main.CounterReactor.Action.*
 import kotlinx.android.synthetic.main.fragment_counter.*
 
 class CounterFragment : Fragment(), ReactorView<CounterReactor> {
@@ -25,7 +26,7 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    createReactor(CounterReactor())
+    createReactor(CounterReactor().of(this))
   }
 
   override fun onDestroyView() {
@@ -46,15 +47,16 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
         .disposed(by = disposeBag)
 
     // State
-    reactor.state.map { it.count }
-        .distinctUntilChanged()
-        .map { "$it" }
-        .bind(to = RxTextView.text(valueTextView))
-        .disposed(by = disposeBag)
+    reactor.state.take(1)
+        .subscribe { state ->
+          state.count.observe(this, Observer { value ->
+            valueTextView.text = "$value"
+          })
 
-    reactor.state.map { it.isLoading }
-        .distinctUntilChanged()
-        .bind(to = RxView.visibility(progressBar, View.GONE))
+          state.isLoading.observe(this, Observer { isLoading ->
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+          })
+        }
         .disposed(by = disposeBag)
   }
 }

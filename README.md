@@ -70,6 +70,24 @@ class ProfileFragment : Fragment(), ReactorView<ProfileReactor> {
 }
 ```
 
+* ##### Jetpack Style (ViewModel + LiveData)
+
+```kotlin
+class ProfileFragment : Fragment(), ReactorView<ProfileReactor> {
+  ...
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    createReactor(CounterReactor().of(this)) // inject reactor
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    destroyReactor()
+  }
+  ...  
+}
+```
+
 When the `reactor` property has changed, `bind(reactor: <T : Reactor<*, *, *>>)` gets called. Implement this method to define the bindings of an action stream and a state stream.
 
 ```kotlin
@@ -82,10 +100,33 @@ override fun bind(reactor: ProfileReactor) {
       .disposed(by = disposeBag)
 
   // State (Reactor -> View)
-  reactor.state.map { it.name }
+  reactor.state.map { it.isFollowing }
       .distinctUntilChanged()
       .bind(to = RxCompoundButton.checked(followButton))
       .disposed(by = disposeBag)
+  ...
+}
+```
+
+* ##### Jetpack Style (ViewModel + LiveData)
+
+```kotlin
+override fun bind(reactor: ProfileReactor) {
+  ...
+  // Action (View -> Reactor)
+  RxView.clicks(refreshButton)
+      .map { ProfileReactor.Action.Refresh }
+      .bind(to = reactor.action)
+      .disposed(by = disposeBag)
+
+  // State (Reactor -> View)
+    reactor.state.take(1)
+        .subscribe { state ->
+          state.count.observe(this, Observer { isFollowing ->
+            followButton.checked = isFollowing
+          })
+        }
+        .disposed(by = disposeBag)
   ...
 }
 ```
@@ -114,10 +155,36 @@ class ProfileReactor
   }
 
   // represents the current view state
-  @Parcelize
   data class State(
       val isFollowing: Boolean = false
-  ) : Parcelable
+  )
+  ...
+}
+```
+
+* ##### Jetpack Style (ViewModel + LiveData)
+
+```kotlin
+class ProfileReactor
+  : Reactor<ProfileReactor.Action, ProfileReactor.Mutation, ProfileReactor.State> {
+  ...
+  override var initialState: State = State()
+    
+  // represent user actions
+  sealed class Action {
+    data class RefreshFollowingStatus(val userId: Int) : Action()
+    data class Follow(val userId: Int) : Action()
+  }
+
+  // represent state changes
+  sealed class Mutation {
+    data class SetFollowing(val isFollowing: Boolean) : Mutation()
+  }
+
+  // represents the current view state
+  data class State(
+      val isFollowing: MutableLiveData<Boolean> = MutableLiveData(false)
+  )
   ...
 }
 ```
@@ -162,6 +229,14 @@ This method is a pure function. It should just return a new `State` synchronousl
 ```kotlin
 override fun reduce(state: State, mutation: Mutation): State = when (mutation) {
   is Mutation.SetFollowing(isFollowing) -> state.copy(isFollowing = mutation.isFollowing) // manipulate the state, creating a new state
+}
+```
+
+* ##### Jetpack Style (ViewModel + LiveData)
+
+```kotlin
+override fun reduce(state: State, mutation: Mutation): State = when (mutation) {
+  is Mutation.SetFollowing(isFollowing) -> state.apply { isFollowing.value = mutation.isFollowing } // manipulate the state, creating a new state
 }
 ```
 

@@ -36,14 +36,13 @@ class GithubSearchReactor :
     data class setLoadingNextPage(val isLoadingNextPage: Boolean) : Mutation()
   }
 
-  @Parcelize
   data class State(
       val name: String = TAG,
       val query: String = "",
       val repos: List<String> = emptyList(),
       val nextPage: Int = 0,
       val isLoadingNextPage: Boolean = false
-  ) : Parcelable
+  )
 
   override fun mutate(action: Action): Observable<Mutation> {
     return when (action) {

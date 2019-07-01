@@ -1,12 +1,13 @@
-package com.perelandra.sample.counter.ui.main
+package com.perelandra.sample.counter.jetpack.ui.main
 
-import com.perelandra.reactorkit.Reactor
+import androidx.lifecycle.MutableLiveData
+import com.perelandra.reactorkit.aac.ReactorViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
 class CounterReactor
-  : Reactor<CounterReactor.Action, CounterReactor.Mutation, CounterReactor.State> {
+  : ReactorViewModel<CounterReactor.Action, CounterReactor.Mutation, CounterReactor.State>() {
 
   companion object {
     private val TAG = CounterReactor::class.java.simpleName
@@ -26,8 +27,8 @@ class CounterReactor
   }
 
   data class State(
-      val count: Int = 0,
-      val isLoading: Boolean = false
+      val count: MutableLiveData<Int> = MutableLiveData(0),
+      val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
   )
 
   override fun mutate(action: Action): Observable<Mutation> = when (action) {
@@ -43,8 +44,8 @@ class CounterReactor
   }
 
   override fun reduce(state: State, mutation: Mutation): State = when (mutation) {
-    is Mutation.IncreaseValue -> state.copy(count = state.count.inc())
-    is Mutation.DecreaseValue -> state.copy(count = state.count.dec())
-    is Mutation.SetLoading -> state.copy(isLoading = mutation.isLoading)
+    is Mutation.IncreaseValue -> state.apply { count.value = count.value?.let { it + 1 } }
+    is Mutation.DecreaseValue -> state.apply { count.value = count.value?.let { it - 1 } }
+    is Mutation.SetLoading -> state.apply { isLoading.value = mutation.isLoading }
   }
 }
