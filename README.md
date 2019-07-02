@@ -166,7 +166,7 @@ class ProfileReactor
 
 ```kotlin
 class ProfileReactor
-  : Reactor<ProfileReactor.Action, ProfileReactor.Mutation, ProfileReactor.State> {
+  : ReactorViewModel<ProfileReactor.Action, ProfileReactor.Mutation, ProfileReactor.State>() {
   ...
   override var initialState: State = State()
     
@@ -236,7 +236,7 @@ override fun reduce(state: State, mutation: Mutation): State = when (mutation) {
 
 ```kotlin
 override fun reduce(state: State, mutation: Mutation): State = when (mutation) {
-  is Mutation.SetFollowing(isFollowing) -> state.apply { isFollowing.value = mutation.isFollowing } // manipulate the state, creating a new state
+  is Mutation.SetFollowing(isFollowing) -> state.apply { isFollowing.value = mutation.isFollowing } // manipulate the state, applying a new state
 }
 ```
 
