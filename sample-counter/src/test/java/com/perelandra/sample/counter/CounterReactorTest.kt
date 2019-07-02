@@ -41,7 +41,7 @@ class CounterReactorTest {
    * Increase 액션이 발생할 경우 값을 1 증가시킨다.
    */
   @Test
-  fun givenStateValue0_whenActionIncrease_thenShouldStateValuePlus1() {
+  fun testState_givenStateValue0_whenActionIncrease_thenShouldStateValuePlus1() {
     // 리액터를 초기값(State count 0)으로 생성한다.
     val reactor = CounterReactor()
     reactor.initialState = CounterReactor.State(count = 0)
@@ -57,7 +57,7 @@ class CounterReactorTest {
    * Decrease 액션이 발생할 경우 값을 1 감소시킨다.
    */
   @Test
-  fun givenStateValue0_whenActionDecrease_thenShouldStateValueMinus1() {
+  fun testState_givenStateValue0_whenActionDecrease_thenShouldStateValueMinus1() {
     // 리액터를 초기값(State Value 0)으로 생성한다.
     val reactor = CounterReactor()
     reactor.initialState = CounterReactor.State(count = 0)

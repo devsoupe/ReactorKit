@@ -49,7 +49,7 @@ class CounterViewTest {
    * 플러스 버튼을 누른경우 Increase Action이 전달되어야 한다.
    */
   @Test
-  fun givenReactorStub_whenPerformClickPlusButton_thenShouldActionsLastIncrease() {
+  fun testAction_givenReactorStub_whenPerformClickPlusButton_thenShouldActionsLastIncrease() {
     // Stub 리액터를 준비하고 뷰에 주입한다.
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
     val reactor = CounterReactor().apply { stub.isEnabled = true }
@@ -66,7 +66,7 @@ class CounterViewTest {
    * 마이너스 버튼을 누른경우 Decrease Action이 전달되어야 한다.
    */
   @Test
-  fun givenReactorStub_whenPerformClickMinusButton_thenShouldActionsLastDecrease() {
+  fun testAction_givenReactorStub_whenPerformClickMinusButton_thenShouldActionsLastDecrease() {
     // Stub 리액터를 준비하고 뷰에 주입한다.
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
     val reactor = CounterReactor().apply { stub.isEnabled = true }
@@ -83,7 +83,7 @@ class CounterViewTest {
    * State count 값이 1로 변경된 경우 화면값이 1로 변경되어야 한다.
    */
   @Test
-  fun givenReactorStub_whenStateValue1_thenShouldViewValuePlus1() {
+  fun testView_givenReactorStub_whenStateValue1_thenShouldViewValuePlus1() {
     // Stub 리액터를 준비하고 뷰에 주입한다.
     val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
@@ -100,7 +100,7 @@ class CounterViewTest {
    * State count 값이 -1로 변경된 경우 화면값이 -1로 변경되어야 한다.
    */
   @Test
-  fun givenReactorStub_whenStateValue1_thenShouldViewValueMinus1() {
+  fun testView_givenReactorStub_whenStateValue1_thenShouldViewValueMinus1() {
     // Stub 리액터를 준비하고 뷰에 주입한다.
     val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
@@ -117,7 +117,7 @@ class CounterViewTest {
    * State isLoading 값이 true인 경우 프로그래스바가 보여야 한다.
    */
   @Test
-  fun givenReactorStub_whenStateIsLoadingTrue_thenShouldViewProgressBarVisible() {
+  fun testView_givenReactorStub_whenStateIsLoadingTrue_thenShouldViewProgressBarVisible() {
     // Stub 리액터를 준비하고 뷰에 주입한다.
     val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
@@ -138,7 +138,7 @@ class CounterViewTest {
    * State isLoading 값이 false인 경우 프로그래스바가 보이지 않아야 한다.
    */
   @Test
-  fun givenReactorStub_whenStateIsLoadingFalse_thenShouldViewProgressBarGone() {
+  fun testView_givenReactorStub_whenStateIsLoadingFalse_thenShouldViewProgressBarGone() {
     // Stub 리액터를 준비하고 뷰에 주입한다.
     val reactor = CounterReactor().apply { stub.isEnabled = true }
     val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
