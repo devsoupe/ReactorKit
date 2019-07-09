@@ -4,11 +4,12 @@
   <img alt="flow" src="https://cloud.githubusercontent.com/assets/931655/25277625/6aa05998-26da-11e7-9b85-e48bec938a6e.png">
 </p>
 
-[![](https://img.shields.io/static/v1.svg?label=AndroidStudio&message=3.4.1&color=blueviolet)](https://developer.android.com/studio)
-[![](https://img.shields.io/badge/platform-android-lightgrey.svg)](https://developer.android.com/)
-[![](https://img.shields.io/badge/Kotlin-1.3.10-orange.svg)](https://kotlinlang.org/)
-[![](https://img.shields.io/badge/gradle-3.4.1-blue.svg)](https://gradle.org/)
-[![](https://jitpack.io/v/perelandrax/reactorkit.svg)](https://jitpack.io/#perelandrax/reactorkit) [![](https://travis-ci.org/perelandrax/ReactorKit.svg?branch=master)](https://travis-ci.org/perelandrax/ReactorKit)
+[![ref](https://img.shields.io/static/v1.svg?label=AndroidStudio&message=3.4.1&color=blueviolet)](https://developer.android.com/studio)
+[![ref](https://img.shields.io/badge/platform-android-lightgrey.svg)](https://developer.android.com/)
+[![ref](https://img.shields.io/badge/Kotlin-1.3.10-orange.svg)](https://kotlinlang.org/)
+[![ref](https://img.shields.io/badge/gradle-3.4.1-blue.svg)](https://gradle.org/)
+[![ref](https://jitpack.io/v/perelandrax/reactorkit.svg)](https://jitpack.io/#perelandrax/reactorkit)
+[![ref](https://travis-ci.org/perelandrax/ReactorKit.svg?branch=master)](https://travis-ci.org/perelandrax/ReactorKit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 🏠 <b>Port of [ReactorKit](https://github.com/ReactorKit/ReactorKit) to Kotlin, which corresponds to [ReactorKit/1.2.1](https://github.com/ReactorKit/ReactorKit/releases/tag/1.2.1)</b><br>
@@ -18,18 +19,18 @@
 
 <b>Please refer to original ReactorKit's</b> : [ReactorKit Documentation](https://github.com/ReactorKit/ReactorKit/blob/master/README.md) that describes the core components of apps built with ReactorKit. To get an understanding of the core principles we recommend reading the brilliant flux and reactive programming documentation.
 
-ReactorKit is a framework for a reactive and unidirectional Kotlin application architecture. This repository introduces the basic concept of ReactorKit and describes how to build an application using ReactorKit. You may want to see the Examples section first if you'd like to see the actual code. 
+ReactorKit is a framework for a reactive and unidirectional Kotlin application architecture. This repository introduces the basic concept of ReactorKit and describes how to build an application using ReactorKit. You may want to see the Examples section first if you'd like to see the actual code.
 
 ## Table of Contents
 
 * [Basic Concept](#basic-concept)
-    * [Design Goal](#design-goal)
-    * [View](#view)
-    * [Reactor](#reactor)
+  * [Design Goal](#design-goal)
+  * [View](#view)
+  * [Reactor](#reactor)
 * [Advanced](#advanced)
-    * [Global States](#global-states)
-    * [View Communication](#view-communication)
-    * [Testing](#testing)
+  * [Global States](#global-states)
+  * [View Communication](#view-communication)
+  * [Testing](#testing)
 * [Examples](#examples)
 * [Installation](#installation)
 * [License](#license)
