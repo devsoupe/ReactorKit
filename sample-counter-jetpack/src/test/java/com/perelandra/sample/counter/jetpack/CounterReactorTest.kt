@@ -33,9 +33,12 @@ class CounterReactorTest {
   @get:Rule
   val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+  private lateinit var reactor: CounterReactor
+
   @Before
   fun setUp() {
-
+    // 리액터를 초기값(State count 0)으로 생성한다.
+    reactor = CounterReactor().apply { currentState.count.testObserver() }
   }
 
   @After
@@ -48,9 +51,6 @@ class CounterReactorTest {
    */
   @Test
   fun testState_givenStateValue0_whenActionIncrease_thenShouldStateValuePlus1() {
-    // 리액터를 초기값(State count 0)으로 생성한다.
-    val reactor = CounterReactor().apply { currentState.count.testObserver() }
-
     // 리액터에 Action Increase를 전달한다.
     reactor.action.accept(Increase).apply { Thread.sleep(500) }
 
@@ -63,9 +63,6 @@ class CounterReactorTest {
    */
   @Test
   fun testState_givenStateValue0_whenActionDecrease_thenShouldStateValueMinus1() {
-    // 리액터를 초기값(State Value 0)으로 생성한다.
-    val reactor = CounterReactor().apply { currentState.count.testObserver() }
-
     // 리액터에 Action Decrease를 전달한다.
     reactor.action.accept(Decrease).apply { Thread.sleep(500) }
 
