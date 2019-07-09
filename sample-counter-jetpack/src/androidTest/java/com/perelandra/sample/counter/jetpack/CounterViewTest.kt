@@ -36,9 +36,17 @@ class CounterViewTest {
   @get:Rule
   val activityRule = ActivityTestRule(CounterActivity::class.java)
 
+  private lateinit var fragment: CounterFragment
+  private lateinit var reactor: CounterReactor
+
   @Before
   fun setUp() {
     ActivityScenario.launch(CounterActivity::class.java)
+
+    // Stub 리액터를 준비하고 뷰에 주입한다.
+    fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
+    reactor = CounterReactor().apply { stub.isEnabled = true }
+    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
   }
 
   @After
@@ -51,11 +59,6 @@ class CounterViewTest {
    */
   @Test
   fun testAction_givenReactorStub_whenPerformClickPlusButton_thenShouldActionsLastIncrease() {
-    // Stub 리액터를 준비하고 뷰에 주입한다.
-    val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
-    val reactor = CounterReactor().apply { stub.isEnabled = true }
-    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
-
     // 플러스 버튼을 누른다.
     onView(withId(R.id.plusButton)).perform(click())
 
@@ -68,11 +71,6 @@ class CounterViewTest {
    */
   @Test
   fun testAction_givenReactorStub_whenPerformClickMinusButton_thenShouldActionsLastDecrease() {
-    // Stub 리액터를 준비하고 뷰에 주입한다.
-    val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
-    val reactor = CounterReactor().apply { stub.isEnabled = true }
-    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
-
     // 마이너스 버튼을 누른다.
     onView(withId(R.id.minusButton)).perform(click())
 
@@ -85,11 +83,6 @@ class CounterViewTest {
    */
   @Test
   fun testView_givenReactorStub_whenStateValue1_thenShouldViewValuePlus1() {
-    // Stub 리액터를 준비하고 뷰에 주입한다.
-    val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
-    val reactor = CounterReactor().apply { stub.isEnabled = true }
-    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
-
     // State count 값을 1로 변경한다.
     reactor.stub.state.value?.count?.postValue(1)
 
@@ -102,11 +95,6 @@ class CounterViewTest {
    */
   @Test
   fun testView_givenReactorStub_whenStateValue1_thenShouldViewValueMinus1() {
-    // Stub 리액터를 준비하고 뷰에 주입한다.
-    val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
-    val reactor = CounterReactor().apply { stub.isEnabled = true }
-    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
-
     // State count 값을 -1로 변경한다.
     reactor.stub.state.value?.count?.postValue(-1)
 
@@ -119,11 +107,6 @@ class CounterViewTest {
    */
   @Test
   fun testView_givenReactorStub_whenStateIsLoadingTrue_thenShouldViewProgressBarVisible() {
-    // Stub 리액터를 준비하고 뷰에 주입한다.
-    val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
-    val reactor = CounterReactor().apply { stub.isEnabled = true }
-    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
-
     // Espresso에서 ProgressBar 테스트를 위해 indeterminateDrawable의 에니메이션을 없앤다.
     val notAnimatedDrawable = ContextCompat.getDrawable(activityRule.activity, android.R.color.transparent)
     (activityRule.activity.findViewById(R.id.progressBar) as ProgressBar).indeterminateDrawable = notAnimatedDrawable
@@ -140,11 +123,6 @@ class CounterViewTest {
    */
   @Test
   fun testView_givenReactorStub_whenStateIsLoadingFalse_thenShouldViewProgressBarGone() {
-    // Stub 리액터를 준비하고 뷰에 주입한다.
-    val fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
-    val reactor = CounterReactor().apply { stub.isEnabled = true }
-    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
-
     // Espresso에서 ProgressBar 테스트를 위해 indeterminateDrawable의 에니메이션을 없앤다.
     val notAnimatedDrawable = ContextCompat.getDrawable(activityRule.activity, android.R.color.transparent)
     (activityRule.activity.findViewById(R.id.progressBar) as ProgressBar).indeterminateDrawable = notAnimatedDrawable
