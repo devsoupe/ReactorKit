@@ -6,11 +6,13 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.Visibility
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import com.perelandra.reactorkit.extras.of
 import com.perelandra.sample.counter.jetpack.ui.main.CounterFragment
 import com.perelandra.sample.counter.jetpack.ui.main.CounterReactor
 import com.perelandra.sample.counter.jetpack.ui.main.CounterReactor.Action.Decrease
@@ -46,12 +48,11 @@ class CounterViewTest {
     // Stub 리액터를 준비하고 뷰에 주입한다.
     fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
     reactor = CounterReactor().apply { stub.isEnabled = true }
-    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
+    activityRule.activity.runOnUiThread { fragment.reactor = reactor }
   }
 
   @After
   fun tearDown() {
-
   }
 
   /**

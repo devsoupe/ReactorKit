@@ -6,8 +6,9 @@
 
 [![ref](https://img.shields.io/static/v1.svg?label=AndroidStudio&message=3.4.1&color=blueviolet)](https://developer.android.com/studio)
 [![ref](https://img.shields.io/badge/platform-android-lightgrey.svg)](https://developer.android.com/)
-[![ref](https://img.shields.io/badge/Kotlin-1.3.10-orange.svg)](https://kotlinlang.org/)
-[![ref](https://img.shields.io/badge/gradle-3.4.1-blue.svg)](https://gradle.org/)
+[![ref](https://img.shields.io/badge/Kotlin-1.3.40-orange.svg)](https://kotlinlang.org/)
+[![ref](https://img.shields.io/badge/gradle--wrapper-gradle--5.1.1--all-yellowgreen.svg)](https://gradle.org/)
+[![ref](https://img.shields.io/badge/gradle-3.4.2-blue.svg)](https://gradle.org/)
 [![ref](https://jitpack.io/v/perelandrax/reactorkit.svg)](https://jitpack.io/#perelandrax/reactorkit)
 [![ref](https://travis-ci.org/perelandrax/ReactorKit.svg?branch=master)](https://travis-ci.org/perelandrax/ReactorKit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

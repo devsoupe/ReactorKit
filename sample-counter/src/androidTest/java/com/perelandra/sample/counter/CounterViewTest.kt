@@ -45,7 +45,7 @@ class CounterViewTest {
     // Stub 리액터를 준비하고 뷰에 주입한다.
     fragment = activityRule.activity.supportFragmentManager.findFragmentById(R.id.container) as CounterFragment
     reactor = CounterReactor().apply { stub.isEnabled = true }
-    InstrumentationRegistry.getInstrumentation().runOnMainSync { fragment.reactor = reactor }
+    activityRule.activity.runOnUiThread{ fragment.reactor = reactor }
   }
 
   @After
