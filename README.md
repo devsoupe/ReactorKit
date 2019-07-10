@@ -4,7 +4,7 @@
   <img alt="flow" src="https://cloud.githubusercontent.com/assets/931655/25277625/6aa05998-26da-11e7-9b85-e48bec938a6e.png">
 </p>
 
-[![ref](https://img.shields.io/static/v1.svg?label=AndroidStudio&message=3.4.1&color=blueviolet)](https://developer.android.com/studio)
+[![ref](https://img.shields.io/static/v1.svg?label=AndroidStudio&message=3.4.2&color=blueviolet)](https://developer.android.com/studio)
 [![ref](https://img.shields.io/badge/platform-android-lightgrey.svg)](https://developer.android.com/)
 [![ref](https://img.shields.io/badge/Kotlin-1.3.40-orange.svg)](https://kotlinlang.org/)
 [![ref](https://img.shields.io/badge/gradle--wrapper-gradle--5.1.1--all-yellowgreen.svg)](https://gradle.org/)
