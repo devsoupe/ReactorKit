@@ -365,6 +365,7 @@ Sometimes a state is changed more than one time for a single action. For example
 ## Examples
 
 * [Counter](https://github.com/perelandrax/ReactorKit/tree/master/sample-counter) : The most simple and basic example of ReactorKit
+* [Counter-Jetpack](https://github.com/perelandrax/ReactorKit/tree/master/sample-counter-jetpack) : The most simple and basic example of ReactorKit
 * [GitHub Search 🚧](https://github.com/perelandrax/ReactorKit/tree/master/sample-githubsearch) : A simple application which provides a GitHub repository search (Under Construction)
 
 ## Installation
