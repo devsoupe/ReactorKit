@@ -1,1 +1,2 @@
-include ':sample-counter', ':reactorkit', ':sample-githubsearch', ':sample-counter-jetpack'
+include ':reactorkit', ':sample-counter', ':sample-counter-jetpack',
+  ':sample-counter-jetpack-databinding', ':sample-githubsearch'
