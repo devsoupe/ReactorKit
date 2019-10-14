@@ -53,15 +53,11 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
 
     searchView.queryHint = "Search"
 
-    // Actions
     RxSearchView.queryTextChanges(searchView)
       .debounce(400, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
       .filter { it.isNotEmpty() }
       .subscribe { RxEvent.publish(GithubSearchQueryTextChangeEvent(it.toString())) }
-
-//        .map { GithubSearchReactor.Action.updateQuery(it.toString()) }
-//        .bind(to = reactor.action)
-//        .disposed(by = disposeBag)
+      .disposed(by = disposeBag)
 
     super.onCreateOptionsMenu(menu, inflater)
   }
@@ -70,9 +66,10 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
     // Actions
     RxEvent.observe<GithubSearchQueryTextChangeEvent>()
       .distinctUntilChanged()
-      .map { GithubSearchReactor.Action.updateQuery(it.toString()) }
+      .map { GithubSearchReactor.Action.updateQuery(it.query) }
       .bind(to = reactor.action)
       .disposed(by = disposeBag)
+
 
     // States
     reactor.state.map { it.repos }
