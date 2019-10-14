@@ -26,20 +26,20 @@ class CounterReactor
   }
 
   data class State(
-      val count: Int = 0,
-      val isLoading: Boolean = false
+    val count: Int = 0,
+    val isLoading: Boolean = false
   )
 
   override fun mutate(action: Action): Observable<Mutation> = when (action) {
     is Action.Increase -> Observable.concat(
-        Observable.just(Mutation.SetLoading(true)),
-        Observable.just(Mutation.IncreaseValue).delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()),
-        Observable.just(Mutation.SetLoading(false)))
+      Observable.just(Mutation.SetLoading(true)),
+      Observable.just(Mutation.IncreaseValue).delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()),
+      Observable.just(Mutation.SetLoading(false)))
 
     is Action.Decrease -> Observable.concat(
-        Observable.just(Mutation.SetLoading(true)),
-        Observable.just(Mutation.DecreaseValue).delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()),
-        Observable.just(Mutation.SetLoading(false)))
+      Observable.just(Mutation.SetLoading(true)),
+      Observable.just(Mutation.DecreaseValue).delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()),
+      Observable.just(Mutation.SetLoading(false)))
   }
 
   override fun reduce(state: State, mutation: Mutation): State = when (mutation) {

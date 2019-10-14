@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import io.reactivex.Flowable
+import io.reactivex.FlowableSubscriber
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -19,6 +20,8 @@ fun <T> Observable<T>.bind(to: Consumer<in T>): Disposable = this.subscribe(to, 
 fun <T> Observable<T>.bind(to: Observer<in T>) = this.subscribe(to)
 
 fun <T> Flowable<T>.bind(to: Consumer<in T>): Disposable = this.subscribe(to, Consumer { it.printStackTrace() })
+
+fun <T> Flowable<T>.bind(to: FlowableSubscriber<in T>) = this.subscribe(to)
 
 fun <T : ViewModel> T.of(fragment: Fragment): T =
     ViewModelProviders.of(fragment, createViewModel(this)).get(this.javaClass)

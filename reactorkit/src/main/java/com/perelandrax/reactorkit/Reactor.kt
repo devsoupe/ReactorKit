@@ -19,11 +19,11 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
 
   private val _action: ActionSubject<Action>
     get() = if (stub.isEnabled) stub.action else associatedObject(actionKey)
-        ?: associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
+      ?: associatedObject<ActionSubject<Action>>(actionKey, ActionSubject.create())
 
   private val _state: Observable<State>
     get() = if (stub.isEnabled) stub.state else associatedObject(stateKey)
-        ?: associatedObject(stateKey, createStateStream())
+      ?: associatedObject(stateKey, createStateStream())
 
   // The action from the view. Bind user inputs to this subject.
   val action: ActionSubject<Action>
@@ -54,18 +54,22 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
     val action = this._action
     val transformedAction = transformAction(action)
     val mutation = transformedAction
-        .flatMap { action ->
-          mutate(action).onErrorResumeNext { _: Throwable -> Observable.empty() }
-        }
+      .flatMap { action ->
+        try { mutate(action).onErrorResumeNext { t: Throwable -> throwMutation(t).run { Observable.empty() } } }
+        catch (throwable: Throwable) { throwMutation(throwable).run { Observable.empty<Mutation>() } }
+      }
     val transformedMutation = transformMutation(mutation)
     val state = transformedMutation
-        .scan(initialState) { state, mutate -> reduce(state, mutate).apply { currentState = this } }
-        .onErrorResumeNext { _: Throwable -> Observable.empty() }
-        .startWith(initialState)
-        .observeOn(AndroidSchedulers.mainThread())
+      .scan(initialState) { state, mutate ->
+        try { reduce(state, mutate).apply { currentState = this } }
+        catch (t : Throwable) { throwaState(t).run { currentState } }
+      }
+      .onErrorResumeNext { t: Throwable -> throwaState(t).run { Observable.empty() } }
+      .startWith(initialState)
+      .observeOn(AndroidSchedulers.mainThread())
     val transformedState = transformState(state)
-        .doOnNext { currentState = it }
-        .replay(1)
+      .doOnNext { currentState = it }
+      .replay(1)
     transformedState.connect().disposed(disposeBag)
     return transformedState
   }
@@ -90,6 +94,12 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
   // Transforms the state stream. Use this function to perform side-effects such as logging. This
   // method is called once after the state stream is created.
   fun transformState(state: Observable<State>): Observable<State> = state
+
+  //
+  fun throwMutation(throwable: Throwable) = throwable.printStackTrace()
+
+  //
+  fun throwaState(throwable: Throwable) = throwable.printStackTrace()
 
   fun clear() {
     disposeBag.clear()
