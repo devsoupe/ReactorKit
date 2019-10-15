@@ -1,7 +1,7 @@
-package com.perelandra.sample.counter.jetpack.databinding.ui.main
+package com.perelandrax.sample.counter.jetpack.databinding.ui.main
 
 import androidx.lifecycle.MutableLiveData
-import com.perelandra.reactorkit.aac.ReactorViewModel
+import com.perelandrax.reactorkit.jetpack.ReactorViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit

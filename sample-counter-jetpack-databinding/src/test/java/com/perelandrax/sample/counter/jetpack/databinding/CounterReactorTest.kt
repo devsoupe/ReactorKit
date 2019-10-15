@@ -1,10 +1,10 @@
-package com.perelandra.sample.counter.databinding
+package com.perelandrax.sample.counter.jetpack.databinding
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.perelandra.sample.counter.jetpack.databinding.ui.main.CounterReactor
-import com.perelandra.sample.counter.jetpack.databinding.ui.main.CounterReactor.Action.*
+import com.perelandrax.sample.counter.jetpack.databinding.ui.main.CounterReactor
+import com.perelandrax.sample.counter.jetpack.databinding.ui.main.CounterReactor.Action.*
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers

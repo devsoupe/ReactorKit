@@ -1,4 +1,4 @@
-package com.perelandra.sample.counter.jetpack.databinding
+package com.perelandrax.sample.counter.jetpack.databinding
 
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
@@ -12,10 +12,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import com.perelandra.sample.counter.jetpack.databinding.ui.main.CounterFragment
-import com.perelandra.sample.counter.jetpack.databinding.ui.main.CounterReactor
-import com.perelandra.sample.counter.jetpack.databinding.ui.main.CounterReactor.Action.Decrease
-import com.perelandra.sample.counter.jetpack.databinding.ui.main.CounterReactor.Action.Increase
+import com.perelandra.sample.counter.jetpack.databinding.R
+import com.perelandrax.sample.counter.jetpack.databinding.ui.main.CounterFragment
+import com.perelandrax.sample.counter.jetpack.databinding.ui.main.CounterReactor
+import com.perelandrax.sample.counter.jetpack.databinding.ui.main.CounterReactor.Action.Decrease
+import com.perelandrax.sample.counter.jetpack.databinding.ui.main.CounterReactor.Action.Increase
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
