@@ -55,16 +55,16 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
     val transformedAction = transformAction(action)
     val mutation = transformedAction
       .flatMap { action ->
-        try { mutate(action).onErrorResumeNext { t: Throwable -> throwMutation(t).run { Observable.empty() } } }
-        catch (throwable: Throwable) { throwMutation(throwable).run { Observable.empty<Mutation>() } }
+        try { mutate(action).onErrorResumeNext { t: Throwable -> throwException(t).run { Observable.empty() } } }
+        catch (throwable: Throwable) { throwException(throwable).run { Observable.empty<Mutation>() } }
       }
     val transformedMutation = transformMutation(mutation)
     val state = transformedMutation
       .scan(initialState) { state, mutate ->
         try { reduce(state, mutate).apply { currentState = this } }
-        catch (t : Throwable) { throwaState(t).run { currentState } }
+        catch (t : Throwable) { throwException(t).run { currentState } }
       }
-      .onErrorResumeNext { t: Throwable -> throwaState(t).run { Observable.empty() } }
+      .onErrorResumeNext { t: Throwable -> throwException(t).run { Observable.empty() } }
       .startWith(initialState)
       .observeOn(AndroidSchedulers.mainThread())
     val transformedState = transformState(state)
@@ -73,6 +73,11 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
     transformedState.connect().disposed(disposeBag)
     return transformedState
   }
+
+//  fun throwException(throwable: Throwable) = Handler(Looper.getMainLooper()).post { throw throwable }
+
+  //
+  fun throwException(throwable: Throwable) = throwable.printStackTrace()
 
   // Transforms the action. Use this function to combine with other observables. This method is
   // called once before the state stream is created.
@@ -94,12 +99,6 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
   // Transforms the state stream. Use this function to perform side-effects such as logging. This
   // method is called once after the state stream is created.
   fun transformState(state: Observable<State>): Observable<State> = state
-
-  //
-  fun throwMutation(throwable: Throwable) = throwable.printStackTrace()
-
-  //
-  fun throwaState(throwable: Throwable) = throwable.printStackTrace()
 
   fun clear() {
     disposeBag.clear()
