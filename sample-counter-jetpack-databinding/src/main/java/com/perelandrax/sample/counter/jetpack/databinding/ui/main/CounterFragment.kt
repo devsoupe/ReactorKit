@@ -1,4 +1,4 @@
-package com.perelandra.sample.counter.jetpack.databinding.ui.main
+package com.perelandrax.sample.counter.jetpack.databinding.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
-import com.perelandra.reactorkit.ReactorView
-import com.perelandra.reactorkit.extras.bind
-import com.perelandra.reactorkit.extras.disposed
-import com.perelandra.reactorkit.extras.of
 import com.perelandra.sample.counter.jetpack.databinding.R
-import com.perelandra.sample.counter.jetpack.databinding.ui.main.CounterReactor.Action.*
+import com.perelandrax.sample.counter.jetpack.databinding.ui.main.CounterReactor.Action.*
+import com.perelandrax.reactorkit.ReactorView
+import com.perelandrax.reactorkit.extras.bind
+import com.perelandrax.reactorkit.extras.disposed
+import com.perelandrax.reactorkit.extras.of
 import kotlinx.android.synthetic.main.fragment_counter.*
 
 class CounterFragment : Fragment(), ReactorView<CounterReactor> {

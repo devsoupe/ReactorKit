@@ -1,8 +1,9 @@
-package com.perelandra.sample.counter.jetpack.databinding
+package com.perelandrax.sample.counter.jetpack.databinding
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.perelandra.sample.counter.jetpack.databinding.ui.main.CounterFragment
+import com.perelandra.sample.counter.jetpack.databinding.R
+import com.perelandrax.sample.counter.jetpack.databinding.ui.main.CounterFragment
 
 class CounterActivity : AppCompatActivity() {
 

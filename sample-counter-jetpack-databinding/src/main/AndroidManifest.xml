@@ -11,7 +11,7 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
 
-    <activity android:name=".CounterActivity">
+    <activity android:name="com.perelandrax.sample.counter.jetpack.databinding.CounterActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
