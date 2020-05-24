@@ -72,24 +72,6 @@ class ProfileFragment : Fragment(), ReactorView<ProfileReactor> {
 }
 ```
 
-* ##### Jetpack Style (ViewModel + LiveData)
-
-```kotlin
-class ProfileFragment : Fragment(), ReactorView<ProfileReactor> {
-  ...
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    createReactor(CounterReactor().of(this)) // inject reactor
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    destroyReactor()
-  }
-  ...  
-}
-```
-
 When the `reactor` property has changed, `bind(reactor: <T : Reactor<*, *, *>>)` gets called. Implement this method to define the bindings of an action stream and a state stream.
 
 ```kotlin
@@ -106,29 +88,6 @@ override fun bind(reactor: ProfileReactor) {
       .distinctUntilChanged()
       .bind(to = RxCompoundButton.checked(followButton))
       .disposed(by = disposeBag)
-  ...
-}
-```
-
-* ##### Jetpack Style (ViewModel + LiveData)
-
-```kotlin
-override fun bind(reactor: ProfileReactor) {
-  ...
-  // Action (View -> Reactor)
-  RxView.clicks(refreshButton)
-      .map { ProfileReactor.Action.Refresh }
-      .bind(to = reactor.action)
-      .disposed(by = disposeBag)
-
-  // State (Reactor -> View)
-    reactor.state.take(1)
-        .subscribe { state ->
-          state.count.observe(this, Observer { isFollowing ->
-            followButton.checked = isFollowing
-          })
-        }
-        .disposed(by = disposeBag)
   ...
 }
 ```
@@ -159,33 +118,6 @@ class ProfileReactor
   // represents the current view state
   data class State(
       val isFollowing: Boolean = false
-  )
-  ...
-}
-```
-
-* ##### Jetpack Style (ViewModel + LiveData)
-
-```kotlin
-class ProfileReactor
-  : ReactorViewModel<ProfileReactor.Action, ProfileReactor.Mutation, ProfileReactor.State>() {
-  ...
-  override var initialState: State = State()
-    
-  // represent user actions
-  sealed class Action {
-    data class RefreshFollowingStatus(val userId: Int) : Action()
-    data class Follow(val userId: Int) : Action()
-  }
-
-  // represent state changes
-  sealed class Mutation {
-    data class SetFollowing(val isFollowing: Boolean) : Mutation()
-  }
-
-  // represents the current view state
-  data class State(
-      val isFollowing: MutableLiveData<Boolean> = MutableLiveData(false)
   )
   ...
 }
@@ -364,8 +296,7 @@ Sometimes a state is changed more than one time for a single action. For example
 
 ## Examples
 
-* [Counter](https://github.com/perelandrax/ReactorKit/tree/master/sample-counter) : The most simple and basic example of ReactorKit
-* [Counter-Jetpack](https://github.com/perelandrax/ReactorKit/tree/master/sample-counter-jetpack) : The most simple and basic example of ReactorKit
+* [Counter](https://github.com/perelandrax/ReactorKit/tree/master/sample-counter) : The most simple and basic example of ReactorKit<!-- * [Counter-Jetpack](https://github.com/perelandrax/ReactorKit/tree/master/sample-counter-jetpack) : The most simple and basic example of ReactorKit -->
 * [GitHub Search 🚧](https://github.com/perelandrax/ReactorKit/tree/master/sample-githubsearch) : A simple application which provides a GitHub repository search (Under Construction)
 
 ## Installation

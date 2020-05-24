@@ -1,4 +1,4 @@
-package com.perelandrax.reactorkit.rxevent
+package com.perelandrax.sample.githubsearch.rxevent
 
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.BackpressureStrategy

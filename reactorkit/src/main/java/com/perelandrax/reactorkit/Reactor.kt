@@ -55,14 +55,20 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
     val transformedAction = transformAction(action)
     val mutation = transformedAction
       .flatMap { action ->
-        try { mutate(action).onErrorResumeNext { t: Throwable -> throwException(t).run { Observable.empty() } } }
-        catch (throwable: Throwable) { throwException(throwable).run { Observable.empty<Mutation>() } }
+        try {
+          mutate(action).onErrorResumeNext { t: Throwable -> throwException(t).run { Observable.empty() } }
+        } catch (throwable: Throwable) {
+          throwException(throwable).run { Observable.empty<Mutation>() }
+        }
       }
     val transformedMutation = transformMutation(mutation)
     val state = transformedMutation
       .scan(initialState) { state, mutate ->
-        try { reduce(state, mutate).apply { currentState = this } }
-        catch (t : Throwable) { throwException(t).run { currentState } }
+        try {
+          reduce(state, mutate).apply { currentState = this }
+        } catch (t: Throwable) {
+          throwException(t).run { currentState }
+        }
       }
       .onErrorResumeNext { t: Throwable -> throwException(t).run { Observable.empty() } }
       .startWith(initialState)
