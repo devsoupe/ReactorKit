@@ -23,13 +23,13 @@ class GithubSearchClientImpl : GithubSearchClient {
         val response = client.newCall(request).execute()
 
         if (response.isSuccessful) {
-          return@defer Observable.just(response.body()?.string())
+          return@defer Observable.just(response.body?.string())
         }
 
-        if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
+        if (response.code == HttpURLConnection.HTTP_FORBIDDEN) {
           throw Throwable("⚠️ GitHub API rate limit exceeded. Wait for 60 seconds and try again.")
         } else {
-          throw Throwable("⚠️ GitHub API error code : ${response.code()}")
+          throw Throwable("⚠️ GitHub API error code : ${response.code}")
         }
       } catch (e: IOException) {
         cancel()
@@ -39,8 +39,7 @@ class GithubSearchClientImpl : GithubSearchClient {
   }
 
   override fun cancel() {
-    Log.i("SETH_DEBUG", "cancel")
-    for (call in client.dispatcher().queuedCalls()) call.cancel()
-    for (call in client.dispatcher().runningCalls()) call.cancel()
+    for (call in client.dispatcher.queuedCalls()) call.cancel()
+    for (call in client.dispatcher.runningCalls()) call.cancel()
   }
 }

@@ -1,6 +1,5 @@
 package com.perelandrax.sample.githubsearch.ui.main
 
-import android.os.Parcelable
 import android.util.Log
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
@@ -10,7 +9,6 @@ import com.perelandrax.reactorkit.Reactor
 import com.perelandrax.sample.githubsearch.client.GithubSearchClientImpl
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.parcel.Parcelize
 
 class GithubSearchReactor :
   Reactor<GithubSearchReactor.Action, GithubSearchReactor.Mutation, GithubSearchReactor.State> {
@@ -47,14 +45,14 @@ class GithubSearchReactor :
   override fun mutate(action: Action): Observable<Mutation> {
     return when (action) {
       is Action.updateQuery -> Observable.concat(
-          // 1) set current state's query
-          Observable.just(Mutation.setQuery(action.query)),
+        // 1) set current state's query
+        Observable.just(Mutation.setQuery(action.query)),
 
-          // 2) call API and set repos
-          this.search(action.query, 1, action)
-              // cancel previous request when the new `updateQuery` action is fired
-              .takeUntil(this.action.filter { isUpdateQueryAction(action) })
-              .map { Mutation.setRepos(it.first, it.second) })
+        // 2) call API and set repos
+        this.search(action.query, 1, action)
+          // cancel previous request when the new `updateQuery` action is fired
+          .takeUntil(this.action.filter { isUpdateQueryAction(action) })
+          .map { Mutation.setRepos(it.first, it.second) })
 
       else -> Observable.empty()
     }
@@ -67,23 +65,23 @@ class GithubSearchReactor :
   }
 
   private fun url(query: String, page: Int): String =
-      "https://api.github.com/search/repositories?q=$query&page=$page"
+    "https://api.github.com/search/repositories?q=$query&page=$page"
 
   private fun search(query: String, page: Int, action: Action): Observable<Pair<List<String>, Int>> {
     var emptyResult = Pair<List<String>, Int>(emptyList(), 0)
     val url = url(query, page)
 
     return client.request(url)
-        .subscribeOn(Schedulers.io())
-        .map {
-          val dict = gson.fromJson(it, JsonObject::class.java)
-          val items = gson.fromJson(dict["items"], object : TypeToken<ArrayList<JsonElement>>() {}.type) as ArrayList<JsonElement>
-          val repos = items.flatMap { arrayListOf(it.asJsonObject["full_name"].asString) }
-          val nextPage = if (repos.isEmpty()) 0 else page + 1
-          Pair(repos, nextPage)
-        }
-        .doOnError { Log.d(TAG, "${it.message}") }
-        .onErrorReturn { emptyResult }
+      .subscribeOn(Schedulers.io())
+      .map {
+        val dict = gson.fromJson(it, JsonObject::class.java)
+        val items = gson.fromJson(dict["items"], object : TypeToken<ArrayList<JsonElement>>() {}.type) as ArrayList<JsonElement>
+        val repos = items.flatMap { arrayListOf(it.asJsonObject["full_name"].asString) }
+        val nextPage = if (repos.isEmpty()) 0 else page + 1
+        Pair(repos, nextPage)
+      }
+      .doOnError { Log.d(TAG, "${it.message}") }
+      .onErrorReturn { emptyResult }
   }
 
   private fun isUpdateQueryAction(action: Action): Boolean = action is Action.updateQuery

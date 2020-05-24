@@ -80,10 +80,9 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
     return transformedState
   }
 
-//  fun throwException(throwable: Throwable) = Handler(Looper.getMainLooper()).post { throw throwable }
-
   //
   fun throwException(throwable: Throwable) = throwable.printStackTrace()
+  //fun throwException(throwable: Throwable) = Handler(Looper.getMainLooper()).post { throw throwable }
 
   // Transforms the action. Use this function to combine with other observables. This method is
   // called once before the state stream is created.

@@ -12,8 +12,8 @@ class CounterActivity : AppCompatActivity() {
 
     if (savedInstanceState == null) {
       supportFragmentManager.beginTransaction()
-          .replace(R.id.container, CounterFragment.newInstance())
-          .commitNow()
+        .replace(R.id.container, CounterFragment.newInstance())
+        .commitNow()
     }
   }
 }

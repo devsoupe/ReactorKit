@@ -11,8 +11,8 @@ import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
 import com.perelandrax.reactorkit.ReactorView
 import com.perelandrax.reactorkit.extras.bind
 import com.perelandrax.reactorkit.extras.disposed
-import com.perelandrax.sample.githubsearch.rxevent.RxEvent
 import com.perelandrax.sample.githubsearch.R
+import com.perelandrax.sample.githubsearch.rxevent.RxEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_github_search.*
 import java.util.concurrent.TimeUnit

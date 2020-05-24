@@ -12,8 +12,8 @@ class GithubSearchActivity : AppCompatActivity() {
 
     if (savedInstanceState == null) {
       supportFragmentManager.beginTransaction()
-          .replace(R.id.container, GithubSearchFragment.newInstance())
-          .commitNow()
+        .replace(R.id.container, GithubSearchFragment.newInstance())
+        .commitNow()
     }
   }
 }

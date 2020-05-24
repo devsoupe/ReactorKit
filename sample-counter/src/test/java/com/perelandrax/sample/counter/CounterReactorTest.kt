@@ -6,9 +6,6 @@ import com.perelandrax.sample.counter.ui.main.CounterReactor.Action.Increase
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.core.Is.`is`
-import org.hamcrest.core.Is.isA
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
