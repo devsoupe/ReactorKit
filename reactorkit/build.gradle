@@ -11,7 +11,7 @@ android {
   buildToolsVersion '29.0.3'
 
   defaultConfig {
-    minSdkVersion 15
+    minSdkVersion 17
     targetSdkVersion 29
     versionCode 1
     versionName "1.0"
@@ -25,18 +25,21 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-  implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.4'
+  implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+  implementation 'io.reactivex.rxjava3:rxkotlin:3.0.0'
 
-  implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
-  implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-  implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
-
-  implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
+  implementation 'com.jakewharton.rxrelay3:rxrelay:3.0.0'
 
   androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
   androidTestImplementation 'androidx.test:runner:1.2.0'

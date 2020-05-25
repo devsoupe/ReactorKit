@@ -29,7 +29,7 @@ interface ReactorView<T : Reactor<*, *, *>> : View<T>, AssociatedObjectStore {
 
   fun destroyReactor() {
     reactor.clear()
-    disposeBag.clear()
+    disposables.clear()
     clearAssociatedObject()
   }
 

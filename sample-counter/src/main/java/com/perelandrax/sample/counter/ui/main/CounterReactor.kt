@@ -1,8 +1,8 @@
 package com.perelandrax.sample.counter.ui.main
 
 import com.perelandrax.reactorkit.Reactor
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import java.util.concurrent.TimeUnit
 
 class CounterReactor

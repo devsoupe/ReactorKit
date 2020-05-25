@@ -1,7 +1,6 @@
 package com.perelandrax.sample.githubsearch.client
 
-import android.util.Log
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor

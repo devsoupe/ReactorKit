@@ -1,9 +1,9 @@
 package com.perelandrax.reactorkit
 
-import com.perelandrax.reactorkit.extras.DisposeBag
-import com.perelandrax.reactorkit.extras.disposed
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
 
 /**
  * A Reactor is an UI-independent layer which manages the state of a view. The foremost role of a
@@ -47,8 +47,8 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
     get() = this._state
 
   // A dispose bag. It is disposed each time the `reactor` is assigned.
-  private val disposeBag: DisposeBag
-    get() = associatedObject(disposeBagKey, DisposeBag())
+  private val disposables: CompositeDisposable
+    get() = associatedObject(disposeBagKey, CompositeDisposable())
 
   private fun createStateStream(): Observable<State> {
     val action = this._action
@@ -71,12 +71,12 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
         }
       }
       .onErrorResumeNext { t: Throwable -> throwException(t).run { Observable.empty() } }
-      .startWith(initialState)
+      .startWithItem(initialState)
       .observeOn(AndroidSchedulers.mainThread())
     val transformedState = transformState(state)
       .doOnNext { currentState = it }
       .replay(1)
-    transformedState.connect().disposed(disposeBag)
+    transformedState.connect().addTo(disposables)
     return transformedState
   }
 
@@ -106,7 +106,7 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
   fun transformState(state: Observable<State>): Observable<State> = state
 
   fun clear() {
-    disposeBag.clear()
+    disposables.clear()
     clearAssociatedObject()
   }
 
@@ -121,7 +121,7 @@ interface Reactor<Action, Mutation, State> : AssociatedObjectStore {
 
   // Stub
   val stub: Stub<Action, Mutation, State>
-    get() = associatedObject(stubKey) ?: associatedObject(stubKey, Stub(this, disposeBag))
+    get() = associatedObject(stubKey) ?: associatedObject(stubKey, Stub(this, disposables))
 }
 
 

@@ -7,8 +7,8 @@ import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.perelandrax.reactorkit.Reactor
 import com.perelandrax.sample.githubsearch.client.GithubSearchClientImpl
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class GithubSearchReactor :
   Reactor<GithubSearchReactor.Action, GithubSearchReactor.Mutation, GithubSearchReactor.State> {

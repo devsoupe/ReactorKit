@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.jakewharton.rxbinding2.view.RxView
-import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxbinding4.view.clicks
+import com.jakewharton.rxbinding4.view.visibility
 import com.perelandrax.reactorkit.ReactorView
-import com.perelandrax.reactorkit.extras.bind
-import com.perelandrax.reactorkit.extras.disposed
+import com.perelandrax.reactorkit.extras.debug
 import com.perelandrax.sample.counter.R
 import com.perelandrax.sample.counter.ui.main.CounterReactor.Action.Decrease
 import com.perelandrax.sample.counter.ui.main.CounterReactor.Action.Increase
+import io.reactivex.rxjava3.kotlin.addTo
 import kotlinx.android.synthetic.main.fragment_counter.*
 
 class CounterFragment : Fragment(), ReactorView<CounterReactor> {
@@ -36,26 +36,30 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
 
   override fun bind(reactor: CounterReactor) {
     // Action
-    RxView.clicks(plusButton)
+    plusButton.clicks()
+      .debug("plusButton.clicks")
       .map { Increase }
-      .bind(to = reactor.action)
-      .disposed(by = disposeBag)
+      .subscribe(reactor.action)
+      .addTo(disposables)
 
-    RxView.clicks(minusButton)
+    minusButton.clicks()
+      .debug("minusButton.clicks")
       .map { Decrease }
-      .bind(to = reactor.action)
-      .disposed(by = disposeBag)
+      .subscribe(reactor.action)
+      .addTo(disposables)
 
     // State
     reactor.state.map { it.count }
       .distinctUntilChanged()
+      .debug("reactor.state.count")
       .map { "$it" }
-      .bind(to = RxTextView.text(valueTextView))
-      .disposed(by = disposeBag)
+      .subscribe(valueTextView::setText)
+      .addTo(disposables)
 
     reactor.state.map { it.isLoading }
       .distinctUntilChanged()
-      .bind(to = RxView.visibility(progressBar, View.GONE))
-      .disposed(by = disposeBag)
+      .debug("reactor.state.isLoading")
+      .subscribe(progressBar.visibility())
+      .addTo(disposables)
   }
 }

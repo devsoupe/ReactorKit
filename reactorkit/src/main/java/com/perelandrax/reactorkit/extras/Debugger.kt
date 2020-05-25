@@ -3,8 +3,8 @@ package com.perelandrax.reactorkit.extras
 import android.os.Build
 import android.util.Log
 import com.perelandrax.reactorkit.extras.StackTraceTagCreator.getFormattedTag
-import io.reactivex.*
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.*
+import io.reactivex.rxjava3.subjects.PublishSubject
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.util.regex.Pattern

@@ -1,8 +1,8 @@
 package com.perelandrax.sample.githubsearch.rxevent
 
-import com.jakewharton.rxrelay2.Relay
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
+import com.jakewharton.rxrelay3.Relay
+import io.reactivex.rxjava3.core.BackpressureStrategy
+import io.reactivex.rxjava3.core.Flowable
 
 /**
  *

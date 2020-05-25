@@ -7,13 +7,12 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
+import com.jakewharton.rxbinding4.appcompat.queryTextChanges
 import com.perelandrax.reactorkit.ReactorView
-import com.perelandrax.reactorkit.extras.bind
-import com.perelandrax.reactorkit.extras.disposed
 import com.perelandrax.sample.githubsearch.R
 import com.perelandrax.sample.githubsearch.rxevent.RxEvent
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.kotlin.addTo
 import kotlinx.android.synthetic.main.fragment_github_search.*
 import java.util.concurrent.TimeUnit
 
@@ -53,11 +52,11 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
 
     searchView.queryHint = "Search"
 
-    RxSearchView.queryTextChanges(searchView)
+    searchView.queryTextChanges()
       .debounce(400, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
       .filter { it.isNotEmpty() }
       .subscribe { RxEvent.publish(GithubSearchQueryTextChangeEvent(it.toString())) }
-      .disposed(by = disposeBag)
+      .addTo(disposables)
 
     super.onCreateOptionsMenu(menu, inflater)
   }
@@ -67,14 +66,14 @@ class GithubSearchFragment : Fragment(), ReactorView<GithubSearchReactor> {
     RxEvent.observe<GithubSearchQueryTextChangeEvent>()
       .distinctUntilChanged()
       .map { GithubSearchReactor.Action.updateQuery(it.query) }
-      .bind(to = reactor.action)
-      .disposed(by = disposeBag)
+      .subscribe(reactor.action)
+      .addTo(disposables)
 
 
     // States
     reactor.state.map { it.repos }
       .distinctUntilChanged()
       .subscribe { (list.adapter as GithubSearchListAdapter).setRepos(it) }
-      .disposed(by = disposeBag)
+      .addTo(disposables)
   }
 }

@@ -1,12 +1,12 @@
 package com.perelandrax.reactorkit
 
-import com.perelandrax.reactorkit.extras.DisposeBag
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 interface View<T : Reactor<*, *, *>> : AssociatedObjectStore {
 
   // A dispose bag. It is disposed each time the `reactor` is assigned.
-  val disposeBag: DisposeBag
-    get() = associatedObject(disposeBagKey, DisposeBag())
+  val disposables: CompositeDisposable
+    get() = associatedObject(disposeBagKey, CompositeDisposable())
 
   // A view's reactor. `bind(reactor:)` gets called when the new value is assigned to this property.
   var reactor: T

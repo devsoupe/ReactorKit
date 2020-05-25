@@ -1,9 +1,9 @@
 package com.perelandrax.reactorkit
 
-import com.perelandrax.reactorkit.extras.DisposeBag
-import com.perelandrax.reactorkit.extras.disposed
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
 
-class Stub<Action, Mutation, State>(reactor: Reactor<Action, Mutation, State>, disposeBag: DisposeBag) {
+class Stub<Action, Mutation, State>(reactor: Reactor<Action, Mutation, State>, disposables: CompositeDisposable) {
 
   var isEnabled: Boolean = false
 
@@ -16,10 +16,10 @@ class Stub<Action, Mutation, State>(reactor: Reactor<Action, Mutation, State>, d
 
     state.subscribe { state ->
       reactor.currentState = state
-    }.disposed(disposeBag)
+    }.addTo(disposables)
 
     action.subscribe { action ->
       actions.add(action)
-    }.disposed(disposeBag)
+    }.addTo(disposables)
   }
 }

@@ -1,6 +1,6 @@
 package com.perelandrax.reactorkit
 
-import com.jakewharton.rxrelay2.BehaviorRelay
+import com.jakewharton.rxrelay3.BehaviorRelay
 
 /**
  * StateRelay is a wrapper for `BehaviorSubject`.
