@@ -24,13 +24,13 @@ interface View<T : Reactor<*, *, *>> : AssociatedObjectStore {
   // fun bind(reactor: MyReactor) {
   //   // Action
   //   RxView.clicks(increaseButton)
-  //     .bind(to = Reactor.Action.Increase)
-  //     .disposed(by = disposeBag)
+  //     .subscribe(Reactor.Action.Increase)
+  //     .addTo(disposables)
   //
   //   // State
   //   reactor.state.map { it.count }
-  //     .bind(to = RxTextView.text(countLabel))
-  //     .disposed(by = disposeBag)
+  //     .subscribe(RxTextView.text(countLabel))
+  //     .addTo(disposables)
   // }
   // ```
   //

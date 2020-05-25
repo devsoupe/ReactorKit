@@ -80,14 +80,14 @@ override fun bind(reactor: ProfileReactor) {
   // Action (View -> Reactor)
   RxView.clicks(refreshButton)
       .map { ProfileReactor.Action.Refresh }
-      .bind(to = reactor.action)
-      .disposed(by = disposeBag)
+      .subscribe(reactor.action)
+      .addTo(disposables)
 
   // State (Reactor -> View)
   reactor.state.map { it.isFollowing }
       .distinctUntilChanged()
-      .bind(to = RxCompoundButton.checked(followButton))
-      .disposed(by = disposeBag)
+      .subscribe(RxCompoundButton.checked(followButton))
+      .addTo(disposables)
   ...
 }
 ```
