@@ -3,9 +3,9 @@ package com.perelandrax.sample.counter
 import com.perelandrax.sample.counter.ui.main.CounterReactor
 import com.perelandrax.sample.counter.ui.main.CounterReactor.Action.Decrease
 import com.perelandrax.sample.counter.ui.main.CounterReactor.Action.Increase
-import io.reactivex.android.plugins.RxAndroidPlugins
-import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
+import io.reactivex.rxjava3.plugins.RxJavaPlugins
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
