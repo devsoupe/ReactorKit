@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.view.visibility
 import com.perelandrax.reactorkit.ReactorView
-import com.perelandrax.reactorkit.viewmodel.debug
 import com.perelandrax.sample.counter.R
 import com.perelandrax.sample.counter.ui.main.CounterReactor.Action.Decrease
 import com.perelandrax.sample.counter.ui.main.CounterReactor.Action.Increase
@@ -37,13 +36,11 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
   override fun bind(reactor: CounterReactor) {
     // Action
     plusButton.clicks()
-      .debug("plusButton.clicks")
       .map { Increase }
       .subscribe(reactor.action)
       .addTo(disposables)
 
     minusButton.clicks()
-      .debug("minusButton.clicks")
       .map { Decrease }
       .subscribe(reactor.action)
       .addTo(disposables)
@@ -51,14 +48,12 @@ class CounterFragment : Fragment(), ReactorView<CounterReactor> {
     // State
     reactor.state.map { it.count }
       .distinctUntilChanged()
-      .debug("reactor.state.count")
       .map { "$it" }
       .subscribe(valueTextView::setText)
       .addTo(disposables)
 
     reactor.state.map { it.isLoading }
       .distinctUntilChanged()
-      .debug("reactor.state.isLoading")
       .subscribe(progressBar.visibility())
       .addTo(disposables)
   }

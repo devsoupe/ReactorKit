@@ -4,11 +4,11 @@
   <img alt="flow" src="https://cloud.githubusercontent.com/assets/931655/25277625/6aa05998-26da-11e7-9b85-e48bec938a6e.png">
 </p>
 
-[![ref](https://img.shields.io/static/v1.svg?label=AndroidStudio&message=3.6.2&color=blueviolet)](https://developer.android.com/studio)
+[![ref](https://img.shields.io/static/v1.svg?label=AndroidStudio&message=4.0&color=blueviolet)](https://developer.android.com/studio)
 [![ref](https://img.shields.io/badge/platform-android-lightgrey.svg)](https://developer.android.com/)
 [![ref](https://img.shields.io/badge/Kotlin-1.3.72-orange.svg)](https://kotlinlang.org/)
-[![ref](https://img.shields.io/badge/gradle--wrapper-gradle--5.6.4--all-yellowgreen.svg)](https://gradle.org/)
-[![ref](https://img.shields.io/badge/gradle-3.6.3-blue.svg)](https://gradle.org/)
+[![ref](https://img.shields.io/badge/gradle--wrapper-gradle--6.1.1--all-yellowgreen.svg)](https://gradle.org/)
+[![ref](https://img.shields.io/badge/gradle-4.0.0-blue.svg)](https://gradle.org/)
 [![ref](https://jitpack.io/v/perelandrax/reactorkit.svg)](https://jitpack.io/#perelandrax/reactorkit)
 [![ref](https://travis-ci.org/perelandrax/ReactorKit.svg?branch=master)](https://travis-ci.org/perelandrax/ReactorKit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -78,7 +78,7 @@ When the `reactor` property has changed, `bind(reactor: <T : Reactor<*, *, *>>)`
 override fun bind(reactor: ProfileReactor) {
   ...
   // Action (View -> Reactor)
-  RxView.clicks(refreshButton)
+  refreshButton.clicks()
       .map { ProfileReactor.Action.Refresh }
       .subscribe(reactor.action)
       .addTo(disposables)
@@ -86,7 +86,7 @@ override fun bind(reactor: ProfileReactor) {
   // State (Reactor -> View)
   reactor.state.map { it.isFollowing }
       .distinctUntilChanged()
-      .subscribe(RxCompoundButton.checked(followButton))
+      .subscribe(followButton::setChecked)
       .addTo(disposables)
   ...
 }
