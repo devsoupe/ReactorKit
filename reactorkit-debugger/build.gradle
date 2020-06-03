@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+androidExtensions {
+  experimental = true
+}
+
+android {
+  compileSdkVersion 29
+  buildToolsVersion '29.0.3'
+
+  defaultConfig {
+    minSdkVersion 17
+    targetSdkVersion 29
+    multiDexEnabled true
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation project(':reactorkit')
+
+  implementation 'androidx.multidex:multidex:2.0.1'
+  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.5'
+
+  implementation 'io.reactivex.rxjava3:rxjava:3.0.4'
+  implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+  implementation 'io.reactivex.rxjava3:rxkotlin:3.0.0'
+
+  implementation 'com.jakewharton.rxrelay3:rxrelay:3.0.0'
+
+  androidTestImplementation 'androidx.test:runner:1.2.0'
+  androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+  androidTestImplementation 'androidx.test:rules:1.2.0'
+  androidTestImplementation 'androidx.test.ext:truth:1.2.0'
+  androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+}

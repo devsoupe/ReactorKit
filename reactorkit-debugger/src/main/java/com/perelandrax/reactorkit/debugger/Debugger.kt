@@ -1,8 +1,8 @@
-package com.perelandrax.reactorkit.extras
+package com.perelandrax.reactorkit.debugger
 
 import android.os.Build
 import android.util.Log
-import com.perelandrax.reactorkit.extras.StackTraceTagCreator.getFormattedTag
+import com.perelandrax.reactorkit.debugger.StackTraceTagCreator.getFormattedTag
 import io.reactivex.rxjava3.core.*
 import io.reactivex.rxjava3.subjects.PublishSubject
 import java.io.PrintWriter
@@ -245,7 +245,7 @@ object RxDebug {
    * @param isLoggindEnabled true if logging should be enabled, false otherwise
    */
   fun setLoggingEnabled(isLoggindEnabled: Boolean) {
-    this.isLoggingEnabledInternal = isLoggindEnabled
+    isLoggingEnabledInternal = isLoggindEnabled
   }
 }
 
@@ -329,7 +329,7 @@ internal object StackTraceTagCreator {
 
   private fun createStackElementTag(element: StackTraceElement): String {
     var tag = element.className
-    val m = StackTraceTagCreator.ANONYMOUS_CLASS.matcher(tag)
+    val m = ANONYMOUS_CLASS.matcher(tag)
     if (m.find()) {
       tag = m.replaceAll("")
       tag = tag.substring(0, tag.lastIndexOf('$'))

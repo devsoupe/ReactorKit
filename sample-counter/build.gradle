@@ -44,6 +44,7 @@ android {
 dependencies {
   implementation fileTree(include: ['*.jar'], dir: 'libs')
   implementation project(':reactorkit')
+  implementation project(':reactorkit-debugger')
 
   implementation 'androidx.appcompat:appcompat:1.1.0'
   implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta6'

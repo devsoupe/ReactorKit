@@ -1,1 +1,1 @@
-include ':reactorkit', ':sample-counter', ':sample-githubsearch'
+include ':reactorkit', 'reactorkit-debugger', ':sample-counter', ':sample-githubsearch'
