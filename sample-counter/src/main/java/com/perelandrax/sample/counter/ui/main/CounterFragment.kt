@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.view.visibility
 import com.perelandrax.reactorkit.ReactorView
-import com.perelandrax.reactorkit.debugger.debug
+import com.perelandrax.reactorkit.viewmodel.debug
 import com.perelandrax.sample.counter.R
 import com.perelandrax.sample.counter.ui.main.CounterReactor.Action.Decrease
 import com.perelandrax.sample.counter.ui.main.CounterReactor.Action.Increase

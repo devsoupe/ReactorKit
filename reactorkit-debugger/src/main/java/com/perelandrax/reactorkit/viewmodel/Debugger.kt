@@ -1,8 +1,8 @@
-package com.perelandrax.reactorkit.debugger
+package com.perelandrax.reactorkit.viewmodel
 
 import android.os.Build
 import android.util.Log
-import com.perelandrax.reactorkit.debugger.StackTraceTagCreator.getFormattedTag
+import com.perelandrax.reactorkit.viewmodel.StackTraceTagCreator.getFormattedTag
 import io.reactivex.rxjava3.core.*
 import io.reactivex.rxjava3.subjects.PublishSubject
 import java.io.PrintWriter
