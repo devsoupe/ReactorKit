@@ -1,18 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
-androidExtensions {
-  experimental = true
-}
 
 android {
-  compileSdkVersion 29
-  buildToolsVersion '29.0.3'
+  compileSdkVersion 30
+  buildToolsVersion '30.0.3'
 
   defaultConfig {
     minSdkVersion 17
-    targetSdkVersion 29
+    targetSdkVersion 30
     multiDexEnabled true
     versionCode 1
     versionName "1.0"
@@ -40,7 +35,7 @@ dependencies {
   implementation project(':reactorkit')
 
   implementation 'androidx.multidex:multidex:2.0.1'
-  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.5'
+  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
   implementation 'io.reactivex.rxjava3:rxjava:3.0.4'
   implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
